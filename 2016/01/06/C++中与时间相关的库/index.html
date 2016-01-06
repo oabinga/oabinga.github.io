@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C++时间库(一)C风格的时间函数 | 思</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结一下。
+由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++时间库(一)C风格的时间函数">
+<meta property="og:url" content="http://yoursite.com/2016/01/06/C++中与时间相关的库/index.html">
+<meta property="og:site_name" content="思">
+<meta property="og:description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结一下。
+由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+<meta property="og:image" content="http://yoursite.com/images/time_zone.png">
+<meta property="og:updated_time" content="2016-01-06T07:50:16.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++时间库(一)C风格的时间函数">
+<meta name="twitter:description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结一下。
+由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+  
+    <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="http://fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?518b61392b8176e803c0bc2f03d713dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">思</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的技术总结</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/oabinga" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C++中与时间相关的库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+<a href="/2016/01/06/C++中与时间相关的库/" class="article-date">
+  <time datetime="2016-01-06T07:50:16.996Z" itemprop="datePublished">2016-01-06</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      C++时间库(一)C风格的时间函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		 
+		<div id="toc" class="toc-article">
+			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
+                  	<h3 class="toc-title"><span>文章目录</span></h3>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u6570_u636E_u7C7B_u578B"><span class="toc-number">1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time_t"><span class="toc-number">1.1.</span> <span class="toc-text">time_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_tm"><span class="toc-number">1.2.</span> <span class="toc-text">struct tm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock_t"><span class="toc-number">1.3.</span> <span class="toc-text">clock_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_timeval"><span class="toc-number">1.4.</span> <span class="toc-text">struct timeval</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570"><span class="toc-number">2.</span> <span class="toc-text">获取时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time"><span class="toc-number">2.1.</span> <span class="toc-text">time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock"><span class="toc-number">2.2.</span> <span class="toc-text">clock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetLocalTime"><span class="toc-number">2.3.</span> <span class="toc-text">GetLocalTime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7C7B_u578B_u7684_u8F6C_u6362_u51FD_u6570"><span class="toc-number">3.</span> <span class="toc-text">时间日期数据类型的转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gmtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.1.</span> <span class="toc-text">gmtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.2.</span> <span class="toc-text">localtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><span class="toc-number">3.3.</span> <span class="toc-text">mktime （tm -> time_t）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><span class="toc-number">4.</span> <span class="toc-text">获取时间函数与时区关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><span class="toc-number">5.</span> <span class="toc-text">时间日期数据的格式化函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><span class="toc-number">5.1.</span> <span class="toc-text">ctime （time_t -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asctime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.2.</span> <span class="toc-text">asctime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strftime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.3.</span> <span class="toc-text">strftime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strptime__uFF08char*_-_26gt_3B_tm_uFF09"><span class="toc-number">5.4.</span> <span class="toc-text">strptime （char* -> tm）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5BF9_u65F6_u95F4_u6570_u636E_u7684_u64CD_u4F5C"><span class="toc-number">6.</span> <span class="toc-text">对时间数据的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#difftime"><span class="toc-number">6.1.</span> <span class="toc-text">difftime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7EBF_u7A0B_u5B89_u5168"><span class="toc-number">7.</span> <span class="toc-text"> 线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime_u548Casctime"><span class="toc-number">7.1.</span> <span class="toc-text">ctime和asctime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime_u548Cgmtime"><span class="toc-number">7.2.</span> <span class="toc-text">localtime和gmtime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		 
+                <!--
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u6570_u636E_u7C7B_u578B"><span class="toc-number">1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time_t"><span class="toc-number">1.1.</span> <span class="toc-text">time_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_tm"><span class="toc-number">1.2.</span> <span class="toc-text">struct tm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock_t"><span class="toc-number">1.3.</span> <span class="toc-text">clock_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_timeval"><span class="toc-number">1.4.</span> <span class="toc-text">struct timeval</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570"><span class="toc-number">2.</span> <span class="toc-text">获取时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time"><span class="toc-number">2.1.</span> <span class="toc-text">time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock"><span class="toc-number">2.2.</span> <span class="toc-text">clock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetLocalTime"><span class="toc-number">2.3.</span> <span class="toc-text">GetLocalTime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7C7B_u578B_u7684_u8F6C_u6362_u51FD_u6570"><span class="toc-number">3.</span> <span class="toc-text">时间日期数据类型的转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gmtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.1.</span> <span class="toc-text">gmtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.2.</span> <span class="toc-text">localtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><span class="toc-number">3.3.</span> <span class="toc-text">mktime （tm -> time_t）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><span class="toc-number">4.</span> <span class="toc-text">获取时间函数与时区关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><span class="toc-number">5.</span> <span class="toc-text">时间日期数据的格式化函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><span class="toc-number">5.1.</span> <span class="toc-text">ctime （time_t -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asctime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.2.</span> <span class="toc-text">asctime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strftime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.3.</span> <span class="toc-text">strftime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strptime__uFF08char*_-_26gt_3B_tm_uFF09"><span class="toc-number">5.4.</span> <span class="toc-text">strptime （char* -> tm）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5BF9_u65F6_u95F4_u6570_u636E_u7684_u64CD_u4F5C"><span class="toc-number">6.</span> <span class="toc-text">对时间数据的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#difftime"><span class="toc-number">6.1.</span> <span class="toc-text">difftime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7EBF_u7A0B_u5B89_u5168"><span class="toc-number">7.</span> <span class="toc-text"> 线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime_u548Casctime"><span class="toc-number">7.1.</span> <span class="toc-text">ctime和asctime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime_u548Cgmtime"><span class="toc-number">7.2.</span> <span class="toc-text">localtime和gmtime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+                </div>
+                -->
+        <p>在C++开发时，经常会用到与时间相关的函数或者库，例如C风格时间函数、std::chrono库、Boost.Date_Time库。<br>他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结一下。</p>
+<p>由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。</p>
+<a id="more"></a>
+<h2 id="u6570_u636E_u7C7B_u578B"><a href="#u6570_u636E_u7C7B_u578B" class="headerlink" title="数据类型"></a>数据类型</h2><p>C风格的时间函数，有C和C++两个版本，如果使用C版本需要包含<code>#include &lt;time.h&gt;</code>，如果使用C++版本需要包含<code>#include &lt;ctime&gt;</code>，并且使用命名空间<code>std</code>。</p>
+<h3 id="time_t"><a href="#time_t" class="headerlink" title="time_t"></a>time_t</h3><p>日历时间（calendar time）。在C/C++编程中经常会遇到它，它定义为从协调时间时（UTC）1970年01月01日00时00分00秒起至现在的总秒数，被用于表示Unix时间（戳）.<br>一般编译器使用32位整数表示time_t，因此这个时间最多使用到2038年1月18日19时14分07秒。一些编译器使用64位整形来表示time_t，可以避免这个问题。</p>
+<h3 id="struct_tm"><a href="#struct_tm" class="headerlink" title="struct tm"></a>struct tm</h3><p>分解时间（broken-down time）。是一个存储了日期和时间的结构体，定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> tm</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> tm_sec;  <span class="comment">/*秒，正常范围0-59， 但允许至61, C99(C++11)改为60*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_min;  <span class="comment">/*分钟，0-59*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_hour; <span class="comment">/*小时， 0-23*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_mday; <span class="comment">/*日，即一个月中的第几天，1-31*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_mon;  <span class="comment">/*月， 从一月算起，0-11，1+tm_mon*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_year;  <span class="comment">/*年， 从1900至今已经多少年， 1900+tm_year*/</span>  </span><br><span class="line">    <span class="keyword">int</span> tm_wday; <span class="comment">/*星期，一周中的第几天， 从星期日算起，0-6*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_yday; <span class="comment">/*从今年1月1日到目前的天数，范围0-365，其中0代表1月1日，1代表1月2日，以此类推*/</span></span><br><span class="line">    <span class="keyword">int</span> tm_isdst; <span class="comment">/* 夏令时标识符，tm_isdst &gt; 0，实行夏令时的时候；tm_isdst = 0, 不实行夏令时的进候；tm_isdst &lt; 0, 表示未知。*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>需要特别注意的是，年份是从1900年起至今多少年，而不是直接存储如2011年，月份从0开始的，0表示一月，星期也是从0开始的，0表示星期日，1表示星期一。</p>
+<h3 id="clock_t"><a href="#clock_t" class="headerlink" title="clock_t"></a>clock_t</h3><p>时钟滴答数（clock tick）。记录从进程开始的时间，是一个相对时间，与<strong>CLOCKS_PER_SEC</strong>（每秒内时钟滴答数，定义在time.h中，一般为1000）相关。一般用32位整数表示clock_t。</p>
+<h3 id="struct_timeval"><a href="#struct_timeval" class="headerlink" title="struct timeval"></a>struct timeval</h3><p>它表示一个时间间隔，这个类型不是标准的C++类型，而是定义在Berkeley Software Distribution (BSD)的Time.h中的一个类型，定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> timeval &#123;</span><br><span class="line">  <span class="keyword">long</span> tv_sec;   <span class="comment">//秒</span></span><br><span class="line">  <span class="keyword">long</span> tv_usec;  <span class="comment">//微秒</span></span><br><span class="line">&#125; timeval;</span><br></pre></td></tr></table></figure></p>
+<p>这个类型具有更高的精度，但不具有跨平台性，主要在Unix或类Unix系统中使用，需要包含头文件<code>&lt;sys/time.h&gt;</code>，与<code>gettimeofday</code>函数配合使用。<br>在Windows下也定义了此结构，主要被Windows Sockets函数<code>select</code>使用，定义在头文件<code>Winsock2.h</code>中。<br>为了跨平台，尽量不要使用此类型。</p>
+<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570" class="headerlink" title="获取时间函数"></a>获取时间函数</h2><h3 id="time"><a href="#time" class="headerlink" title="time"></a>time</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> time (<span class="keyword">time_t</span>* timer);</span><br></pre></td></tr></table></figure>
+<p>返回自从00:00 hours, Jan 1, 1970 UTC (i.e., the current unix timestamp)到现在的秒数。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> timer;</span><br><span class="line">time(&amp;timer);  <span class="comment">/* get current time; same as: timer = time(NULL)  */</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="clock"><a href="#clock" class="headerlink" title="clock"></a>clock</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">clock_t</span> clock(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+<p>得到从进程启动到此次函数调用的累计的时钟滴答数。一般用来统计一个函数或者过程的耗时。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">clock_t</span> start, finish;</span><br><span class="line">start = clock();</span><br><span class="line">...</span><br><span class="line">finish = clock();</span><br><span class="line">duration = (<span class="keyword">double</span>)(finish - start) / CLOCKS_PER_SEC;</span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"%2.1f seconds\n"</span>, duration );</span><br></pre></td></tr></table></figure></p>
+<h3 id="GetLocalTime"><a href="#GetLocalTime" class="headerlink" title="GetLocalTime"></a>GetLocalTime</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> WINAPI <span class="title">GetLocalTime</span><span class="params">(</span><br><span class="line">  _Out_ LPSYSTEMTIME lpSystemTime</span><br><span class="line">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> _SYSTEMTIME &#123;</span><br><span class="line">  WORD wYear;          <span class="comment">//有效值是从1601年到30827年</span></span><br><span class="line">  WORD wMonth;         <span class="comment">//有效值是从1到12</span></span><br><span class="line">  WORD wDayOfWeek;     <span class="comment">//有效值是从0到6，0是周日</span></span><br><span class="line">  WORD wDay;           <span class="comment">//有效值是从1到31</span></span><br><span class="line">  WORD wHour;          <span class="comment">//有效值是从0到23</span></span><br><span class="line">  WORD wMinute;        <span class="comment">//有效值是从0到59</span></span><br><span class="line">  WORD wSecond;        <span class="comment">//有效值是从0到59</span></span><br><span class="line">  WORD wMilliseconds;  <span class="comment">//有效值是从0到999</span></span><br><span class="line">&#125; SYSTEMTIME, *PSYSTEMTIME;</span><br></pre></td></tr></table></figure>
+<p>Windows函数，能获取当前日期和时间（UTC），能精确到毫秒，不具有跨平台性。<br>如果想获取更高精度的时间（&lt;1us），可以用<code>QueryPerformanceCounter</code>和<code>QueryPerformanceFrequency</code>。</p>
+<h2 id="u65F6_u95F4_u65E5_u671F_u6570_u636E_u7C7B_u578B_u7684_u8F6C_u6362_u51FD_u6570"><a href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7C7B_u578B_u7684_u8F6C_u6362_u51FD_u6570" class="headerlink" title="时间日期数据类型的转换函数"></a>时间日期数据类型的转换函数</h2><h3 id="gmtime__uFF08time_t_-_26gt_3B_tm_uFF09"><a href="#gmtime__uFF08time_t_-_26gt_3B_tm_uFF09" class="headerlink" title="gmtime （time_t -&gt; tm）"></a>gmtime （time_t -&gt; tm）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">struct</span> tm * <span class="title">gmtime</span> <span class="params">(<span class="keyword">const</span> time_t * timer)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>转换time_t成UTC时间的tm结构体。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> rawtime;</span><br><span class="line"><span class="keyword">struct</span> tm * ptm;</span><br><span class="line">time ( &amp;rawtime );</span><br><span class="line">ptm = gmtime ( &amp;rawtime );</span><br></pre></td></tr></table></figure></p>
+<h3 id="localtime__uFF08time_t_-_26gt_3B_tm_uFF09"><a href="#localtime__uFF08time_t_-_26gt_3B_tm_uFF09" class="headerlink" title="localtime （time_t -&gt; tm）"></a>localtime （time_t -&gt; tm）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">struct</span> tm * <span class="title">localtime</span> <span class="params">(<span class="keyword">const</span> time_t * timer)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>转换time_t成本地时区的tm结构体。<br>多个线程同时调用<strong>localtime</strong>会引起数据竞争，下面的<a href="#thread">线程安全</a>部分会讲到它。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> rawtime;</span><br><span class="line"><span class="keyword">struct</span> tm * timeinfo;</span><br><span class="line"></span><br><span class="line">time (&amp;rawtime);</span><br><span class="line">timeinfo = localtime (&amp;rawtime);</span><br><span class="line"><span class="built_in">printf</span> (<span class="string">"Current local time and date: %s"</span>, asctime(timeinfo));</span><br></pre></td></tr></table></figure></p>
+<h3 id="mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><a href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09" class="headerlink" title="mktime （tm -&gt; time_t）"></a>mktime （tm -&gt; time_t）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> mktime (<span class="keyword">struct</span> tm * timeptr);</span><br></pre></td></tr></table></figure>
+<p>转换本地时间的tm结构体成time_t。<br>这个函数是<strong>localtime</strong>的逆操作。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">time_t</span> t = <span class="built_in">std</span>::time(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">std</span>::tm tm = *<span class="built_in">std</span>::localtime(&amp;t);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Today is           "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt;<span class="string">'\n'</span>;</span><br><span class="line">    tm.tm_mon -= <span class="number">100</span>;  <span class="comment">// tm_mon is now outside its normal range</span></span><br><span class="line">    <span class="built_in">std</span>::mktime(&amp;tm);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"100 months ago was "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Today is           Wed Dec <span class="number">28</span> <span class="number">09</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2011</span> EST</span><br><span class="line"><span class="number">100</span> months ago was Thu Aug <span class="number">28</span> <span class="number">10</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2003</span> EDT</span><br></pre></td></tr></table></figure></p>
+<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB" class="headerlink" title="获取时间函数与时区关系"></a>获取时间函数与时区关系</h2><p><img src="/images/time_zone.png" alt="enter description here"><br>关于时区的总结，请看<a href="/2016/01/06/时间概念总结">时间概念总结</a></p>
+<h2 id="u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><a href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570" class="headerlink" title="时间日期数据的格式化函数"></a>时间日期数据的格式化函数</h2><h3 id="ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><a href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09" class="headerlink" title="ctime （time_t -&gt; char*）"></a>ctime （time_t -&gt; char*）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">ctime</span> <span class="params">(<span class="keyword">const</span> time_t * timer)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>转换time_t成人类可读的字符串，是本地时间。<br>这个函数等价：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asctime(localtime(timer))</span><br></pre></td></tr></table></figure></p>
+<p>格式如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Www Mmm dd hh:mm:ss yyyy</span><br></pre></td></tr></table></figure></p>
+<p>Www是周几，Mmm是月份（字母表示），dd是当月的一天，hh::mm::ss是时间，yyyy是年份<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>      /* printf */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span>       /* time_t, time, ctime */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> rawtime;</span><br><span class="line"></span><br><span class="line">  time (&amp;rawtime);</span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">"The current local time is: %s"</span>, ctime (&amp;rawtime));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="asctime__uFF08tm_-_26gt_3B_char*_uFF09"><a href="#asctime__uFF08tm_-_26gt_3B_char*_uFF09" class="headerlink" title="asctime （tm -&gt; char*）"></a>asctime （tm -&gt; char*）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">asctime</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> tm * timeptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>转换tm结构体成字符串。<br>这个函数等价：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">asctime</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> tm *timeptr)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> wday_name[][<span class="number">4</span>] = &#123;</span><br><span class="line">    <span class="string">"Sun"</span>, <span class="string">"Mon"</span>, <span class="string">"Tue"</span>, <span class="string">"Wed"</span>, <span class="string">"Thu"</span>, <span class="string">"Fri"</span>, <span class="string">"Sat"</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> mon_name[][<span class="number">4</span>] = &#123;</span><br><span class="line">    <span class="string">"Jan"</span>, <span class="string">"Feb"</span>, <span class="string">"Mar"</span>, <span class="string">"Apr"</span>, <span class="string">"May"</span>, <span class="string">"Jun"</span>,</span><br><span class="line">    <span class="string">"Jul"</span>, <span class="string">"Aug"</span>, <span class="string">"Sep"</span>, <span class="string">"Oct"</span>, <span class="string">"Nov"</span>, <span class="string">"Dec"</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">char</span> result[<span class="number">26</span>];</span><br><span class="line">  <span class="built_in">sprintf</span>(result, <span class="string">"%.3s %.3s%3d %.2d:%.2d:%.2d %d\n"</span>,</span><br><span class="line">    wday_name[timeptr-&gt;tm_wday],</span><br><span class="line">    mon_name[timeptr-&gt;tm_mon],</span><br><span class="line">    timeptr-&gt;tm_mday, timeptr-&gt;tm_hour,</span><br><span class="line">    timeptr-&gt;tm_min, timeptr-&gt;tm_sec,</span><br><span class="line">    <span class="number">1900</span> + timeptr-&gt;tm_year);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>字符串格式同<strong>ctime</strong>。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>      /* printf */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span>       /* time_t, struct tm, time, localtime, asctime */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> rawtime;</span><br><span class="line">  <span class="keyword">struct</span> tm * timeinfo;</span><br><span class="line"></span><br><span class="line">  time ( &amp;rawtime );</span><br><span class="line">  timeinfo = localtime ( &amp;rawtime );</span><br><span class="line">  <span class="built_in">printf</span> ( <span class="string">"The current date/time is: %s"</span>, asctime (timeinfo) );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="strftime__uFF08tm_-_26gt_3B_char*_uFF09"><a href="#strftime__uFF08tm_-_26gt_3B_char*_uFF09" class="headerlink" title="strftime （tm -&gt; char*）"></a>strftime （tm -&gt; char*）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> strftime (<span class="keyword">char</span>* ptr, <span class="keyword">size_t</span> maxsize, <span class="keyword">const</span> <span class="keyword">char</span>* format,</span><br><span class="line">                 <span class="keyword">const</span> <span class="keyword">struct</span> tm* timeptr );</span><br></pre></td></tr></table></figure>
+<p>转换结构体tm为自定义格式的字符串，类似于<code>sprintf</code>。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>      /* puts */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span>       /* time_t, struct tm, time, localtime, strftime */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> rawtime;</span><br><span class="line">  <span class="keyword">struct</span> tm * timeinfo;</span><br><span class="line">  <span class="keyword">char</span> buffer [<span class="number">80</span>];</span><br><span class="line"></span><br><span class="line">  time (&amp;rawtime);</span><br><span class="line">  timeinfo = localtime (&amp;rawtime);</span><br><span class="line"></span><br><span class="line">  strftime (buffer,<span class="number">80</span>,<span class="string">"Now it's %I:%M%p."</span>,timeinfo);</span><br><span class="line">  <span class="built_in">puts</span> (buffer);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="strptime__uFF08char*_-_26gt_3B_tm_uFF09"><a href="#strptime__uFF08char*_-_26gt_3B_tm_uFF09" class="headerlink" title="strptime （char* -&gt; tm）"></a>strptime （char* -&gt; tm）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">strptime</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* buf, <span class="keyword">const</span> <span class="keyword">char</span>* format, <span class="keyword">struct</span> tm* tptr)</span></span></span><br></pre></td></tr></table></figure>
+<p><code>strftime</code>逆操作，把字符串按照自定义的格式转换为tm。</p>
+<h2 id="u5BF9_u65F6_u95F4_u6570_u636E_u7684_u64CD_u4F5C"><a href="#u5BF9_u65F6_u95F4_u6570_u636E_u7684_u64CD_u4F5C" class="headerlink" title="对时间数据的操作"></a>对时间数据的操作</h2><h3 id="difftime"><a href="#difftime" class="headerlink" title="difftime"></a>difftime</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">difftime</span> <span class="params">(time_t end, time_t beginning)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>计算两个时间的差值，单位为秒。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>      /* printf */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span>       /* time_t, struct tm, difftime, time, mktime */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> now;</span><br><span class="line">  <span class="keyword">struct</span> tm newyear;</span><br><span class="line">  <span class="keyword">double</span> seconds;</span><br><span class="line"></span><br><span class="line">  time(&amp;now);  <span class="comment">/* get current time; same as: now = time(NULL)  */</span></span><br><span class="line"></span><br><span class="line">  newyear = *localtime(&amp;now);</span><br><span class="line"></span><br><span class="line">  newyear.tm_hour = <span class="number">0</span>; newyear.tm_min = <span class="number">0</span>; newyear.tm_sec = <span class="number">0</span>;</span><br><span class="line">  newyear.tm_mon = <span class="number">0</span>;  newyear.tm_mday = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  seconds = difftime(now,mktime(&amp;newyear));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span> (<span class="string">"%.f seconds since new year in the current timezone.\n"</span>, seconds);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="u7EBF_u7A0B_u5B89_u5168"><a href="#u7EBF_u7A0B_u5B89_u5168" class="headerlink" title="线程安全"></a><a name="“thread”/"> 线程安全</a></h2><h3 id="ctime_u548Casctime"><a href="#ctime_u548Casctime" class="headerlink" title="ctime和asctime"></a>ctime和asctime</h3><p><strong>ctime</strong>和<strong>asctime</strong>不是线程安全的，原因是返回的字符串指针指向了一个静态分配的字符串，会被后续函数调用复写掉。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** asctime returns a static allocated string shared with other calls</span><br><span class="line">* to asctime or ctime. Every time these functions are called the content</span><br><span class="line">* of the static string is overwritten*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="keyword">time_t</span> t1 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">  <span class="built_in">std</span>::tm* t1_tm = <span class="built_in">std</span>::localtime(&amp;t1);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* t1_as_text = <span class="built_in">std</span>::asctime(t1_tm); <span class="comment">// save as dangerous string</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (original)   : "</span> &lt;&lt; t1_as_text &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="keyword">time_t</span> t2 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">  <span class="built_in">std</span>::tm* t2_tm = <span class="built_in">std</span>::localtime(&amp;t2);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* t2_as_text = <span class="built_in">std</span>::asctime(t2_tm);  <span class="comment">// overwrite t1_as_text</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (overwritten): "</span> &lt;&lt; t1_as_text;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t2              : "</span> &lt;&lt; t2_as_text &lt;&lt; <span class="built_in">std</span>::endl;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t1 (original) : Mon Jan <span class="number">21</span> <span class="number">13</span>:<span class="number">56</span>:<span class="number">30</span> <span class="number">2013</span></span><br><span class="line"></span><br><span class="line">t1 (overwrite): Mon Jan <span class="number">21</span> <span class="number">13</span>:<span class="number">56</span>:<span class="number">35</span> <span class="number">2013</span></span><br><span class="line">t2            : Mon Jan <span class="number">21</span> <span class="number">13</span>:<span class="number">56</span>:<span class="number">35</span> <span class="number">2013</span></span><br></pre></td></tr></table></figure></p>
+<p>在Linux系统下，可以使用<code>ctime_r</code>和<code>asctime_r</code>这两个线程安全的函数，它们线程安全的原因是使用了用户自己分配的buffer，这个buffer至少有26字节的空间。<br>在Windows系统下，可以使用<code>ctime_s</code>和<code>asctime_s</code>这两个函数。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">ctime_r</span><span class="params">(<span class="keyword">const</span> time_t *timep, <span class="keyword">char</span> *buf)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">asctime_r</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> tm *tm, <span class="keyword">char</span> *buf)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">errno_t</span> ctime_s(</span><br><span class="line">   <span class="keyword">char</span>* buffer,</span><br><span class="line">   <span class="keyword">size_t</span> numberOfElements,</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">time_t</span> *time</span><br><span class="line">);</span><br><span class="line"><span class="keyword">errno_t</span> asctime_s(</span><br><span class="line">   <span class="keyword">char</span>* buffer,</span><br><span class="line">   <span class="keyword">size_t</span> numberOfElements,</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">struct</span> tm *_tm</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<h3 id="localtime_u548Cgmtime"><a href="#localtime_u548Cgmtime" class="headerlink" title="localtime和gmtime"></a>localtime和gmtime</h3><p><strong>localtime</strong>和<strong>gmtime</strong>也不是线程安全的。原因是，返回的std::tm指针在内部指向了静态的std::tm结构。<br>在Linux系统下，可以使用<code>localtime_r</code>和<code>gmtime_r</code>这两个线程安全的函数。<br>在Windows系统下，可以使用<code>localtime_s</code>和<code>gmtime_s</code>这两个函数。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">struct</span> tm *<span class="title">localtime_r</span><span class="params">(<span class="keyword">const</span> time_t *timep, <span class="keyword">struct</span> tm *result)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">struct</span> tm *<span class="title">gmtime_r</span><span class="params">(<span class="keyword">const</span> time_t *timep, <span class="keyword">struct</span> tm *result)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">errno_t</span> localtime_s(</span><br><span class="line">   <span class="keyword">struct</span> tm* _tm,</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">time_t</span> *time</span><br><span class="line">);</span><br><span class="line"><span class="keyword">errno_t</span> gmtime_s(</span><br><span class="line">   <span class="keyword">struct</span> tm* _tm,</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">__time_t</span>* time</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>为了跨平台并且多线程使用这些功能，下面定义安全的版本<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> g2&#123;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::chrono::time_point&lt;<span class="built_in">std</span>::chrono::system_clock&gt;  system_time_point;</span><br><span class="line"></span><br><span class="line"><span class="function">tm <span class="title">localtime</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::time_t&amp; time)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::tm tm_snapshot;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))</span></span><br><span class="line">  localtime_s(&amp;tm_snapshot, &amp;time);</span><br><span class="line"><span class="preprocessor">#<span class="keyword">else</span></span></span><br><span class="line">  localtime_r(&amp;time, &amp;tm_snapshot); <span class="comment">// POSIX</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">  <span class="keyword">return</span> tm_snapshot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// To simplify things the return value is just a string. I.e. by design!</span></span><br><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">put_time</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::tm* date_time, <span class="keyword">const</span> <span class="keyword">char</span>* c_time_format)</span></span><br><span class="line"></span>&#123;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">ostringstream</span> oss;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// BOGUS hack done for VS2012: C++11 non-conformant since it SHOULD take a "const struct tm*  "</span></span><br><span class="line">  <span class="comment">// ref. C++11 standard: ISO/IEC 14882:2011, § 27.7.1,</span></span><br><span class="line">  oss &lt;&lt; <span class="built_in">std</span>::put_time(<span class="keyword">const_cast</span>&lt;<span class="built_in">std</span>::tm*&gt;(date_time), c_time_format);</span><br><span class="line">  <span class="keyword">return</span> oss.str();</span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">else</span>    <span class="comment">// LINUX</span></span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> size = <span class="number">1024</span>;</span><br><span class="line">  <span class="keyword">char</span> buffer[size];</span><br><span class="line">  <span class="keyword">auto</span> success = <span class="built_in">std</span>::strftime(buffer, size, c_time_format, date_time);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="number">0</span> == success)</span><br><span class="line">    <span class="keyword">return</span> c_time_format;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> buffer;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// extracting std::time_t from std:chrono for "now"</span></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">time_t</span> systemtime_now()</span><br><span class="line">&#123;</span><br><span class="line">  system_time_point system_now = <span class="built_in">std</span>::chrono::system_clock::now();</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">std</span>::chrono::system_clock::<span class="keyword">to_time_t</span>(system_now);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125; <span class="comment">// g2-namespace</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://zh.wikipedia.org/wiki/Time.h" target="_blank" rel="external">维基百科time.h</a></li>
+<li><a href="http://en.cppreference.com" target="_blank" rel="external">cppreference.com</a></li>
+<li><a href="http://www.cplusplus.com/" target="_blank" rel="external">cplusplus</a></li>
+<li><a href="http://blog.csdn.net/love_gaohz/article/details/6637625" target="_blank" rel="external">c++ 时间类型详解 time_t</a></li>
+<li><a href="https://kjellkod.wordpress.com/2013/01/22/exploring-c11-part-2-localtime-and-time-again/" target="_blank" rel="external">Exploring C++11, part 2 (localtime and time again)</a></li>
+<li><a href="http://rabbit.eng.miami.edu/info/functions/time.html" target="_blank" rel="external">Unix, C, and C++Function Reference Time</a></li>
+</ol>
+<hr>
+<p><strong>版权声明</strong></p>
+<p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++中与时间相关的库/">http://yoursite.com/2016/01/06/C++中与时间相关的库/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <a data-url="http://yoursite.com/2016/01/06/C++中与时间相关的库/" data-id="cij2gwkfq000kzk39kfm9v2fz" data_title="C++时间库(一)C风格的时间函数" data_summary="在C++开发时，经常会用到与时间相关的函数或者库，例如..." class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/06/C++中与时间相关的库/#disqus_thread" class="article-comment-link">Comments</a>
+      
+
+      
+	  
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li></ul>
+
+	  
+<span>
+更新日期:<time datetime="2016-01-06T07:50:16.996Z" itemprop="dateModified">2016-01-06</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/06/C-时间库（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C++时间库（三）Boost.Date_Time库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<!-- 多说评论框 start -->
+
+<!-- 多说评论框 end -->
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">文章目录</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u6570_u636E_u7C7B_u578B"><span class="toc-number">1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time_t"><span class="toc-number">1.1.</span> <span class="toc-text">time_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_tm"><span class="toc-number">1.2.</span> <span class="toc-text">struct tm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock_t"><span class="toc-number">1.3.</span> <span class="toc-text">clock_t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#struct_timeval"><span class="toc-number">1.4.</span> <span class="toc-text">struct timeval</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570"><span class="toc-number">2.</span> <span class="toc-text">获取时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#time"><span class="toc-number">2.1.</span> <span class="toc-text">time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#clock"><span class="toc-number">2.2.</span> <span class="toc-text">clock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetLocalTime"><span class="toc-number">2.3.</span> <span class="toc-text">GetLocalTime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7C7B_u578B_u7684_u8F6C_u6362_u51FD_u6570"><span class="toc-number">3.</span> <span class="toc-text">时间日期数据类型的转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gmtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.1.</span> <span class="toc-text">gmtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime__uFF08time_t_-_26gt_3B_tm_uFF09"><span class="toc-number">3.2.</span> <span class="toc-text">localtime （time_t -> tm）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><span class="toc-number">3.3.</span> <span class="toc-text">mktime （tm -> time_t）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><span class="toc-number">4.</span> <span class="toc-text">获取时间函数与时区关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><span class="toc-number">5.</span> <span class="toc-text">时间日期数据的格式化函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><span class="toc-number">5.1.</span> <span class="toc-text">ctime （time_t -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asctime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.2.</span> <span class="toc-text">asctime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strftime__uFF08tm_-_26gt_3B_char*_uFF09"><span class="toc-number">5.3.</span> <span class="toc-text">strftime （tm -> char*）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strptime__uFF08char*_-_26gt_3B_tm_uFF09"><span class="toc-number">5.4.</span> <span class="toc-text">strptime （char* -> tm）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5BF9_u65F6_u95F4_u6570_u636E_u7684_u64CD_u4F5C"><span class="toc-number">6.</span> <span class="toc-text">对时间数据的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#difftime"><span class="toc-number">6.1.</span> <span class="toc-text">difftime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7EBF_u7A0B_u5B89_u5168"><span class="toc-number">7.</span> <span class="toc-text"> 线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctime_u548Casctime"><span class="toc-number">7.1.</span> <span class="toc-text">ctime和asctime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#localtime_u548Cgmtime"><span class="toc-number">7.2.</span> <span class="toc-text">localtime和gmtime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Boost/" style="font-size: 13px; color: #7dc3de">Boost</a> <a href="/tags/C/" style="font-size: 20px; color: #1db400">C++</a>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">日历</h3>
+  <div class="widget">
+    <div id="g-calendar" class="g-calendar">
+        <span class="g-calendar-prev"></span>
+		 
+        <span class="g-calendar-back"></span>
+        <span class="g-calendar-now"></span>
+		 
+        <span class="g-calendar-next"></span>
+        <div class="g-calendar-hd"></div>
+        <div class="g-calendar-tit"></div>
+        <div class="g-calendar-bd"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function LGY_calendar(wrapId, options){
+    this.oWrap = this.getId(wrapId);
+    this.oHead = this.getByClassName('g-calendar-hd',this.oWrap)[0];
+    this.oBody = this.getByClassName('g-calendar-bd',this.oWrap)[0];
+    this.oTit = this.getByClassName('g-calendar-tit',this.oWrap)[0];
+    this.oPrev = this.getByClassName('g-calendar-prev',this.oWrap)[0];
+    this.oNext = this.getByClassName('g-calendar-next',this.oWrap)[0];
+    this.oNow = this.getByClassName('g-calendar-now',this.oWrap)[0];
+    this.oBack = this.getByClassName('g-calendar-back',this.oWrap)[0];
+    this.init();
+}
+LGY_calendar.prototype = {
+    ///////////获取ID元素
+    getId:function(id){
+        return document.getElementById(id);
+    },
+    ////////获取css类名元素
+    getByClassName:function(className,parent){
+        var elem = [],
+            node = parent != undefined&&parent.nodeType==1?parent.getElementsByTagName('*'):document.getElementsByTagName('*'),
+            p = new RegExp("(^|\\s)"+className+"(\\s|$)");
+        for(var n=0,i=node.length;n<i;n++){
+            if(p.test(node[n].className)){
+                elem.push(node[n]);
+            }
+        }
+        return elem;
+    },
+    //填充日历
+    fillDate:function(year,month){
+        //本月份第一天是星期几-为显示上个月的天数做铺垫
+        var first_day = new Date(year,month,1).getDay(),
+        //如果刚好是星期天，则空出一行（显示上个月的天数）
+            first_day = first_day == 0?first_day=7:first_day;
+        //本月份最后一天是几号
+        var final_date = new Date(year,month+1,0).getDate(),
+        //上个月的最后一天是几号
+            last_date = new Date(year,month,0).getDate(),
+        //剩余的格子数--即排在末尾的格子数
+            surplus = 42 - first_day - final_date;
+        //设置年的链接
+        var yearHead = "<a href='/" + "archives/" + year + "/'>" + year + " "+ "</a>"; 
+        //设置年的链接
+        var monthHead = "";
+        var month1 = month + 1;
+        if (month1 < 10) {
+            monthHead = "<a href='/" + "archives/" + year + "/" + "0" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        } else {
+            monthHead = "<a href='/" + "archives/" + year + "/" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        }
+        //设置表头的日历
+        this.oHead.innerHTML = yearHead+'年'+monthHead+'月';
+        //填充日历执行
+        var html = '';
+        //上个月的显示天数
+        for(var i=0;i<first_day;i++){
+            html+='<span class="g-calendar-grey">'+(last_date-(first_day-1)+i)+'</span>';
+        }
+        //本月的显示天数
+        var postdate = new Date("Wed Jan 06 2016 15:50:16 GMT+0800"); 
+        if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
+            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/开张/" title="终于开张了">4</a></span><span>5</span><span><a href="/2016/01/06/时间概念总结/" title="当天有5篇博客,第一篇:时间概念总结">6</a></span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+        } else {
+            for(var j=0;j<final_date;j++){        
+                html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
+            }
+        }
+        //下个月的显示天数
+        for(var k=0;k<surplus;k++){
+            html+='<span class="g-calendar-grey">'+(k+1)+'</span>';
+        }
+        //fill
+        this.oBody.innerHTML = html;
+        // 当前状态
+        if(year==this.c_year&&this.c_month==month){
+            this.oBody.getElementsByTagName('span')[first_day+this.date-1].className='g-calendar-on';
+        }
+
+        // 对所有文章遍历,然后将有文章的日期加上链接,如果文章太多的话,生成页面会很大,去掉了
+        
+    },
+    // next切换
+    next:function(){
+        var _that = this;
+        this.oNext.onclick = function(){
+            _that.month++;
+            if(_that.month>11){
+                _that.month = 0;
+                _that.year++;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    // back 切换
+    back:function(){
+        var _that = this;
+        if(this.oBack != undefined) {
+            this.oBack.onclick = function(){
+                var postdate = new Date("Wed Jan 06 2016 15:50:16 GMT+0800"); 
+                _that.year = postdate.getFullYear();
+                _that.month = postdate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // now切换
+    now:function(){
+        var _that = this;
+        if(this.oNow != undefined ) {
+            this.oNow.onclick = function(){
+                var nowDate = new Date(); 
+                _that.year = nowDate.getFullYear();
+                _that.month = nowDate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // prev切换
+    prev:function(){
+        var _that = this;
+        this.oPrev.onclick = function(){
+            _that.month--;
+            if(_that.month<0){
+                _that.month = 11;
+                _that.year--;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    init:function(){
+        this.oTit.innerHTML = '<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>';
+        // 获取今天的日历时间
+        var now = new Date();
+        this.c_year = this.year = now.getFullYear();
+        this.c_month = this.month = now.getMonth();
+        this.date = now.getDate();
+        // 初始化--填充日历
+        this.fillDate(this.year,this.month);
+        //next切换
+        this.next();
+        //prev切换
+        this.prev();
+        //back 切换
+        this.back();
+        //now 切换
+        this.now();
+    }
+}
+new LGY_calendar('g-calendar');
+</script>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/01/06/C++中与时间相关的库/">C++时间库(一)C风格的时间函数</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C-时间库（三）/">C++时间库（三）Boost.Date_Time库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C-时间库（二）-1/">C++时间库（二）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C-时间库（二）/">C++时间库（二）std::chrono时间库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/时间概念总结/">时间概念总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="/images/cc88x31.png"></a><br>
+      &copy; 2016 Oabinga<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+      <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+      </script>
+      </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'oabinga';
+  
+  var disqus_url = 'http://yoursite.com/2016/01/06/C++中与时间相关的库/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+<!-- 多说公共JS代码 end -->
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+-->
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	<script src="/js/gotop.js" type="text/javascript"></script>
+	<!--
+	<script src="/js/gotop.js"></script>
+	-->
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	<!--
+	<script src="/js/toc_aside_toggle.js"></script>
+	-->
+
+</div>
+<script src="/js/toc_aside_toggle.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
