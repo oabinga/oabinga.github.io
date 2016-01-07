@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>C++时间库(一) C风格的时间函数 | 思</title>
+  <title>C++时间库（一） C风格的时间函数 | 思</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。
-由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++时间库(一) C风格的时间函数">
-<meta property="og:url" content="http://yoursite.com/2016/01/06/C++时间库(一)/index.html">
+<meta property="og:title" content="C++时间库（一） C风格的时间函数">
+<meta property="og:url" content="http://yoursite.com/2016/01/06/C++时间库（一）/index.html">
 <meta property="og:site_name" content="思">
 <meta property="og:description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。
-由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结">
 <meta property="og:image" content="http://yoursite.com/images/time_zone.png">
-<meta property="og:updated_time" content="2016-01-06T09:28:43.911Z">
+<meta property="og:updated_time" content="2016-01-07T07:06:29.312Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++时间库(一) C风格的时间函数">
+<meta name="twitter:title" content="C++时间库（一） C风格的时间函数">
 <meta name="twitter:description" content="在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。
-由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。">
+由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结">
   
     <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
   
@@ -87,10 +87,10 @@ var _hmt = _hmt || [];
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-C++时间库(一)" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-C++时间库（一）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     
-<a href="/2016/01/06/C++时间库(一)/" class="article-date">
+<a href="/2016/01/06/C++时间库（一）/" class="article-date">
   <time datetime="2016-01-06T04:19:22.000Z" itemprop="datePublished">2016-01-06</time>
 </a>
 
@@ -108,7 +108,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      C++时间库(一) C风格的时间函数
+      C++时间库（一） C风格的时间函数
     </h1>
   
 
@@ -132,7 +132,7 @@ var _hmt = _hmt || [];
                 </div>
                 -->
         <p>在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。<br>他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。</p>
-<p>由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。</p>
+<p>由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结。</p>
 <a id="more"></a>
 <p>C风格的时间类型和函数，有C和C++两个版本，如果使用C版本需要包含<code>#include &lt;time.h&gt;</code>，如果使用C++版本需要包含<code>#include &lt;ctime&gt;</code>，并且使用命名空间<code>std</code>。与平台相关的类型和函数会特别指出。</p>
 <h2 id="u6570_u636E_u7C7B_u578B"><a href="#u6570_u636E_u7C7B_u578B" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="time_t"><a href="#time_t" class="headerlink" title="time_t"></a>time_t</h3><p>日历时间（calendar time）。在C/C++编程中经常会遇到它，它定义为从协调时间时（UTC）1970年01月01日00时00分00秒起至现在的总秒数，被用于表示Unix时间（戳）。<br>一般编译器使用32位整数表示time_t，因此这个时间最多使用到2038年1月18日19时14分07秒。一些编译器使用64位整数来表示time_t，可以避免这个问题。</p>
@@ -154,7 +154,7 @@ var _hmt = _hmt || [];
 <h3 id="mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><a href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09" class="headerlink" title="mktime （tm -&gt; time_t）"></a>mktime （tm -&gt; time_t）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> mktime (<span class="keyword">struct</span> tm * timeptr);</span><br></pre></td></tr></table></figure>
 <p>转换本地时间的tm结构体成time_t。<br>这个函数是<strong>localtime</strong>的逆操作。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">time_t</span> t = <span class="built_in">std</span>::time(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">std</span>::tm tm = *<span class="built_in">std</span>::localtime(&amp;t);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Today is           "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt;<span class="string">'\n'</span>;</span><br><span class="line">    tm.tm_mon -= <span class="number">100</span>;  <span class="comment">// tm_mon is now outside its normal range</span></span><br><span class="line">    <span class="built_in">std</span>::mktime(&amp;tm);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"100 months ago was "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>结果<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Today is           Wed Dec <span class="number">28</span> <span class="number">09</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2011</span> EST</span><br><span class="line"><span class="number">100</span> months ago was Thu Aug <span class="number">28</span> <span class="number">10</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2003</span> EDT</span><br></pre></td></tr></table></figure></p>
-<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB" class="headerlink" title="获取时间函数与时区关系"></a>获取时间函数与时区关系</h2><p><img src="/images/time_zone.png" alt="enter description here"><br>关于时区的总结，请看<a href="/2016/01/06/时间概念总结">时间概念总结</a></p>
+<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB" class="headerlink" title="获取时间函数与时区关系"></a>获取时间函数与时区关系</h2><p><img src="/images/time_zone.png" alt="enter description here"><br>关于时区的总结，请看<a href="/2016/01/04/时区和Unix时间戳的整理">时区和Unix时间戳的整理</a></p>
 <h2 id="u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><a href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570" class="headerlink" title="时间日期数据的格式化函数"></a>时间日期数据的格式化函数</h2><h3 id="ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><a href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09" class="headerlink" title="ctime （time_t -&gt; char*）"></a><a name="ctime">ctime （time_t -&gt; char*）</a></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">ctime</span> <span class="params">(<span class="keyword">const</span> time_t * timer)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>转换time_t成人类可读的字符串，是本地时间。<br>这个函数等价：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asctime(localtime(timer))</span><br></pre></td></tr></table></figure></p>
 <p>格式如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Www Mmm dd hh:mm:ss yyyy</span><br></pre></td></tr></table></figure></p>
@@ -186,15 +186,15 @@ var _hmt = _hmt || [];
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库(一)/">http://yoursite.com/2016/01/06/C++时间库(一)/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库（一）/">http://yoursite.com/2016/01/06/C++时间库（一）/</a></p>
 
       
     </div>
     <footer class="article-footer">
 	  
-	  <a data-url="http://yoursite.com/2016/01/06/C++时间库(一)/" data-id="cij3jwb4h000ofw39huuggnop" data_title="C++时间库(一) C风格的时间函数" data_summary="在C++开发时，经常会用到与时间相关的函数或者库，例如..." class="article-share-link">Share</a>
+	  <a data-url="http://yoursite.com/2016/01/06/C++时间库（一）/" data-id="cij3wx24d000rrk39rjsit8pw" data_title="C++时间库（一） C风格的时间函数" data_summary="在C++开发时，经常会用到与时间相关的函数或者库，例如..." class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/06/C++时间库(一)/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/06/C++时间库（一）/#disqus_thread" class="article-comment-link">Comments</a>
       
 
       
@@ -204,7 +204,7 @@ var _hmt = _hmt || [];
 
 	  
 <span>
-更新日期:<time datetime="2016-01-06T09:28:43.911Z" itemprop="dateModified">2016-01-06</time>
+更新日期:<time datetime="2016-01-07T07:06:29.312Z" itemprop="dateModified">2016-01-07</time>
 </span>
 
 
@@ -214,11 +214,11 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/01/06/C++时间库(二)/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/01/06/C++时间库（二）/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          C++时间库（二）std::chrono时间库
+          C++时间库（二） std::chrono时间库
         
       </div>
     </a>
@@ -262,7 +262,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -272,7 +272,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -366,7 +366,7 @@ LGY_calendar.prototype = {
         //本月的显示天数
         var postdate = new Date("Wed Jan 06 2016 12:19:22 GMT+0800"); 
         if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
-            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/开张/" title="终于开张了">4</a></span><span>5</span><span><a href="/2016/01/06/时间概念总结/" title="当天有5篇博客,第一篇:时间概念总结">6</a></span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/时区和Unix时间戳的整理/" title="时区和Unix时间戳的整理">4</a></span><span>5</span><span><a href="/2016/01/06/localtime的安全性总结/" title="当天有4篇博客,第一篇:localtime的安全性总结">6</a></span><span><a href="/2016/01/07/C++时间库（四）/" title="C++时间库（四） 总结">7</a></span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
         } else {
             for(var j=0;j<final_date;j++){        
                 html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
@@ -468,19 +468,19 @@ new LGY_calendar('g-calendar');
       <ul>
         
           <li>
-            <a href="/2016/01/06/时间概念总结/">时间概念总结</a>
+            <a href="/2016/01/07/C++时间库（四）/">C++时间库（四） 总结</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(三)/">C++时间库（三）Boost.Date_Time库</a>
+            <a href="/2016/01/06/C++时间库（三）/">C++时间库（三） Boost.Date_Time库</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(二)/">C++时间库（二）std::chrono时间库</a>
+            <a href="/2016/01/06/C++时间库（二）/">C++时间库（二） std::chrono时间库</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(一)/">C++时间库(一) C风格的时间函数</a>
+            <a href="/2016/01/06/C++时间库（一）/">C++时间库（一） C风格的时间函数</a>
           </li>
         
           <li>
@@ -526,7 +526,7 @@ new LGY_calendar('g-calendar');
 <script>
   var disqus_shortname = 'oabinga';
   
-  var disqus_url = 'http://yoursite.com/2016/01/06/C++时间库(一)/';
+  var disqus_url = 'http://yoursite.com/2016/01/06/C++时间库（一）/';
   
   (function(){
     var dsq = document.createElement('script');

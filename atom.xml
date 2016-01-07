@@ -4,7 +4,7 @@
   <subtitle><![CDATA[我的技术总结]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-06T09:29:56.392Z</updated>
+  <updated>2016-01-07T06:58:24.834Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,83 +15,111 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[时间概念总结]]></title>
-    <link href="http://yoursite.com/2016/01/06/%E6%97%B6%E9%97%B4%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/"/>
-    <id>http://yoursite.com/2016/01/06/时间概念总结/</id>
-    <published>2016-01-06T09:29:56.392Z</published>
-    <updated>2016-01-06T09:29:56.392Z</updated>
-    <content type="html"><![CDATA[<p>关于时区和Unix时间戳的简单总结整理。</p>
+    <title><![CDATA[C++时间库（四） 总结]]></title>
+    <link href="http://yoursite.com/2016/01/07/C++%E6%97%B6%E9%97%B4%E5%BA%93%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/01/07/C++时间库（四）/</id>
+    <published>2016-01-07T01:45:12.000Z</published>
+    <updated>2016-01-07T06:58:24.834Z</updated>
+    <content type="html"><![CDATA[<p>前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。</p>
 <a id="more"></a>
-<h2 id="UTC"><a href="#UTC" class="headerlink" title="UTC"></a>UTC</h2><p>Coordinated Universal Time，协调世界时，又称世界标准时间或世界协调时间，是最主要的世界时间标准，其以原子时秒长为基础，在时刻上尽量接近于格林尼治标准时间。<br>中国大陆时间比UTC快8小时，就会写作UTC+8，俗称东8区。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6" target="_blank" rel="external">协调世界时</a></p>
-<h2 id="GMT"><a href="#GMT" class="headerlink" title="GMT"></a>GMT</h2><p>Greenwich Mean Time，格林尼治标准时间（中国大陆翻译：格林尼治平均时间或格林尼治标准时间），是指位于英国伦敦郊区的皇家格林尼治天文台的标准时间，因为本初子午线被定义为通过那里的经线。</p>
-<p>理论上来说，格林尼治标准时间的正午是指当太阳横穿格林尼治子午线时（也就是在格林尼治上空最高点时）的时间。由于地球在它的椭圆轨道里的运动速度不均匀，这个时刻可能与实际的太阳时有误差，最大误差达16分钟。</p>
-<p>由于地球每天的自转是有些不规则的，而且正在缓慢减速，因此格林尼治时间已经不再被作为标准时间使用。现在的标准时间，是由原子钟报时的协调世界时（UTC）。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E6%A0%BC%E6%9E%97%E5%B0%BC%E6%B2%BB%E5%B9%B3%E6%97%B6" target="_blank" rel="external">格林尼治标准时间</a></p>
-<h2 id="CST"><a href="#CST" class="headerlink" title="CST"></a>CST</h2><p>China Standard Time，中国标准时间，又称北京时间。是中国大陆的标准时间，比世界协调时快八小时（即UTC+8），与香港、澳门、台湾、马来西亚、新加坡等地的标准时间相同。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E5%8C%97%E4%BA%AC%E6%97%B6%E9%97%B4" target="_blank" rel="external">北京时间</a></p>
-<h2 id="UT"><a href="#UT" class="headerlink" title="UT"></a>UT</h2><p>Universal Time，是一种以格林尼治子夜起算的平太阳时。世界时是以地球自转为基准得到的时间尺度,其精度受到地球自转不均匀变化和极移的影响，为了解决这种影响，1955年国际天文联合会定义了UT0、UT1和UT2三个系统：</p>
-<p>UT0系统是由天文观测直接测定的世界时，未经任何改正。该系统曾长期被认为是稳定均匀的时间计量系统，得到过广泛应用，又叫做格林尼治平均时间（GMT）。<br>UT1系统是在UT0的基础上加入了极移改正 Δλ，修正地轴摆动的影响。<br>UT2系统是在UT1基础上加入了地球自转速率的季节性改正 ΔT</p>
-<p>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E4%B8%96%E7%95%8C%E6%97%B6" target="_blank" rel="external">世界时</a></p>
-<h2 id="CET"><a href="#CET" class="headerlink" title="CET"></a>CET</h2><p>Central European Time，欧洲中部时间，是比世界标准时间（UTC）早一个小时的时区名称之一。它被大部分欧洲国家和部分北非国家采用。</p>
-<h2 id="Unix_timestamp"><a href="#Unix_timestamp" class="headerlink" title="Unix timestamp"></a>Unix timestamp</h2><p>Unix时间戳，或称Unix时间， POSIX时间是一种时间表示方式，定义为从格林威治时间1970年01月01日00时00分00秒起至现在的总秒数。Unix时间戳不仅被使用在Unix系统、类Unix系统中，也在许多其他操作系统中被广泛采用。<br>目前相当一部分操作系统使用32位二进制数字表示时间。此类系统的Unix时间戳最多可以使用到格林威治时间2038年01月19日03时14分07秒（二进制：01111111 11111111 11111111 11111111）。其后一秒，二进制数字会变为10000000 00000000 00000000 00000000，发生溢出错误，造成系统将时间误解为1901年12月13日20时45分52秒。这很可能会引起软件故障，甚至是系统瘫痪。使用64位二进制数字表示时间的系统（最多可以使用到格林威治时间292,277,026,596年12月04日15时30分08秒）则基本不会遇到这类溢出问题。</p>
-<p>参考<a href="http://blog.csdn.net/love_gaohz/article/details/6637625" target="_blank" rel="external">c++ 时间类型详解 time_t</a></p>
+<h2 id="C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570"><a href="#C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570" class="headerlink" title="C风格的时间函数"></a>C风格的时间函数</h2><p>C库的时间函数已经被使用了几十年，它包含了时间点和时间段两个概念。</p>
+<ul>
+<li><code>time_t</code>表示时间点</li>
+<li><code>double difftime(time_t t1, time_t t2);</code>计算时间段</li>
+<li><code>time_t time(time_t*);</code>返回当前时间</li>
+</ul>
+<p>此外C库还包含将时间点与公历(使用<code>struct tm</code>表示)进行转换的函数。</p>
+<p>时间点一个重要特征是应该能进行比较。要想比较两个时间需要一个共同的时间参考点（epoch）和相同的时间单位，而时间参考点（epoch）的信息，可以不用关心。</p>
+<p>C委员会没有指定<code>time_t</code>的时间参考点（epoch）和时间单位。好处是平台可以容易的修改epoch的定义。如果一个程序需要导入或者导出另一个程序的时间点，首先要转换时间点到约定的epoch上，比如公历。</p>
+<p>POSIX指定<code>time_t</code>时间单位为秒，过去几十年，<code>time_t</code>约定俗成地表示为从1970年开始的秒数，并用32位整数存储。但是这有几个问题：</p>
+<ul>
+<li><code>time_t</code>时间单位是秒，<code>difftime</code>计算的时间段也是秒，所以它不能处理小于1秒的情况。</li>
+<li>32位的<code>time_t</code>最大只能表示到2038年1月18日19时14分07秒，否则会溢出。</li>
+</ul>
+<p>虽然可以使用64位的<code>time_t</code>来解决第二个问题，但第一个问题仍不能解决。<br>后来POSIX提出了<code>struct timeb</code>, <code>struct timeval</code>和<code>struct timespec</code>将精度提高到毫秒、微秒和纳秒。但是每一个精度都需要一个新接口和新的结构体。纳秒是尽头吗？不一定，这也意味着将来需要定义新的接口和结构体来满足要求。</p>
+<h2 id="Chrono_u5E93"><a href="#Chrono_u5E93" class="headerlink" title="Chrono库"></a>Chrono库</h2><p>C风格的时间函数缺乏灵活性和扩展性，为了解决这个问题，Chrono库对此进行了抽象，抽象出时间段（duration）、时间点（time_point）和时钟（clock）。</p>
+<ul>
+<li>时间段（duration）可以有不同的时间精度，不同精度的时间段使用同样的接口。</li>
+<li>时间点（time_point）表示参考时间点（epoch）加上或者减去一个时间段。它的时间参考点由时钟（clock）决定。</li>
+<li>时钟（clock）提供参数时间点（epoch）和时间精度。能返回当前时间点。</li>
+</ul>
+<p>这种抽象，能解决上面提到的C风格的时间函数的问题，能很方便的在不同时间精度间进行转换，也可以实现新epoch的clock，在同一个clock中，time_point可以进行比较，如果知道两个clock的epoch的转换规则，两个clock中的time_point可以相互转换和比较。</p>
+<p><code>system_clock</code>可以映射时间点到C风格的时间上（<code>time_t</code>），即可以与<code>time_t</code>进行相互转换。</p>
+<p>此外这个库没有格式化函数，需要转换成<code>time_t</code>或者<code>tm</code>，使用C风格时间函数进行格式化。</p>
+<p>顺带说一下，这里的Chrono库是指std::chrono或者Boost.Chrono库。</p>
+<h2 id="Boost-Date_Time"><a href="#Boost-Date_Time" class="headerlink" title="Boost.Date_Time"></a>Boost.Date_Time</h2><p>虽然Chrono库能很好的解决时间处理问题，但是它没有比hour更高的计时单位，所以处理日期的能力不是很强，而Boost.Date_Time库关注日期和时间。它有很多用于为本地化显示而格式化日期的函数，而且有很多函数用于获取和操作日期和时间。</p>
+<p>Chrono库与Date_Time库还有一个区别就是，对于Chrono，某一刻的时间更多的是用距离某一个参考时间点的偏移（例如从1970年1月1日开始）来表示，而Date_Time库具有公历日期，可以绝对表示某一个时间点，不需要相对某个参考时间点来表示。<br>这两个库可以互补，当然也有重复的地方。但是这两个库没有任何交互操作，所以不得不进行手工转换。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>如果是新开发的程序需要处理时间，尽量使用std::chrono，如果需要对日期进行处理或者需要对时间进行合并、拆分和比较的需求时，最好选择Boost.Date_Time库，除了格式化外，尽量少使用C风格的时间函数。</li>
+<li><code>time_t</code>可以作为这几个库进行转换的中转类型。因为这些库都提供了对它的转换函数。</li>
+</ul>
+<p>C++中的时间库就是这么扯淡，且不说时区转换的问题，光是这几个库中的类型来回倒腾转换，就能把程序猿绕晕了。真心希望这个系列的总结能将这些知识梳理清晰，使用时不再犯糊涂。</p>
+<h2 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2661.htm" target="_blank" rel="external">N2661 - A Foundation to Sleep On</a></li>
+<li><a href="http://stackoverflow.com/questions/6730422/boost-chrono-vs-boost-date-time" target="_blank" rel="external">Boost.Chrono vs. Boost.Date_Time</a>。</li>
+</ol>
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/时间概念总结/">http://yoursite.com/2016/01/06/时间概念总结/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/07/C++时间库（四）/">http://yoursite.com/2016/01/07/C++时间库（四）/</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>关于时区和Unix时间戳的简单总结整理。</p>]]>
+    <![CDATA[<p>前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。</p>]]>
     
     </summary>
     
-      <category term="整理" scheme="http://yoursite.com/categories/%E6%95%B4%E7%90%86/"/>
+      <category term="C++" scheme="http://yoursite.com/tags/C/"/>
+    
+      <category term="技术" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[C++时间库（三）Boost.Date_Time库]]></title>
-    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93(%E4%B8%89)/"/>
-    <id>http://yoursite.com/2016/01/06/C++时间库(三)/</id>
+    <title><![CDATA[C++时间库（三） Boost.Date_Time库]]></title>
+    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93%EF%BC%88%E4%B8%89%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/01/06/C++时间库（三）/</id>
     <published>2016-01-06T06:21:51.000Z</published>
-    <updated>2016-01-06T09:26:53.743Z</updated>
-    <content type="html"><![CDATA[<p>这里只是简单列了一些比较重要的类和函数，没有面面俱到，详细说明可以参考<a href="http://www.boost.org/doc/libs/master/doc/html/date_time.html" target="_blank" rel="external">Boost.Date_Time</a></p>
+    <updated>2016-01-07T06:26:13.240Z</updated>
+    <content type="html"><![CDATA[<p>前面两节，总结了C风格的时间函数和C++标准库std::chrono，作为C++的一个重要的开发库Boost，它提供了两个时间库Boost.Chrono和Boost.Date_Time，这里只对Boost.Date_Time库进行简单地总结和梳理，没有面面俱到，详细说明可以参考<a href="http://www.boost.org/doc/libs/master/doc/html/date_time.html" target="_blank" rel="external">Boost.Date_Time</a>。</p>
 <a id="more"></a>
-<h2 id="Chrono"><a href="#Chrono" class="headerlink" title="Chrono"></a>Chrono</h2><p>这个库实现了C++11中新的时间工具，这个工具提出在<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2661.htm" target="_blank" rel="external">N2661 - A Foundation to Sleep On</a>。<br>这个库除了实现了标准库中Chrono的标准功能外，还增加了很多其它功能，而且多了几个clock。</p>
-<h2 id="Date_Time"><a href="#Date_Time" class="headerlink" title="Date_Time"></a>Date_Time</h2><h3 id="Gregorian"><a href="#Gregorian" class="headerlink" title="Gregorian"></a>Gregorian</h3><p>是一个基于公历的日期库，Boost.DateTime支持由1400年至9999年的历法日期。<br>所有gregorian类型都在<code>boost::gregorian</code>命名空间下。没有input/output依赖的类包含在<code>boost/date_time/gregorian/gregorian_types.hpp</code>中，<code>boost/date_time/gregorian/gregorian.hpp</code>包含所有类型和input/output代码。<br>主要类型：<code>date</code>、<code>date_duration</code>、<code>date_period</code>、<code>date_iterator</code></p>
-<h4 id="Date"><a href="#Date" class="headerlink" title="Date"></a>Date</h4><p><code>date</code>代表了一个日期，由年、月、日组成。<br>它可以从年月日构造<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date(greg_year, greg_month, greg_day)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Gregorian"><a href="#Gregorian" class="headerlink" title="Gregorian"></a>Gregorian</h2><p>是一个基于公历的日期库，Boost.DateTime支持从1400年至9999年的历法日期。<br>所有gregorian类型都在<code>boost::gregorian</code>命名空间下。没有input/output依赖的类包含在<code>boost/date_time/gregorian/gregorian_types.hpp</code>中，<code>boost/date_time/gregorian/gregorian.hpp</code>包含所有类型和input/output代码。<br>主要类型：<code>date</code>、<code>date_duration</code>、<code>date_period</code>、<code>date_iterator</code></p>
+<h3 id="Date"><a href="#Date" class="headerlink" title="Date"></a>Date</h3><p><code>date</code>代表了一个日期，由年、月、日组成。<br>它可以从年月日进行构造<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date(greg_year, greg_month, greg_day)</span><br></pre></td></tr></table></figure></p>
 <p>从字符串构造<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">date from_string(std::string)</span><br><span class="line">date from_undelimited_string(std::string)</span><br><span class="line"></span><br><span class="line">std::string ds("2002/1/25");</span><br><span class="line">date d(from_string(ds));</span><br><span class="line"></span><br><span class="line">std::string ds("20020125");</span><br><span class="line">date d(from_undelimited_string(ds));</span><br></pre></td></tr></table></figure></p>
 <p>从clock构造<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">date d(day_clock::local_day()); //Get the local day based on the time zone settings of the computer.</span><br><span class="line">date d(day_clock::universal_day()); //Get the UTC day.</span><br></pre></td></tr></table></figure></p>
 <p>从结构体tm创建<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tm d_tm;</span><br><span class="line">d_tm.tm_year = <span class="number">105</span>;</span><br><span class="line">d_tm.tm_mon  = <span class="number">0</span>;</span><br><span class="line">d_tm.tm_mday = <span class="number">1</span>;</span><br><span class="line">date d = date_from_tm(d_tm);</span><br><span class="line"><span class="comment">// d =&gt; 2005-Jan-01</span></span><br></pre></td></tr></table></figure></p>
 <p>可以转换成字符串<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::string to_simple_string(date d) //"2002-Jan-01"</span><br><span class="line">std::string to_iso_string(date d) //"20020131"</span><br><span class="line">std::string to_iso_extended_string(date d) //"2002-01-31"</span><br></pre></td></tr></table></figure></p>
 <p>可以转换成结构体tm<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">date <span class="title">d</span><span class="params">(<span class="number">2005</span>,Jan,<span class="number">1</span>)</span></span>;</span><br><span class="line">tm d_tm = to_tm(d);</span><br><span class="line"><span class="comment">/* tm_year =&gt; 105</span><br><span class="line">   tm_mon  =&gt; 0</span><br><span class="line">   tm_mday =&gt; 1</span><br><span class="line">   tm_wday =&gt; 6 (Saturday)</span><br><span class="line">   tm_yday =&gt; 0</span><br><span class="line">   tm_hour =&gt; 0</span><br><span class="line">   tm_min  =&gt; 0</span><br><span class="line">   tm_sec  =&gt; 0</span><br><span class="line">   tm_isddst =&gt; -1 */</span></span><br></pre></td></tr></table></figure></p>
 <p>能进行加减算术运算和逻辑运算。</p>
-<h4 id="Date_Duration"><a href="#Date_Duration" class="headerlink" title="Date Duration"></a>Date Duration</h4><p><code>boost::gregorian::date_duration</code>表示时间长度，被用做的<code>gregorian::date</code>的算术运算，可正可负。<br><code>boost::gregorian::date_duration</code>被<code>typedef</code>成<code>days</code>。<br>这里还包括其它duration类型：<code>months</code>，<code>years</code>，<code>weeks</code>。</p>
-<h4 id="Date_Period"><a href="#Date_Period" class="headerlink" title="Date Period"></a>Date Period</h4><p><code>boost::gregorian::date_period</code>表示两个日期之间的区间。利用它可以检测某个日期是否在某个假日或者周末内，可以计算一个时间区间与另一个时间区间的交集或者并集等。<br>可以用两个日期或者一个日期和一个时间长度进行构造:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">date_period dp(date(2002,Jan,10),</span><br><span class="line">               date(2002,Jan,12));</span><br><span class="line">date_period dp(date(2002,Jan,10),</span><br><span class="line">               days(2));</span><br></pre></td></tr></table></figure></p>
-<h3 id="Posix_Time"><a href="#Posix_Time" class="headerlink" title="Posix Time"></a>Posix Time</h3><p>定义了一个非调节的时间系统，这个系统具有纳秒/毫秒精度和稳定计算的特性。对于<code>ptime</code>，纳秒精度下使用96 bits存储，毫秒精度下使用64 bits存储。这个时间系统使用公历（Gregrorian calendar)去表示时间中的日期部分。</p>
-<h4 id="Ptime"><a href="#Ptime" class="headerlink" title="Ptime"></a>Ptime</h4><p><code>boost::posix_time::ptime</code>表示一个与时区无关的时间点，日期部分依赖于<code>gregorian::date</code>。<br>使用日期加时间偏移构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ptime t1(date(2002,Jan,10),</span><br><span class="line">         time_duration(1,2,3));</span><br><span class="line">ptime t2(date(2002,Jan,10),</span><br><span class="line">         hours(1)+nanosec(5));</span><br></pre></td></tr></table></figure></p>
+<h3 id="Date_Duration"><a href="#Date_Duration" class="headerlink" title="Date Duration"></a>Date Duration</h3><p><code>boost::gregorian::date_duration</code>表示时间长度，被用做的<code>gregorian::date</code>的算术运算，可正可负。<br><code>boost::gregorian::date_duration</code>被<code>typedef</code>成<code>days</code>。<br>这里还包括其它duration类型：<code>months</code>，<code>years</code>，<code>weeks</code>。</p>
+<h3 id="Date_Period"><a href="#Date_Period" class="headerlink" title="Date Period"></a>Date Period</h3><p><code>boost::gregorian::date_period</code>表示两个日期之间的区间。利用它可以检测某个日期是否在某个假日或者周末内，可以计算一个时间区间与另一个时间区间的交集或者并集等。<br>可以用两个日期或者一个日期和一个时间长度进行构造:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">date_period dp(date(2002,Jan,10),</span><br><span class="line">               date(2002,Jan,12));</span><br><span class="line">date_period dp(date(2002,Jan,10),</span><br><span class="line">               days(2));</span><br></pre></td></tr></table></figure></p>
+<h2 id="Posix_Time"><a href="#Posix_Time" class="headerlink" title="Posix Time"></a>Posix Time</h2><p>定义了一个非调节的时间系统，这个系统具有纳秒/毫秒精度和稳定计算的特性。对于<code>ptime</code>，纳秒精度下使用96 bits存储，毫秒精度下使用64 bits存储。这个时间系统使用公历（Gregrorian calendar)去表示时间中的日期部分。</p>
+<h3 id="Ptime"><a href="#Ptime" class="headerlink" title="Ptime"></a>Ptime</h3><p><code>boost::posix_time::ptime</code>表示一个与时区无关的时间点，日期部分依赖于<code>gregorian::date</code>。<br><strong>注意</strong>：<br><strong>此时间点与时区无关</strong>，例如：<br><code>ptime t(second_clock::local_time());</code><br>此时的时间t是本地时间。<br><code>ptime t(second_clock::universal_time());</code><br>而此时的时间t是UTC时间。</p>
+<p>使用日期加时间偏移构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ptime t1(date(2002,Jan,10),</span><br><span class="line">         time_duration(1,2,3));</span><br><span class="line">ptime t2(date(2002,Jan,10),</span><br><span class="line">         hours(1)+nanosec(5));</span><br></pre></td></tr></table></figure></p>
 <p>从字符串创建：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string ts("2002-01-20 23:59:59.000");</span><br><span class="line">ptime t(time_from_string(ts))</span><br><span class="line"></span><br><span class="line">std::string ts("20020131T235959");</span><br><span class="line">ptime t(from_iso_string(ts))</span><br></pre></td></tr></table></figure></p>
 <p>从时钟构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ptime t(second_clock::local_time()); //本地时间</span><br><span class="line"></span><br><span class="line">ptime t(second_clock::universal_time()) //UTC时间</span><br><span class="line"></span><br><span class="line">ptime t(microsec_clock::local_time());</span><br><span class="line"></span><br><span class="line">ptime t(microsec_clock::universal_time());</span><br></pre></td></tr></table></figure></p>
 <p>使用转换函数创建：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//time_t -&gt; ptime</span></span><br><span class="line"><span class="function">ptime <span class="title">from_time_t</span><span class="params">(time_t t)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//FILETIEM -&gt; ptime</span></span><br><span class="line">ptime from_ftime&lt;ptime&gt;(FILETIME ft);</span><br><span class="line"></span><br><span class="line"><span class="comment">//tm -&gt; ptime</span></span><br><span class="line"><span class="function">ptime <span class="title">ptime_from_tm</span><span class="params">(tm timetm)</span></span><br><span class="line"></span><br><span class="line">tm pt_tm</span>;</span><br><span class="line">pt_tm.tm_year = <span class="number">105</span>;</span><br><span class="line">pt_tm.tm_mon  = <span class="number">0</span>;</span><br><span class="line">pt_tm.tm_mday = <span class="number">1</span>;</span><br><span class="line">pt_tm.tm_hour = <span class="number">1</span>;</span><br><span class="line">pt_tm.tm_min  = <span class="number">2</span>;</span><br><span class="line">pt_tm.tm_sec  = <span class="number">3</span>;</span><br><span class="line">ptime pt = ptime_from_tm(pt_tm);</span><br><span class="line"><span class="comment">// pt =&gt; 2005-Jan-01 01:02:03</span></span><br></pre></td></tr></table></figure></p>
 <p>转换成字符串<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::string to_simple_string(ptime) //2002-Jan-01 10:00:01.123456789</span><br><span class="line"></span><br><span class="line">std::string to_iso_string(ptime)  //20020131T100001,123456789</span><br><span class="line"></span><br><span class="line">std::string to_iso_extended_string(ptime) //2002-01-31T10:00:01,123456789</span><br></pre></td></tr></table></figure></p>
 <p>转换成结构体tm<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ptime pt(date(2005,Jan,1), time_duration(1,2,3));</span><br><span class="line">tm pt_tm = to_tm(pt);</span><br><span class="line">/* tm_year =&gt; 105</span><br><span class="line">   tm_mon  =&gt; 0</span><br><span class="line">   tm_mday =&gt; 1</span><br><span class="line">   tm_wday =&gt; 6 (Saturday)</span><br><span class="line">   tm_yday =&gt; 0</span><br><span class="line">   tm_hour =&gt; 1</span><br><span class="line">   tm_min  =&gt; 2</span><br><span class="line">   tm_sec  =&gt; 3</span><br><span class="line">   tm_isddst =&gt; -1 */</span><br></pre></td></tr></table></figure></p>
-<h4 id="Time_Duration"><a href="#Time_Duration" class="headerlink" title="Time Duration"></a>Time Duration</h4><p><code>boost::posix_time::time_duration</code>代表时间长度，可正可负。<br>下面展示了几个继承自<code>time_duration</code>的辅助类：<br><img src="/images/time_duration_inherit.png" alt="time_duration_inherit"><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> boost::posix_time;</span><br><span class="line"></span><br><span class="line">time_duration td = hours(<span class="number">1</span>) + seconds(<span class="number">10</span>); <span class="comment">//01:00:01</span></span><br><span class="line">td = hours(<span class="number">1</span>) + nanoseconds(<span class="number">5</span>); <span class="comment">//01:00:00.000000005</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Time_Duration"><a href="#Time_Duration" class="headerlink" title="Time Duration"></a>Time Duration</h3><p><code>boost::posix_time::time_duration</code>代表时间长度，可正可负。<br>下面展示了几个继承自<code>time_duration</code>的辅助类：<br><img src="/images/time_duration_inherit.png" alt="time_duration_inherit"><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> boost::posix_time;</span><br><span class="line"></span><br><span class="line">time_duration td = hours(<span class="number">1</span>) + seconds(<span class="number">10</span>); <span class="comment">//01:00:10</span></span><br><span class="line">td = hours(<span class="number">1</span>) + nanoseconds(<span class="number">5</span>); <span class="comment">//01:00:00.000000005</span></span><br></pre></td></tr></table></figure></p>
 <p>构造函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">time_duration(hours,</span><br><span class="line">              minutes,</span><br><span class="line">              seconds,</span><br><span class="line">              fractional_seconds)</span><br></pre></td></tr></table></figure></p>
 <p>可以使用<code>hours</code>,<code>minutes</code>,<code>seconds</code>,<code>milliseconds</code>,<code>microseconds</code>,<code>nanoseconds</code>来构造：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">time_duration td = hours(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">time_duration td = milliseconds(<span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+<p>还记得上一节在std::chrono命名空间下也有<code>hours</code>,<code>minutes</code>,<code>seconds</code>,<code>milliseconds</code>,<code>microseconds</code>,<code>nanoseconds</code>这些类型，不要混了。</p>
 <p>从字符串创建：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::string ts("23:59:59.000");</span><br><span class="line">time_duration td(duration_from_string(ts));</span><br></pre></td></tr></table></figure></p>
 <p>转换成结构体tm：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">time_duration <span class="title">td</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span></span>;</span><br><span class="line">tm td_tm = to_tm(td);</span><br><span class="line"><span class="comment">/* tm_year =&gt; 0</span><br><span class="line">   tm_mon  =&gt; 0</span><br><span class="line">   tm_mday =&gt; 0</span><br><span class="line">   tm_wday =&gt; 0</span><br><span class="line">   tm_yday =&gt; 0</span><br><span class="line">   tm_hour =&gt; 1</span><br><span class="line">   tm_min  =&gt; 2</span><br><span class="line">   tm_sec  =&gt; 3</span><br><span class="line">   tm_isddst =&gt; -1 */</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="Time_Period"><a href="#Time_Period" class="headerlink" title="Time Period"></a>Time Period</h4><p><code>boost::posix_time::time_period</code>表示两个时间的区间。类似于<code>date_period</code>。</p>
+<h3 id="Time_Period"><a href="#Time_Period" class="headerlink" title="Time Period"></a>Time Period</h3><p><code>boost::posix_time::time_period</code>表示两个时间的区间。类似于<code>date_period</code>。</p>
 <p>用两个时间点来构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">date d(2002,Jan,01);</span><br><span class="line">ptime t1(d, seconds(10)); //10 sec after midnight</span><br><span class="line">ptime t2(d, hours(10)); //10 hours after midnight</span><br><span class="line">time_period tp(t1, t2); //Create a period as [begin, end). If end is &lt;= begin then the period will be defined as invalid.</span><br><span class="line"></span><br><span class="line">date d(2002,Jan,01);</span><br><span class="line">ptime t(d, seconds(10)); //10 sec after midnight</span><br><span class="line">time_period tp(t, hours(3)); //Create a period as [begin, begin+len) where end would be begin+len. If len is &lt;= zero then the period will be defined as invalid.</span><br></pre></td></tr></table></figure></p>
-<h3 id="Local_Time"><a href="#Local_Time" class="headerlink" title="Local Time"></a>Local Time</h3><p>这个库包括四个主要的本地时间管理扩展。<br><code>local_date_time</code>本地时间<br><code>posix_time_zone</code>由posix字符串（”EST10EDT,M10.5.0,M3.5.0/03”）定义的时区<br><code>time_zone_database</code>从.csv文件中用区域获取时区<br><code>time_zone</code>抽象的时区接口</p>
+<h2 id="Local_Time"><a href="#Local_Time" class="headerlink" title="Local Time"></a>Local Time</h2><p>这个库包括四个主要的本地时间管理扩展。<br><code>local_date_time</code>本地时间<br><code>posix_time_zone</code>由posix字符串（”EST10EDT,M10.5.0,M3.5.0/03”）定义的时区<br><code>time_zone_database</code>从.csv文件中用区域获取时区<br><code>time_zone</code>抽象的时区接口</p>
 <p>这些扩展定义了一个用于调整时间到本地时区的时间系统。这个时间系统使用了posix_time系统的所有特性和优点。<code>time_zone</code>包含用于时区转换的所有必要数据/规则。</p>
-<h4 id="Time_Zone_uFF08_u62BD_u8C61_uFF09"><a href="#Time_Zone_uFF08_u62BD_u8C61_uFF09" class="headerlink" title="Time Zone（抽象）"></a>Time Zone（抽象）</h4><p><code>time_zone_base</code>是表示时区的一个抽象基类模板。<code>date_time</code>库靠<code>boost::shared_ptr&lt;time_zone_base&gt;</code>来处理时区。为了使用方便，<code>time_zone_base</code>被<code>typedef</code>成<code>time_zone</code>。</p>
-<h4 id="Posix_Time_Zone"><a href="#Posix_Time_Zone" class="headerlink" title="Posix Time Zone"></a>Posix Time Zone</h4><p>一个<code>posix_time_zone</code>对象包含一个时区的数据和规则，像距离UTC时间的偏移、名称、缩写和夏令时规则。</p>
-<h4 id="Time_Zone_Database"><a href="#Time_Zone_Database" class="headerlink" title="Time Zone Database"></a>Time Zone Database</h4><p>本地时间系统依赖于时区信息的存储。时区数据库就是用来存储这些数据的。</p>
+<h3 id="Time_Zone_uFF08_u62BD_u8C61_uFF09"><a href="#Time_Zone_uFF08_u62BD_u8C61_uFF09" class="headerlink" title="Time Zone（抽象）"></a>Time Zone（抽象）</h3><p><code>time_zone_base</code>是表示时区的一个抽象基类模板。<code>date_time</code>库靠<code>boost::shared_ptr&lt;time_zone_base&gt;</code>来处理时区。为了使用方便，<code>time_zone_base</code>被<code>typedef</code>成<code>time_zone</code>。</p>
+<h3 id="Posix_Time_Zone"><a href="#Posix_Time_Zone" class="headerlink" title="Posix Time Zone"></a>Posix Time Zone</h3><p>一个<code>posix_time_zone</code>对象包含一个时区的数据和规则，像距离UTC时间的偏移、名称、缩写和夏令时规则。</p>
+<h3 id="Time_Zone_Database"><a href="#Time_Zone_Database" class="headerlink" title="Time Zone Database"></a>Time Zone Database</h3><p>本地时间系统依赖于时区信息的存储。时区数据库就是用来存储这些数据的。</p>
 <h4 id="Local_Date_Time"><a href="#Local_Date_Time" class="headerlink" title="Local Date Time"></a>Local Date Time</h4><p><code>local_date_time</code>就是一个时间点和对应的时区。时间在内部用UTC表示。</p>
 <p>从clock构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">time_zone_ptr zone(</span><br><span class="line">  new posix_time_zone("MST-07")</span><br><span class="line">);</span><br><span class="line">local_date_time ldt =</span><br><span class="line">  local_microsec_clock::local_time(</span><br><span class="line">    zone);</span><br><span class="line"></span><br><span class="line">time_zone_ptr zone(</span><br><span class="line">  new posix_time_zone("MST-07")</span><br><span class="line">);</span><br><span class="line">local_date_time ldt =</span><br><span class="line">  local_sec_clock::local_time(zone);</span><br></pre></td></tr></table></figure></p>
 <p>从ptime构造：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 3am, 2004-Nov-05 local time</span><br><span class="line">ptime pt(date(2004,Nov,5),</span><br><span class="line">         hours(10));</span><br><span class="line">time_zone_ptr zone(</span><br><span class="line">  new posix_time_zone("MST-07"));</span><br><span class="line">local_date_time az(pt, zone);</span><br></pre></td></tr></table></figure></p>
 <p>转换成结构体tm：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 6am, 2005-Jul-05 local time</span><br><span class="line">std::string z("EST-05EDT,M4.1.0,M10.1.0");</span><br><span class="line">ptime pt(date(2005,Jul,5),</span><br><span class="line">         hours(10));</span><br><span class="line">time_zone_ptr zone( new posix_time_zone(z));</span><br><span class="line">local_date_time ldt(pt, zone);</span><br><span class="line">tm ldt_tm = to_tm(ldt);</span><br><span class="line">/* tm_year =&gt; 105</span><br><span class="line">   tm_mon  =&gt; 6</span><br><span class="line">   tm_mday =&gt; 5</span><br><span class="line">   tm_wday =&gt; 2 (Tuesday)</span><br><span class="line">   tm_yday =&gt; 185</span><br><span class="line">   tm_hour =&gt; 6</span><br><span class="line">   tm_min  =&gt; 0</span><br><span class="line">   tm_sec  =&gt; 0</span><br><span class="line">   tm_isddst =&gt; 1 */</span><br></pre></td></tr></table></figure></p>
-<h4 id="Local_Time_Period"><a href="#Local_Time_Period" class="headerlink" title="Local Time Period"></a>Local Time Period</h4><p><code>boost::local_time::local_time_period</code>表示两个本地时间的区间，与<code>date_period</code>和<code>time_period</code>类似。</p>
-<h3 id="Date_Time_Input/Output"><a href="#Date_Time_Input/Output" class="headerlink" title="Date Time Input/Output"></a>Date Time Input/Output</h3><p><code>IO streaming system</code>给用户提供了灵活的日期和时间展示方式。其自定义项分为两部分：格式化标识和字符串元素。格式化标识提供了日期元素和日期类型的组织顺序上的灵活性，自定义字符串元素允许替换内建的月份名称、周名称等其它IO内建的字符串。<br>输出系统基于<code>date_facet</code>（派生自<code>std::facet</code>），输入系统基于<code>date_input_facet</code>。</p>
-<h4 id="IO_u5BF9_u8C61"><a href="#IO_u5BF9_u8C61" class="headerlink" title="IO对象"></a>IO对象</h4><table>
+<h3 id="Local_Time_Period"><a href="#Local_Time_Period" class="headerlink" title="Local Time Period"></a>Local Time Period</h3><p><code>boost::local_time::local_time_period</code>表示两个本地时间的区间，与<code>date_period</code>和<code>time_period</code>类似。</p>
+<h2 id="Date_Time_Input/Output"><a href="#Date_Time_Input/Output" class="headerlink" title="Date Time Input/Output"></a>Date Time Input/Output</h2><p><code>IO streaming system</code>给用户提供了灵活的日期和时间展示方式。其自定义项分为两部分：格式化标识和字符串元素。格式化标识提供了日期元素和日期类型的组织顺序上的灵活性，自定义字符串元素允许替换内建的月份名称、周名称等其它IO内建的字符串。<br>输出系统基于<code>date_facet</code>（派生自<code>std::facet</code>），输入系统基于<code>date_input_facet</code>。</p>
+<h3 id="IO_u5BF9_u8C61"><a href="#IO_u5BF9_u8C61" class="headerlink" title="IO对象"></a>IO对象</h3><table>
 <thead>
 <tr>
 <th>Output</th>
@@ -125,7 +153,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="Formatter/Parser_u5BF9_u8C61"><a href="#Formatter/Parser_u5BF9_u8C61" class="headerlink" title="Formatter/Parser对象"></a>Formatter/Parser对象</h4><table>
+<h3 id="Formatter/Parser_u5BF9_u8C61"><a href="#Formatter/Parser_u5BF9_u8C61" class="headerlink" title="Formatter/Parser对象"></a>Formatter/Parser对象</h3><table>
 <thead>
 <tr>
 <th>Output</th>
@@ -153,16 +181,16 @@
 </table>
 <p>示例1：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">date <span class="title">d</span><span class="params">(<span class="number">2004</span>, Feb, <span class="number">29</span>)</span></span>;</span><br><span class="line"><span class="function">time_duration <span class="title">td</span><span class="params">(<span class="number">12</span>,<span class="number">34</span>,<span class="number">56</span>,<span class="number">789</span>)</span></span>;</span><br><span class="line"><span class="built_in">stringstream</span> ss;</span><br><span class="line">ss &lt;&lt; d &lt;&lt; <span class="string">' '</span> &lt;&lt; td;</span><br><span class="line"><span class="function">ptime <span class="title">pt</span><span class="params">(not_a_date_time)</span></span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; pt &lt;&lt; endl; <span class="comment">// "not-a-date-time"</span></span><br><span class="line">ss &gt;&gt; pt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; pt &lt;&lt; endl; <span class="comment">// "2004-Feb-29 12:34:56.000789"</span></span><br><span class="line">ss.str(<span class="string">""</span>);</span><br><span class="line">ss &lt;&lt; pt &lt;&lt; <span class="string">" EDT-05EDT,M4.1.0,M10.5.0"</span>;</span><br><span class="line"><span class="function">local_date_time <span class="title">ldt</span><span class="params">(not_a_date_time)</span></span>;</span><br><span class="line">ss &gt;&gt; ldt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ldt &lt;&lt; endl; <span class="comment">// "2004-Feb-29 12:34:56.000789 EDT"</span></span><br><span class="line"></span><br><span class="line">local_time_facet* output_facet = <span class="keyword">new</span> local_time_facet();</span><br><span class="line">local_time_input_facet* input_facet = <span class="keyword">new</span> local_time_input_facet();</span><br><span class="line">ss.imbue(locale(locale::classic(), output_facet));</span><br><span class="line">ss.imbue(locale(ss.getloc(), input_facet));</span><br><span class="line"></span><br><span class="line">output_facet-&gt;format(<span class="string">"%a %b %d, %H:%M %z"</span>);</span><br><span class="line">ss.str(<span class="string">""</span>);</span><br><span class="line">ss &lt;&lt; ldt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ss.str() &lt;&lt; endl; <span class="comment">// "Sun Feb 29, 12:34 EDT"</span></span><br><span class="line"></span><br><span class="line">output_facet-&gt;format(local_time_facet::iso_time_format_specifier);</span><br><span class="line">ss.str(<span class="string">""</span>);</span><br><span class="line">ss &lt;&lt; ldt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ss.str() &lt;&lt; endl; <span class="comment">// "20040229T123456.000789-0500"</span></span><br><span class="line"></span><br><span class="line">output_facet-&gt;format(local_time_facet::iso_time_format_extended_specifier);</span><br><span class="line">ss.str(<span class="string">""</span>);</span><br><span class="line">ss &lt;&lt; ldt;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ss.str() &lt;&lt; endl; <span class="comment">// "2004-02-29 12:34:56.000789-05:00"</span></span><br></pre></td></tr></table></figure></p>
 <p>示例2，这是一个格式化时间的函数，应用最多的应该是格式化time_t时间（第二个函数）。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">std::string FormatTime(const ptime&amp; pt, const char* time_format) &#123;</span><br><span class="line">    std::stringstream stream;</span><br><span class="line">    std::locale currlocale(std::locale::classic(),</span><br><span class="line">                                        new time_facet(time_format));</span><br><span class="line">    stream.imbue(currlocale);</span><br><span class="line">    stream &lt;&lt; pt;</span><br><span class="line">    return stream.str();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::string FormatLocalTime(std::time_t t, const char* time_format) &#123;</span><br><span class="line">    return FormatTime(local_adj::utc_to_local(from_time_t(t)), time_format);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意<code>std::ios_base::imbue</code>就是设置本地化。<br>C++输入/输出库中的每一个stream对象都会关联一个locale对象，locale对象会使用facet去解析和格式化所有的数据。此外，每一个<code>std::basic_regxe</code>对象会关联一个locale对象。locale对象还可以用于标准容器和算法执行字符串排序时的断言。</p>
+<p><strong>注意</strong>:<br><code>std::ios_base::imbue</code>就是设置本地化。<br>C++输入/输出库中的每一个stream对象都会关联一个locale对象，locale对象会使用facet去解析和格式化所有的数据。此外，每一个<code>std::basic_regxe</code>对象会关联一个locale对象。locale对象还可以用于标准容器和算法执行字符串排序时的断言。</p>
 <p><strong>注意</strong>：<br><code>std::locale</code>构造函数的第二个参数facet，需要在堆中分配，如果使用局部变量（对象在栈中），会引起程序崩溃，而且最后也不要手工<code>delete</code>这个facet对象，因为<code>std::locale</code>在析构中会自动释放内存。<br>参看<a href="https://rhubbarb.wordpress.com/2009/10/17/boost-datetime-locales-and-facets/" target="_blank" rel="external">Boost DateTime, Locales and Facets</a></p>
-<h2 id="std_3A_3Achrono_u4E0EBoost-Date_Time_u5173_u7CFB"><a href="#std_3A_3Achrono_u4E0EBoost-Date_Time_u5173_u7CFB" class="headerlink" title="std::chrono与Boost.Date_Time关系"></a>std::chrono与Boost.Date_Time关系</h2><p>Boost.Date_Time是关于日期和时间的库，它有很多用于为本地化显示而格式化日期的函数，而且有很多函数用于获取和操作日期和时间。<br>而std::chrono（或者boost::chrono）更关心处理时间（而非日期），它没有比hour更高的计时单位。它表示某一刻的时间仅是某一个参考时间点的偏移（例如从1970年1月1日开始）。这个库没有格式化函数，需要转换成<code>time_t</code>或者<code>tm</code>，使用C风格时间函数进行格式化。<br>这两个库可以互补，当然也有重复的地方。但是这两个库没有任何交互操作，所以不得不进行手工转换。<br>参见<a href="http://stackoverflow.com/questions/6730422/boost-chrono-vs-boost-date-time" target="_blank" rel="external">Boost.Chrono vs. Boost.Date_Time</a>。<br><code>time_t</code>可以作为这几个库进行转换的中转类型。因为这些库都提供了对它的转换函数。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><p>总的来说Boost.Date_Time库比较庞大，提供的功能非常多，使用也非常方便，但是细节比较多，这里只能简单得梳理一下，下一节将总结一下三个库。</p>
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库(三)/">http://yoursite.com/2016/01/06/C++时间库(三)/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库（三）/">http://yoursite.com/2016/01/06/C++时间库（三）/</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>这里只是简单列了一些比较重要的类和函数，没有面面俱到，详细说明可以参考<a href="http://www.boost.org/doc/libs/master/doc/html/date_time.html">Boost.Date_Time</a></p>]]>
+    <![CDATA[<p>前面两节，总结了C风格的时间函数和C++标准库std::chrono，作为C++的一个重要的开发库Boost，它提供了两个时间库Boost.Chrono和Boost.Date_Time，这里只对Boost.Date_Time库进行简单地总结和梳理，没有面面俱到，详细说明可以参考<a href="http://www.boost.org/doc/libs/master/doc/html/date_time.html">Boost.Date_Time</a>。</p>]]>
     
     </summary>
     
@@ -175,22 +203,24 @@
   </entry>
   
   <entry>
-    <title><![CDATA[C++时间库（二）std::chrono时间库]]></title>
-    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93(%E4%BA%8C)/"/>
-    <id>http://yoursite.com/2016/01/06/C++时间库(二)/</id>
+    <title><![CDATA[C++时间库（二） std::chrono时间库]]></title>
+    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/01/06/C++时间库（二）/</id>
     <published>2016-01-06T06:19:22.000Z</published>
-    <updated>2016-01-06T09:16:34.386Z</updated>
-    <content type="html"><![CDATA[<p>自从C++11之后，标准库中出现了一个std::chrono库，这个库对时间的一些感念进行抽象，提供了对日期时间的表示和计算，在灵活性和易用性上要好于C风格的时间函数。下面就梳理一下这个库。</p>
+    <updated>2016-01-07T05:54:25.554Z</updated>
+    <content type="html"><![CDATA[<p>自从C++11之后，标准库中出现了一个std::chrono库，这个库对时间的一些感念进行抽象，在灵活性和扩展性上要好于C风格的时间函数。下面就梳理一下这个库。</p>
 <a id="more"></a>
-<h2 id="u6982_u8C8C"><a href="#u6982_u8C8C" class="headerlink" title="概貌"></a>概貌</h2><p>要使用chrono库，需要包含<code>#include&lt;chrono&gt;</code>，其所有实现均在std::chrono namespace中。这个库定义了三个主要类型：</p>
+<h2 id="u6982_u8C8C"><a href="#u6982_u8C8C" class="headerlink" title="概貌"></a>概貌</h2><p>这个库源自<a href="http://www.boost.org/doc/libs/1_60_0/doc/html/chrono.html" target="_blank" rel="external">Boost.Chrono</a>，<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2661.htm" target="_blank" rel="external">N2661 - A Foundation to Sleep On</a>提供了这个设计的背景和动机。<br>Boost.Chrono除了有标准库std::chrono的基本功能外，它还有很多其它功能，而且多了几个clock。</p>
+<p>要使用chrono库，需要包含<code>#include&lt;chrono&gt;</code>，其所有实现均在std::chrono namespace中。这个库定义了三个主要类型：</p>
 <ul>
 <li><strong>Durations</strong> 用于测量时间跨度。像1分钟，2小时或者10毫秒。在这个库中，它们由<code>duration</code>类模板对象表示，它们由计数（count representation）和时间单位（period precision）组成，例如10毫秒由10（计数）和毫秒（时间单位）组成。</li>
 <li><strong>Time points</strong> 代表一个特定的时间点，像某人的生日，下一趟火车的经过时间。在这个库中，<code>time_point</code>类模板的对象靠使用相对于标准时间点（epoch）的<code>duration</code>来表示特定时间点。</li>
-<li><strong>Clocks</strong> 一个将时间点关联到真实物理时间的框架。一个时钟包含一个开始时间点（例如1970年1月1日）和计时周期（例如秒）。这个库提供了至少3个时钟，这些时钟提供了以<code>time_point</code>表示当前时间的方法。有<code>system_clock</code>, <code>steady_clock</code>和<code>high_resolution_clock</code>.</li>
+<li><strong>Clocks</strong> 一个将时间点映射到真实物理时间的框架。一个时钟包含一个开始时间点（例如1970年1月1日）和计时周期（例如秒）。这个库提供了至少3个时钟，这些时钟提供了以<code>time_point</code>表示当前时间的方法。有<code>system_clock</code>, <code>steady_clock</code>和<code>high_resolution_clock</code>.</li>
 </ul>
 <h2 id="Durations"><a href="#Durations" class="headerlink" title="Durations"></a>Durations</h2><h3 id="duration"><a href="#duration" class="headerlink" title="duration"></a>duration</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> Rep, <span class="keyword">class</span> Period = ratio&lt;<span class="number">1</span>&gt; &gt;</span><br><span class="line"><span class="keyword">class</span> duration;</span><br></pre></td></tr></table></figure>
 <p><strong>Rep</strong>是一个算术类型，或者一个具有算法运算的类，用于表示计数。<br><strong>Period</strong>是一个ratio类型，表示以秒为单位的周期。</p>
 <p>成员函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">count() <span class="comment">//返回计数，时间单位不一定是秒</span></span><br><span class="line">operators() <span class="comment">//各种算术运算</span></span><br></pre></td></tr></table></figure></p>
+<p>一些有用的辅助类型：</p>
 <table>
 <thead>
 <tr>
@@ -261,9 +291,9 @@
 <h2 id="u683C_u5F0F_u5316_u65F6_u95F4"><a href="#u683C_u5F0F_u5316_u65F6_u95F4" class="headerlink" title="格式化时间"></a>格式化时间</h2><h3 id="time_point_u683C_u5F0F_u5316"><a href="#time_point_u683C_u5F0F_u5316" class="headerlink" title="time_point格式化"></a><code>time_point</code>格式化</h3><p><code>time_point</code>不能直接输出到stream中，需要转换成<code>std::time_t</code>或者<code>std::tm</code>，使用<code>ctime</code>、<code>asctime</code>、<code>strftime</code>或者<code>std::put_time</code>格式化成字符串。</p>
 <p>示例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">system_clock::time_point today = system_clock::now();</span><br><span class="line"><span class="keyword">time_t</span> tt;</span><br><span class="line"></span><br><span class="line">tt = system_clock::<span class="keyword">to_time_t</span> ( today );</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"today is: "</span> &lt;&lt; ctime(&amp;tt);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"today is: "</span></span><br><span class="line">              &lt;&lt; <span class="built_in">std</span>::put_time(<span class="built_in">std</span>::localtime(&amp;tt), <span class="string">"%F %T"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br></pre></td></tr></table></figure></p>
 <h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
-<li><code>durationS</code>代表了一个时间跨度，即多少个时间单位。</li>
+<li><code>durationS</code>代表了一个时间段，即多少个时间单位。</li>
 <li><code>time_pointS</code>代表了从一个时间参考点开始经历了多长时间，是一个时间点。例如，开机后3小时，从计时器开始后的3秒钟等等。其中时间参考点由<code>clockS</code>提供，时长由<code>duration</code>表示。当两个时间点拥有同样的时间参考点，就可以进行比较和计算。</li>
-<li><code>clockS</code>代表一个现实时钟，由参考时间点和计时周期组成。可以自定义<code>clock</code>。<code>now</code>函数返回当前时间点<code>time_point</code>。</li>
+<li><code>clockS</code>代表一个现实时钟，由参考时间点和计时周期组成。可以自定义<code>clock</code>。<code>now()</code>函数返回当前时间点<code>time_point</code>。</li>
 <li><code>clockS</code>和<code>time_pointS</code>之间紧密的相互联系和引用。</li>
 </ul>
 <p><img src="/images/chrono.png" alt="三者之间的关系和不同时钟的关系"></p>
@@ -275,10 +305,10 @@
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库(二)/">http://yoursite.com/2016/01/06/C++时间库(二)/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库（二）/">http://yoursite.com/2016/01/06/C++时间库（二）/</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>自从C++11之后，标准库中出现了一个std::chrono库，这个库对时间的一些感念进行抽象，提供了对日期时间的表示和计算，在灵活性和易用性上要好于C风格的时间函数。下面就梳理一下这个库。</p>]]>
+    <![CDATA[<p>自从C++11之后，标准库中出现了一个std::chrono库，这个库对时间的一些感念进行抽象，在灵活性和扩展性上要好于C风格的时间函数。下面就梳理一下这个库。</p>]]>
     
     </summary>
     
@@ -289,13 +319,13 @@
   </entry>
   
   <entry>
-    <title><![CDATA[C++时间库(一) C风格的时间函数]]></title>
-    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93(%E4%B8%80)/"/>
-    <id>http://yoursite.com/2016/01/06/C++时间库(一)/</id>
+    <title><![CDATA[C++时间库（一） C风格的时间函数]]></title>
+    <link href="http://yoursite.com/2016/01/06/C++%E6%97%B6%E9%97%B4%E5%BA%93%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/01/06/C++时间库（一）/</id>
     <published>2016-01-06T04:19:22.000Z</published>
-    <updated>2016-01-06T09:28:43.911Z</updated>
+    <updated>2016-01-07T07:06:29.312Z</updated>
     <content type="html"><![CDATA[<p>在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。<br>他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。</p>
-<p>由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。</p>
+<p>由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结。</p>
 <a id="more"></a>
 <p>C风格的时间类型和函数，有C和C++两个版本，如果使用C版本需要包含<code>#include &lt;time.h&gt;</code>，如果使用C++版本需要包含<code>#include &lt;ctime&gt;</code>，并且使用命名空间<code>std</code>。与平台相关的类型和函数会特别指出。</p>
 <h2 id="u6570_u636E_u7C7B_u578B"><a href="#u6570_u636E_u7C7B_u578B" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="time_t"><a href="#time_t" class="headerlink" title="time_t"></a>time_t</h3><p>日历时间（calendar time）。在C/C++编程中经常会遇到它，它定义为从协调时间时（UTC）1970年01月01日00时00分00秒起至现在的总秒数，被用于表示Unix时间（戳）。<br>一般编译器使用32位整数表示time_t，因此这个时间最多使用到2038年1月18日19时14分07秒。一些编译器使用64位整数来表示time_t，可以避免这个问题。</p>
@@ -317,7 +347,7 @@
 <h3 id="mktime__uFF08tm_-_26gt_3B_time_t_uFF09"><a href="#mktime__uFF08tm_-_26gt_3B_time_t_uFF09" class="headerlink" title="mktime （tm -&gt; time_t）"></a>mktime （tm -&gt; time_t）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">time_t</span> mktime (<span class="keyword">struct</span> tm * timeptr);</span><br></pre></td></tr></table></figure>
 <p>转换本地时间的tm结构体成time_t。<br>这个函数是<strong>localtime</strong>的逆操作。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">time_t</span> t = <span class="built_in">std</span>::time(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">std</span>::tm tm = *<span class="built_in">std</span>::localtime(&amp;t);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Today is           "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt;<span class="string">'\n'</span>;</span><br><span class="line">    tm.tm_mon -= <span class="number">100</span>;  <span class="comment">// tm_mon is now outside its normal range</span></span><br><span class="line">    <span class="built_in">std</span>::mktime(&amp;tm);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"100 months ago was "</span> &lt;&lt; <span class="built_in">std</span>::put_time(&amp;tm, <span class="string">"%c %Z"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>结果<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Today is           Wed Dec <span class="number">28</span> <span class="number">09</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2011</span> EST</span><br><span class="line"><span class="number">100</span> months ago was Thu Aug <span class="number">28</span> <span class="number">10</span>:<span class="number">56</span>:<span class="number">10</span> <span class="number">2003</span> EDT</span><br></pre></td></tr></table></figure></p>
-<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB" class="headerlink" title="获取时间函数与时区关系"></a>获取时间函数与时区关系</h2><p><img src="/images/time_zone.png" alt="enter description here"><br>关于时区的总结，请看<a href="/2016/01/06/时间概念总结">时间概念总结</a></p>
+<h2 id="u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB"><a href="#u83B7_u53D6_u65F6_u95F4_u51FD_u6570_u4E0E_u65F6_u533A_u5173_u7CFB" class="headerlink" title="获取时间函数与时区关系"></a>获取时间函数与时区关系</h2><p><img src="/images/time_zone.png" alt="enter description here"><br>关于时区的总结，请看<a href="/2016/01/04/时区和Unix时间戳的整理">时区和Unix时间戳的整理</a></p>
 <h2 id="u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570"><a href="#u65F6_u95F4_u65E5_u671F_u6570_u636E_u7684_u683C_u5F0F_u5316_u51FD_u6570" class="headerlink" title="时间日期数据的格式化函数"></a>时间日期数据的格式化函数</h2><h3 id="ctime__uFF08time_t_-_26gt_3B_char*_uFF09"><a href="#ctime__uFF08time_t_-_26gt_3B_char*_uFF09" class="headerlink" title="ctime （time_t -&gt; char*）"></a><a name="ctime">ctime （time_t -&gt; char*）</a></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">ctime</span> <span class="params">(<span class="keyword">const</span> time_t * timer)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>转换time_t成人类可读的字符串，是本地时间。<br>这个函数等价：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asctime(localtime(timer))</span><br></pre></td></tr></table></figure></p>
 <p>格式如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Www Mmm dd hh:mm:ss yyyy</span><br></pre></td></tr></table></figure></p>
@@ -349,11 +379,11 @@
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库(一)/">http://yoursite.com/2016/01/06/C++时间库(一)/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/C++时间库（一）/">http://yoursite.com/2016/01/06/C++时间库（一）/</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在C++开发时，经常会用到与时间相关的函数或者库，例如C风格的时间函数、std::chrono库、Boost.Date_Time库。<br>他们都包含哪些时间函数或者类？它们的设计思想是什么？什么情况选择什么样的时间函数？怎么使用呢？大家可能都会有这些方面的疑问，于是我决定就对这些库总结梳理一下。</p>
-<p>由于文章太长，分成三个部分：C风格的时间函数、std::chrono库和Boost.Date_Time库。</p>]]>
+<p>由于文章太长，分成四部分：C风格的时间函数、std::chrono库、Boost.Date_Time库和总结。</p>]]>
     
     </summary>
     
@@ -427,11 +457,44 @@
   </entry>
   
   <entry>
+    <title><![CDATA[时区和Unix时间戳的整理]]></title>
+    <link href="http://yoursite.com/2016/01/04/%E6%97%B6%E5%8C%BA%E5%92%8CUnix%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E6%95%B4%E7%90%86/"/>
+    <id>http://yoursite.com/2016/01/04/时区和Unix时间戳的整理/</id>
+    <published>2016-01-03T16:00:00.000Z</published>
+    <updated>2016-01-07T07:05:41.449Z</updated>
+    <content type="html"><![CDATA[<p>对时区和Unix时间戳的简单总结整理。</p>
+<a id="more"></a>
+<h2 id="UTC"><a href="#UTC" class="headerlink" title="UTC"></a>UTC</h2><p>Coordinated Universal Time，协调世界时，又称世界标准时间或世界协调时间，是最主要的世界时间标准，其以原子时秒长为基础，在时刻上尽量接近于格林尼治标准时间。<br>中国大陆时间比UTC快8小时，就会写作UTC+8，俗称东8区。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6" target="_blank" rel="external">协调世界时</a></p>
+<h2 id="GMT"><a href="#GMT" class="headerlink" title="GMT"></a>GMT</h2><p>Greenwich Mean Time，格林尼治标准时间（中国大陆翻译：格林尼治平均时间或格林尼治标准时间），是指位于英国伦敦郊区的皇家格林尼治天文台的标准时间，因为本初子午线被定义为通过那里的经线。</p>
+<p>理论上来说，格林尼治标准时间的正午是指当太阳横穿格林尼治子午线时（也就是在格林尼治上空最高点时）的时间。由于地球在它的椭圆轨道里的运动速度不均匀，这个时刻可能与实际的太阳时有误差，最大误差达16分钟。</p>
+<p>由于地球每天的自转是有些不规则的，而且正在缓慢减速，因此格林尼治时间已经不再被作为标准时间使用。现在的标准时间，是由原子钟报时的协调世界时（UTC）。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E6%A0%BC%E6%9E%97%E5%B0%BC%E6%B2%BB%E5%B9%B3%E6%97%B6" target="_blank" rel="external">格林尼治标准时间</a></p>
+<h2 id="CST"><a href="#CST" class="headerlink" title="CST"></a>CST</h2><p>China Standard Time，中国标准时间，又称北京时间。是中国大陆的标准时间，比世界协调时快八小时（即UTC+8），与香港、澳门、台湾、马来西亚、新加坡等地的标准时间相同。<br>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E5%8C%97%E4%BA%AC%E6%97%B6%E9%97%B4" target="_blank" rel="external">北京时间</a></p>
+<h2 id="UT"><a href="#UT" class="headerlink" title="UT"></a>UT</h2><p>Universal Time，是一种以格林尼治子夜起算的平太阳时。世界时是以地球自转为基准得到的时间尺度,其精度受到地球自转不均匀变化和极移的影响，为了解决这种影响，1955年国际天文联合会定义了UT0、UT1和UT2三个系统：</p>
+<p>UT0系统是由天文观测直接测定的世界时，未经任何改正。该系统曾长期被认为是稳定均匀的时间计量系统，得到过广泛应用，又叫做格林尼治平均时间（GMT）。<br>UT1系统是在UT0的基础上加入了极移改正 Δλ，修正地轴摆动的影响。<br>UT2系统是在UT1基础上加入了地球自转速率的季节性改正 ΔT</p>
+<p>参考维基百科<a href="https://zh.wikipedia.org/wiki/%E4%B8%96%E7%95%8C%E6%97%B6" target="_blank" rel="external">世界时</a></p>
+<h2 id="CET"><a href="#CET" class="headerlink" title="CET"></a>CET</h2><p>Central European Time，欧洲中部时间，是比世界标准时间（UTC）早一个小时的时区名称之一。它被大部分欧洲国家和部分北非国家采用。</p>
+<h2 id="Unix_timestamp"><a href="#Unix_timestamp" class="headerlink" title="Unix timestamp"></a>Unix timestamp</h2><p>Unix时间戳，或称Unix时间， POSIX时间是一种时间表示方式，定义为从格林威治时间1970年01月01日00时00分00秒起至现在的总秒数。Unix时间戳不仅被使用在Unix系统、类Unix系统中，也在许多其他操作系统中被广泛采用。<br>目前相当一部分操作系统使用32位二进制数字表示时间。此类系统的Unix时间戳最多可以使用到格林威治时间2038年01月19日03时14分07秒（二进制：01111111 11111111 11111111 11111111）。其后一秒，二进制数字会变为10000000 00000000 00000000 00000000，发生溢出错误，造成系统将时间误解为1901年12月13日20时45分52秒。这很可能会引起软件故障，甚至是系统瘫痪。使用64位二进制数字表示时间的系统（最多可以使用到格林威治时间292,277,026,596年12月04日15时30分08秒）则基本不会遇到这类溢出问题。</p>
+<p>参考<a href="http://blog.csdn.net/love_gaohz/article/details/6637625" target="_blank" rel="external">c++ 时间类型详解 time_t</a></p>
+<hr>
+<p><strong>版权声明</strong></p>
+<p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/04/时区和Unix时间戳的整理/">http://yoursite.com/2016/01/04/时区和Unix时间戳的整理/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>对时区和Unix时间戳的简单总结整理。</p>]]>
+    
+    </summary>
+    
+      <category term="整理" scheme="http://yoursite.com/categories/%E6%95%B4%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[终于开张了]]></title>
-    <link href="http://yoursite.com/2016/01/04/%E5%BC%80%E5%BC%A0/"/>
-    <id>http://yoursite.com/2016/01/04/开张/</id>
-    <published>2016-01-04T08:17:16.866Z</published>
-    <updated>2016-01-04T08:17:16.866Z</updated>
+    <link href="http://yoursite.com/2015/12/25/%E5%BC%80%E5%BC%A0/"/>
+    <id>http://yoursite.com/2015/12/25/开张/</id>
+    <published>2015-12-24T16:00:00.000Z</published>
+    <updated>2016-01-07T07:02:18.405Z</updated>
     <content type="html"><![CDATA[<p>在酝酿（实际拖延）了接近一年之后，<br>在2015年末，<br>在西方圣诞节这一天，<br>终于鼓足勇气搭建起了自己的博客。</p>
 <a id="more"></a>
 <p>完成了自己的年度计划，<br>开启了自己的写作之路。</p>
@@ -440,7 +503,7 @@
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/04/开张/">http://yoursite.com/2016/01/04/开张/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2015/12/25/开张/">http://yoursite.com/2015/12/25/开张/</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在酝酿（实际拖延）了接近一年之后，<br>在2015年末，<br>在西方圣诞节这一天，<br>终于鼓足勇气搭建起了自己的博客。</p>]]>

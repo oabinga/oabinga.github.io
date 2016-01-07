@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>终于开张了 | 思</title>
+  <title>C++时间库（四） 总结 | 思</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在酝酿（实际拖延）了接近一年之后，在2015年末，在西方圣诞节这一天，终于鼓足勇气搭建起了自己的博客。">
+  <meta name="description" content="前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="终于开张了">
-<meta property="og:url" content="http://yoursite.com/2016/01/04/开张/index.html">
+<meta property="og:title" content="C++时间库（四） 总结">
+<meta property="og:url" content="http://yoursite.com/2016/01/07/C++时间库（四）/index.html">
 <meta property="og:site_name" content="思">
-<meta property="og:description" content="在酝酿（实际拖延）了接近一年之后，在2015年末，在西方圣诞节这一天，终于鼓足勇气搭建起了自己的博客。">
-<meta property="og:updated_time" content="2016-01-04T08:17:16.866Z">
+<meta property="og:description" content="前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。">
+<meta property="og:updated_time" content="2016-01-07T06:58:24.834Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="终于开张了">
-<meta name="twitter:description" content="在酝酿（实际拖延）了接近一年之后，在2015年末，在西方圣诞节这一天，终于鼓足勇气搭建起了自己的博客。">
+<meta name="twitter:title" content="C++时间库（四） 总结">
+<meta name="twitter:description" content="前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。">
   
     <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
   
@@ -83,17 +83,17 @@ var _hmt = _hmt || [];
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-开张" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-C++时间库（四）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     
-<a href="/2016/01/04/开张/" class="article-date">
-  <time datetime="2016-01-04T08:17:16.866Z" itemprop="datePublished">2016-01-04</time>
+<a href="/2016/01/07/C++时间库（四）/" class="article-date">
+  <time datetime="2016-01-07T01:45:12.000Z" itemprop="datePublished">2016-01-07</time>
 </a>
 
 
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/随笔/">随笔</a>
+    <a class="article-category-link" href="/categories/技术/">技术</a>
   </div>
 
   </div>
@@ -104,7 +104,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      终于开张了
+      C++时间库（四） 总结
     </h1>
   
 
@@ -117,36 +117,76 @@ var _hmt = _hmt || [];
 			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
                   	<h3 class="toc-title"><span>文章目录</span></h3>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570"><span class="toc-number">1.</span> <span class="toc-text">C风格的时间函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chrono_u5E93"><span class="toc-number">2.</span> <span class="toc-text">Chrono库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boost-Date_Time"><span class="toc-number">3.</span> <span class="toc-text">Boost.Date_Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		 
-                <!---->
-        <p>在酝酿（实际拖延）了接近一年之后，<br>在2015年末，<br>在西方圣诞节这一天，<br>终于鼓足勇气搭建起了自己的博客。</p>
+                <!--
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570"><span class="toc-number">1.</span> <span class="toc-text">C风格的时间函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chrono_u5E93"><span class="toc-number">2.</span> <span class="toc-text">Chrono库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boost-Date_Time"><span class="toc-number">3.</span> <span class="toc-text">Boost.Date_Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+                </div>
+                -->
+        <p>前面三节总结了C++开发中使用的库和函数，但是它们的特点和之间的联系是什么呢，什么情况应该选择什么样的时间库呢，现在总结一下。</p>
 <a id="more"></a>
-<p>完成了自己的年度计划，<br>开启了自己的写作之路。</p>
-<p>希望她能作为督促我思考的动力，<br>知识升华的工具，<br>交流的平台，<br>展示的舞台。</p>
-<p>今天迈开了艰难的第一步，<br>希望今后能一直相伴走下去。<br>祝我们好运！</p>
+<h2 id="C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570"><a href="#C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570" class="headerlink" title="C风格的时间函数"></a>C风格的时间函数</h2><p>C库的时间函数已经被使用了几十年，它包含了时间点和时间段两个概念。</p>
+<ul>
+<li><code>time_t</code>表示时间点</li>
+<li><code>double difftime(time_t t1, time_t t2);</code>计算时间段</li>
+<li><code>time_t time(time_t*);</code>返回当前时间</li>
+</ul>
+<p>此外C库还包含将时间点与公历(使用<code>struct tm</code>表示)进行转换的函数。</p>
+<p>时间点一个重要特征是应该能进行比较。要想比较两个时间需要一个共同的时间参考点（epoch）和相同的时间单位，而时间参考点（epoch）的信息，可以不用关心。</p>
+<p>C委员会没有指定<code>time_t</code>的时间参考点（epoch）和时间单位。好处是平台可以容易的修改epoch的定义。如果一个程序需要导入或者导出另一个程序的时间点，首先要转换时间点到约定的epoch上，比如公历。</p>
+<p>POSIX指定<code>time_t</code>时间单位为秒，过去几十年，<code>time_t</code>约定俗成地表示为从1970年开始的秒数，并用32位整数存储。但是这有几个问题：</p>
+<ul>
+<li><code>time_t</code>时间单位是秒，<code>difftime</code>计算的时间段也是秒，所以它不能处理小于1秒的情况。</li>
+<li>32位的<code>time_t</code>最大只能表示到2038年1月18日19时14分07秒，否则会溢出。</li>
+</ul>
+<p>虽然可以使用64位的<code>time_t</code>来解决第二个问题，但第一个问题仍不能解决。<br>后来POSIX提出了<code>struct timeb</code>, <code>struct timeval</code>和<code>struct timespec</code>将精度提高到毫秒、微秒和纳秒。但是每一个精度都需要一个新接口和新的结构体。纳秒是尽头吗？不一定，这也意味着将来需要定义新的接口和结构体来满足要求。</p>
+<h2 id="Chrono_u5E93"><a href="#Chrono_u5E93" class="headerlink" title="Chrono库"></a>Chrono库</h2><p>C风格的时间函数缺乏灵活性和扩展性，为了解决这个问题，Chrono库对此进行了抽象，抽象出时间段（duration）、时间点（time_point）和时钟（clock）。</p>
+<ul>
+<li>时间段（duration）可以有不同的时间精度，不同精度的时间段使用同样的接口。</li>
+<li>时间点（time_point）表示参考时间点（epoch）加上或者减去一个时间段。它的时间参考点由时钟（clock）决定。</li>
+<li>时钟（clock）提供参数时间点（epoch）和时间精度。能返回当前时间点。</li>
+</ul>
+<p>这种抽象，能解决上面提到的C风格的时间函数的问题，能很方便的在不同时间精度间进行转换，也可以实现新epoch的clock，在同一个clock中，time_point可以进行比较，如果知道两个clock的epoch的转换规则，两个clock中的time_point可以相互转换和比较。</p>
+<p><code>system_clock</code>可以映射时间点到C风格的时间上（<code>time_t</code>），即可以与<code>time_t</code>进行相互转换。</p>
+<p>此外这个库没有格式化函数，需要转换成<code>time_t</code>或者<code>tm</code>，使用C风格时间函数进行格式化。</p>
+<p>顺带说一下，这里的Chrono库是指std::chrono或者Boost.Chrono库。</p>
+<h2 id="Boost-Date_Time"><a href="#Boost-Date_Time" class="headerlink" title="Boost.Date_Time"></a>Boost.Date_Time</h2><p>虽然Chrono库能很好的解决时间处理问题，但是它没有比hour更高的计时单位，所以处理日期的能力不是很强，而Boost.Date_Time库关注日期和时间。它有很多用于为本地化显示而格式化日期的函数，而且有很多函数用于获取和操作日期和时间。</p>
+<p>Chrono库与Date_Time库还有一个区别就是，对于Chrono，某一刻的时间更多的是用距离某一个参考时间点的偏移（例如从1970年1月1日开始）来表示，而Date_Time库具有公历日期，可以绝对表示某一个时间点，不需要相对某个参考时间点来表示。<br>这两个库可以互补，当然也有重复的地方。但是这两个库没有任何交互操作，所以不得不进行手工转换。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>如果是新开发的程序需要处理时间，尽量使用std::chrono，如果需要对日期进行处理或者需要对时间进行合并、拆分和比较的需求时，最好选择Boost.Date_Time库，除了格式化外，尽量少使用C风格的时间函数。</li>
+<li><code>time_t</code>可以作为这几个库进行转换的中转类型。因为这些库都提供了对它的转换函数。</li>
+</ul>
+<p>C++中的时间库就是这么扯淡，且不说时区转换的问题，光是这几个库中的类型来回倒腾转换，就能把程序猿绕晕了。真心希望这个系列的总结能将这些知识梳理清晰，使用时不再犯糊涂。</p>
+<h2 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2661.htm" target="_blank" rel="external">N2661 - A Foundation to Sleep On</a></li>
+<li><a href="http://stackoverflow.com/questions/6730422/boost-chrono-vs-boost-date-time" target="_blank" rel="external">Boost.Chrono vs. Boost.Date_Time</a>。</li>
+</ol>
 <hr>
 <p><strong>版权声明</strong></p>
 <p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
-<p>本文永久链接：<a href="http://yoursite.com/2016/01/04/开张/">http://yoursite.com/2016/01/04/开张/</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/07/C++时间库（四）/">http://yoursite.com/2016/01/07/C++时间库（四）/</a></p>
 
       
     </div>
     <footer class="article-footer">
 	  
-	  <a data-url="http://yoursite.com/2016/01/04/开张/" data-id="cij3jwb460008fw39gxo4lodz" data_title="终于开张了" data_summary="在酝酿（实际拖延）了接近一年之后，在2015年末，在西..." class="article-share-link">Share</a>
+	  <a data-url="http://yoursite.com/2016/01/07/C++时间库（四）/" data-id="cij3wx242000grk39s2nukkes" data_title="C++时间库（四） 总结" data_summary="前面三节总结了C++开发中使用的库和函数，但是它们的特..." class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/04/开张/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/07/C++时间库（四）/#disqus_thread" class="article-comment-link">Comments</a>
       
 
       
 	  
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li></ul>
+
 	  
 <span>
-更新日期:<time datetime="2016-01-04T08:17:16.866Z" itemprop="dateModified">2016-01-04</time>
+更新日期:<time datetime="2016-01-07T06:58:24.834Z" itemprop="dateModified">2016-01-07</time>
 </span>
 
 
@@ -156,15 +196,11 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/01/06/localtime的安全性总结/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          localtime的安全性总结
-        
-      </div>
-    </a>
   
+    <a href="/2016/01/06/C++时间库（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C++时间库（三） Boost.Date_Time库</div>
+    </a>
   
 </nav>
 
@@ -188,7 +224,7 @@ var _hmt = _hmt || [];
   <div id="toc" class="toc-aside">
   <h2 class="toc-title">文章目录</h2>
     
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#C_u98CE_u683C_u7684_u65F6_u95F4_u51FD_u6570"><span class="toc-number">1.</span> <span class="toc-text">C风格的时间函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chrono_u5E93"><span class="toc-number">2.</span> <span class="toc-text">Chrono库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boost-Date_Time"><span class="toc-number">3.</span> <span class="toc-text">Boost.Date_Time</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
     
   </div>
 
@@ -199,7 +235,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -209,7 +245,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -301,9 +337,9 @@ LGY_calendar.prototype = {
             html+='<span class="g-calendar-grey">'+(last_date-(first_day-1)+i)+'</span>';
         }
         //本月的显示天数
-        var postdate = new Date("Mon Jan 04 2016 16:17:16 GMT+0800"); 
+        var postdate = new Date("Thu Jan 07 2016 09:45:12 GMT+0800"); 
         if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
-            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/开张/" title="终于开张了">4</a></span><span>5</span><span><a href="/2016/01/06/时间概念总结/" title="当天有5篇博客,第一篇:时间概念总结">6</a></span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/时区和Unix时间戳的整理/" title="时区和Unix时间戳的整理">4</a></span><span>5</span><span><a href="/2016/01/06/localtime的安全性总结/" title="当天有4篇博客,第一篇:localtime的安全性总结">6</a></span><span><a href="/2016/01/07/C++时间库（四）/" title="C++时间库（四） 总结">7</a></span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
         } else {
             for(var j=0;j<final_date;j++){        
                 html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
@@ -341,7 +377,7 @@ LGY_calendar.prototype = {
         var _that = this;
         if(this.oBack != undefined) {
             this.oBack.onclick = function(){
-                var postdate = new Date("Mon Jan 04 2016 16:17:16 GMT+0800"); 
+                var postdate = new Date("Thu Jan 07 2016 09:45:12 GMT+0800"); 
                 _that.year = postdate.getFullYear();
                 _that.month = postdate.getMonth();
                 // 填充日历
@@ -405,19 +441,19 @@ new LGY_calendar('g-calendar');
       <ul>
         
           <li>
-            <a href="/2016/01/06/时间概念总结/">时间概念总结</a>
+            <a href="/2016/01/07/C++时间库（四）/">C++时间库（四） 总结</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(三)/">C++时间库（三）Boost.Date_Time库</a>
+            <a href="/2016/01/06/C++时间库（三）/">C++时间库（三） Boost.Date_Time库</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(二)/">C++时间库（二）std::chrono时间库</a>
+            <a href="/2016/01/06/C++时间库（二）/">C++时间库（二） std::chrono时间库</a>
           </li>
         
           <li>
-            <a href="/2016/01/06/C++时间库(一)/">C++时间库(一) C风格的时间函数</a>
+            <a href="/2016/01/06/C++时间库（一）/">C++时间库（一） C风格的时间函数</a>
           </li>
         
           <li>
@@ -463,7 +499,7 @@ new LGY_calendar('g-calendar');
 <script>
   var disqus_shortname = 'oabinga';
   
-  var disqus_url = 'http://yoursite.com/2016/01/04/开张/';
+  var disqus_url = 'http://yoursite.com/2016/01/07/C++时间库（四）/';
   
   (function(){
     var dsq = document.createElement('script');
