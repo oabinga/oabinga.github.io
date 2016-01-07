@@ -398,8 +398,10 @@
     <link href="http://yoursite.com/2016/01/06/localtime%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7%E6%80%BB%E7%BB%93/"/>
     <id>http://yoursite.com/2016/01/06/localtime的安全性总结/</id>
     <published>2016-01-06T02:15:10.000Z</published>
-    <updated>2016-01-06T09:28:07.667Z</updated>
-    <content type="html"><![CDATA[<p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br>按照标准说法此函数不是线程安全的。<br>见cplusplus上提示</p>
+    <updated>2016-01-07T07:12:51.949Z</updated>
+    <content type="html"><![CDATA[<p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br> 按照标准说法此函数不是线程安全的。</p>
+ <a id="more"></a>
+<p>见cplusplus上提示</p>
 <blockquote>
 <p>The function also accesses and modifies a shared internal object, which may introduce data races on concurrent calls to gmtime and localtime.</p>
 </blockquote>
@@ -408,7 +410,6 @@
 <p>This function may not be thread-safe.</p>
 </blockquote>
 <p>但在不同平台下实现还是不一样的。</p>
-<a id="more"></a>
 <h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>在Windows下，此函数是线程安全的。</p>
 <blockquote>
 <p>Both the 32-bit and 64-bit versions of gmtime, mktime, mkgmtime, and localtime all use a single tm structure per thread for the conversion. </p>
@@ -438,15 +439,7 @@
 <p>本文永久链接：<a href="http://yoursite.com/2016/01/06/localtime的安全性总结/">http://yoursite.com/2016/01/06/localtime的安全性总结/</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br>按照标准说法此函数不是线程安全的。<br>见cplusplus上提示</p>
-<blockquote>
-<p>The function also accesses and modifies a shared internal object, which may introduce data races on concurrent calls to gmtime and localtime.</p>
-</blockquote>
-<p>cpprefence上说得更明确</p>
-<blockquote>
-<p>This function may not be thread-safe.</p>
-</blockquote>
-<p>但在不同平台下实现还是不一样的。</p>]]>
+    <![CDATA[<p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br> 按照标准说法此函数不是线程安全的。</p>]]>
     
     </summary>
     

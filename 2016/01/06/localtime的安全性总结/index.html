@@ -5,22 +5,16 @@
   
   <title>localtime的安全性总结 | 思</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
-
-The function also accesses and modifies a shared internal object, which may introduce data races o">
+  <meta name="description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。 按照标准说法此函数不是线程安全的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="localtime的安全性总结">
 <meta property="og:url" content="http://yoursite.com/2016/01/06/localtime的安全性总结/index.html">
 <meta property="og:site_name" content="思">
-<meta property="og:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
-
-The function also accesses and modifies a shared internal object, which may introduce data races o">
-<meta property="og:updated_time" content="2016-01-06T09:28:07.667Z">
+<meta property="og:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。 按照标准说法此函数不是线程安全的。">
+<meta property="og:updated_time" content="2016-01-07T07:12:51.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="localtime的安全性总结">
-<meta name="twitter:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
-
-The function also accesses and modifies a shared internal object, which may introduce data races o">
+<meta name="twitter:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。 按照标准说法此函数不是线程安全的。">
   
     <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
   
@@ -128,7 +122,9 @@ var _hmt = _hmt || [];
 		</div>
 		 
                 <!---->
-        <p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br>按照标准说法此函数不是线程安全的。<br>见cplusplus上提示</p>
+        <p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br> 按照标准说法此函数不是线程安全的。</p>
+ <a id="more"></a>
+<p>见cplusplus上提示</p>
 <blockquote>
 <p>The function also accesses and modifies a shared internal object, which may introduce data races on concurrent calls to gmtime and localtime.</p>
 </blockquote>
@@ -137,7 +133,6 @@ var _hmt = _hmt || [];
 <p>This function may not be thread-safe.</p>
 </blockquote>
 <p>但在不同平台下实现还是不一样的。</p>
-<a id="more"></a>
 <h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>在Windows下，此函数是线程安全的。</p>
 <blockquote>
 <p>Both the 32-bit and 64-bit versions of gmtime, mktime, mkgmtime, and localtime all use a single tm structure per thread for the conversion. </p>
@@ -170,7 +165,7 @@ var _hmt = _hmt || [];
     </div>
     <footer class="article-footer">
 	  
-	  <a data-url="http://yoursite.com/2016/01/06/localtime的安全性总结/" data-id="cij3wx23z000brk39eam1cbfh" data_title="localtime的安全性总结" data_summary="std::localtime这个函数功能是将time_..." class="article-share-link">Share</a>
+	  <a data-url="http://yoursite.com/2016/01/06/localtime的安全性总结/" data-id="cij3x43g9000bxw39xc7pcxla" data_title="localtime的安全性总结" data_summary="std::localtime这个函数功能是将time_..." class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/06/localtime的安全性总结/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -182,7 +177,7 @@ var _hmt = _hmt || [];
 
 	  
 <span>
-更新日期:<time datetime="2016-01-06T09:28:07.667Z" itemprop="dateModified">2016-01-06</time>
+更新日期:<time datetime="2016-01-07T07:12:51.949Z" itemprop="dateModified">2016-01-07</time>
 </span>
 
 
