@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>localtime的安全性总结 | 思</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
+
+The function also accesses and modifies a shared internal object, which may introduce data races o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="localtime的安全性总结">
+<meta property="og:url" content="http://yoursite.com/2016/01/06/localtime的安全性总结/index.html">
+<meta property="og:site_name" content="思">
+<meta property="og:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
+
+The function also accesses and modifies a shared internal object, which may introduce data races o">
+<meta property="og:updated_time" content="2016-01-06T09:28:07.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="localtime的安全性总结">
+<meta name="twitter:description" content="std::localtime这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数localtime，只是不带命名空间。按照标准说法此函数不是线程安全的。见cplusplus上提示
+
+The function also accesses and modifies a shared internal object, which may introduce data races o">
+  
+    <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="http://fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?518b61392b8176e803c0bc2f03d713dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">思</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的技术总结</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/oabinga" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-localtime的安全性总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+<a href="/2016/01/06/localtime的安全性总结/" class="article-date">
+  <time datetime="2016-01-06T02:15:10.000Z" itemprop="datePublished">2016-01-06</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      localtime的安全性总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		 
+		<div id="toc" class="toc-article">
+			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
+                  	<h3 class="toc-title"><span>文章目录</span></h3>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows"><span class="toc-number">1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#POSIX"><span class="toc-number">2.</span> <span class="toc-text">POSIX</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6CE8_u610F"><span class="toc-number">3.</span> <span class="toc-text">注意</span></a></li></ol>
+		
+		</div>
+		 
+                <!---->
+        <p> <code>std::localtime</code>这个函数功能是将time_t转换成本地时间的结构体tm。功能同C风格的函数<code>localtime</code>，只是不带命名空间。<br>按照标准说法此函数不是线程安全的。<br>见cplusplus上提示</p>
+<blockquote>
+<p>The function also accesses and modifies a shared internal object, which may introduce data races on concurrent calls to gmtime and localtime.</p>
+</blockquote>
+<p>cpprefence上说得更明确</p>
+<blockquote>
+<p>This function may not be thread-safe.</p>
+</blockquote>
+<p>但在不同平台下实现还是不一样的。</p>
+<a id="more"></a>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>在Windows下，此函数是线程安全的。</p>
+<blockquote>
+<p>Both the 32-bit and 64-bit versions of gmtime, mktime, mkgmtime, and localtime all use a single tm structure per thread for the conversion. </p>
+</blockquote>
+<p>意思是，不管是32位还是64位版本，这个函数都会为每一个线程分配一个单独的tm结构体。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="keyword">time_t</span> t1 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">	<span class="built_in">std</span>::tm*  t1_tm = <span class="built_in">std</span>::localtime(&amp;t1);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (original)   :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line">	<span class="built_in">std</span>::<span class="function">thread <span class="title">thread1</span><span class="params">(<span class="built_in">std</span>::bind([&amp;t1_tm]()</span></span>&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="keyword">time_t</span> t2 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">		<span class="built_in">std</span>::tm*  t2_tm = <span class="built_in">std</span>::localtime(&amp;t2);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1              :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t2              :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t2_tm);</span><br><span class="line">	&#125;));</span><br><span class="line">	thread1.join();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t1 (original)   :Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">26</span>:<span class="number">11</span> <span class="number">2015</span></span><br><span class="line"></span><br><span class="line">t1              :Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">26</span>:<span class="number">11</span> <span class="number">2015</span></span><br><span class="line">t2              :Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">26</span>:<span class="number">16</span> <span class="number">2015</span></span><br></pre></td></tr></table></figure></p>
+<p>在主线程中调用<code>localtime</code>，打印的时间t1与在另一个线程中打印的时间t1是相同的，可见，Windows下的<code>localtime</code>是线程安全的。</p>
+<h2 id="POSIX"><a href="#POSIX" class="headerlink" title="POSIX"></a>POSIX</h2><p>此时函数就不是线程安全的。不是线程安全的原因是，这个函数内部使用了一个静态tm结构体，每个访问它的函数都会修改这个值。</p>
+<p>与上面同样的代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">time_t</span> t1 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">    <span class="built_in">std</span>::tm*  t1_tm = <span class="built_in">std</span>::localtime(&amp;t1);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (original)   :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">thread1</span><span class="params">(<span class="built_in">std</span>::bind([&amp;t1_tm]()</span></span>&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="keyword">time_t</span> t2 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">		<span class="built_in">std</span>::tm*  t2_tm = <span class="built_in">std</span>::localtime(&amp;t2);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (overwritten):"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t2              :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t2_tm);</span><br><span class="line">            &#125;));</span><br><span class="line">    thread1.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译选项<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -std=c++<span class="number">11</span> -pthread localtimetest.cpp -o localtimetest</span><br></pre></td></tr></table></figure></p>
+<p>结果是<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t1 (original)   :Fri Dec  <span class="number">4</span> <span class="number">11</span>:<span class="number">30</span>:<span class="number">40</span> <span class="number">2015</span></span><br><span class="line"></span><br><span class="line">t1 (overwritten):Fri Dec  <span class="number">4</span> <span class="number">11</span>:<span class="number">30</span>:<span class="number">45</span> <span class="number">2015</span></span><br><span class="line">t2              :Fri Dec  <span class="number">4</span> <span class="number">11</span>:<span class="number">30</span>:<span class="number">45</span> <span class="number">2015</span></span><br></pre></td></tr></table></figure></p>
+<p>另一个线程打印的时间t1与主线程中打印的时间t1不同，而与这个线程下的t2相同，说明这个线程中调用的<code>localtime</code>修改了主线程中调用<code>localtime</code>的结果。所以不是线程安全的。</p>
+<h2 id="u6CE8_u610F"><a href="#u6CE8_u610F" class="headerlink" title="注意"></a>注意</h2><p>虽然Window下的<code>localtime</code>是线程安全的，但是要注意在调用<code>localtime</code>后，不要再使用前一个调用<code>localtime</code>的结果，MSDN上说明：</p>
+<blockquote>
+<p>Each call to one of these routines destroys the result of the previous call.</p>
+</blockquote>
+<p>意思是每次调用这个函数都会破坏前一个调用的结果。</p>
+<p>看示例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="keyword">time_t</span> t1 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">	<span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line">	<span class="built_in">std</span>::<span class="keyword">time_t</span> t2 = <span class="built_in">std</span>::time(<span class="literal">nullptr</span>);</span><br><span class="line">	<span class="comment">// std::tm* points to static data that will be overwritten</span></span><br><span class="line">	<span class="comment">// for any new localtime call</span></span><br><span class="line">	<span class="comment">// 1) Print the original value before it is overwritten  </span></span><br><span class="line">	<span class="built_in">std</span>::tm*  t1_tm = localtime(&amp;t1);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (original)   :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2) Print t2 and t1 after t1 is overwritten by t2</span></span><br><span class="line">	<span class="built_in">std</span>::tm*  t2_tm = localtime(&amp;t2);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t1 (overwritten):"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t1_tm);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"t2              :"</span> &lt;&lt; <span class="built_in">std</span>::asctime(t2_tm);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t1 (original)   :Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">39</span>:<span class="number">34</span> <span class="number">2015</span></span><br><span class="line"></span><br><span class="line">t1 (overwritten):Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">39</span>:<span class="number">39</span> <span class="number">2015</span></span><br><span class="line">t2              :Fri Dec <span class="number">04</span> <span class="number">11</span>:<span class="number">39</span>:<span class="number">39</span> <span class="number">2015</span></span><br></pre></td></tr></table></figure></p>
+<p>这个程序在第二次调用<code>localtime</code>之后，就把第一次调用<code>localtime</code>的结果<code>t1_tm</code>覆盖了。这个错误会非常隐蔽的发生，要特别注意。当然可以使用<code>localtime_s</code>（Windows）或者<code>localtime_r</code>（POSIX）来避免。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">struct</span> tm *<span class="title">localtime_r</span><span class="params">(<span class="keyword">const</span> time_t *timep, <span class="keyword">struct</span> tm *result)</span></span>;</span><br><span class="line"><span class="keyword">errno_t</span> localtime_s( <span class="keyword">struct</span> tm* _tm, <span class="keyword">const</span> <span class="keyword">time_t</span> *time );</span><br></pre></td></tr></table></figure></p>
+<p>原因就是，这两个函数会返回自定义的tm结构体。</p>
+<p><strong>声明</strong>：以上代码参考<a href="https://kjellkod.wordpress.com/2013/01/22/exploring-c11-part-2-localtime-and-time-again/" target="_blank" rel="external">Exploring C++11, part 2 (localtime and time again)</a></p>
+<hr>
+<p><strong>版权声明</strong></p>
+<p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/06/localtime的安全性总结/">http://yoursite.com/2016/01/06/localtime的安全性总结/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <a data-url="http://yoursite.com/2016/01/06/localtime的安全性总结/" data-id="cij3jwb49000bfw39d25hvh2i" data_title="localtime的安全性总结" data_summary="std::localtime这个函数功能是将time_..." class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/06/localtime的安全性总结/#disqus_thread" class="article-comment-link">Comments</a>
+      
+
+      
+	  
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li></ul>
+
+	  
+<span>
+更新日期:<time datetime="2016-01-06T09:28:07.667Z" itemprop="dateModified">2016-01-06</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/06/C++时间库(一)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          C++时间库(一) C风格的时间函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/04/开张/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">终于开张了</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<!-- 多说评论框 start -->
+
+<!-- 多说评论框 end -->
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">文章目录</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows"><span class="toc-number">1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#POSIX"><span class="toc-number">2.</span> <span class="toc-text">POSIX</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6CE8_u610F"><span class="toc-number">3.</span> <span class="toc-text">注意</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Boost/" style="font-size: 13px; color: #7dc3de">Boost</a> <a href="/tags/C/" style="font-size: 20px; color: #1db400">C++</a>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">日历</h3>
+  <div class="widget">
+    <div id="g-calendar" class="g-calendar">
+        <span class="g-calendar-prev"></span>
+		 
+        <span class="g-calendar-back"></span>
+        <span class="g-calendar-now"></span>
+		 
+        <span class="g-calendar-next"></span>
+        <div class="g-calendar-hd"></div>
+        <div class="g-calendar-tit"></div>
+        <div class="g-calendar-bd"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function LGY_calendar(wrapId, options){
+    this.oWrap = this.getId(wrapId);
+    this.oHead = this.getByClassName('g-calendar-hd',this.oWrap)[0];
+    this.oBody = this.getByClassName('g-calendar-bd',this.oWrap)[0];
+    this.oTit = this.getByClassName('g-calendar-tit',this.oWrap)[0];
+    this.oPrev = this.getByClassName('g-calendar-prev',this.oWrap)[0];
+    this.oNext = this.getByClassName('g-calendar-next',this.oWrap)[0];
+    this.oNow = this.getByClassName('g-calendar-now',this.oWrap)[0];
+    this.oBack = this.getByClassName('g-calendar-back',this.oWrap)[0];
+    this.init();
+}
+LGY_calendar.prototype = {
+    ///////////获取ID元素
+    getId:function(id){
+        return document.getElementById(id);
+    },
+    ////////获取css类名元素
+    getByClassName:function(className,parent){
+        var elem = [],
+            node = parent != undefined&&parent.nodeType==1?parent.getElementsByTagName('*'):document.getElementsByTagName('*'),
+            p = new RegExp("(^|\\s)"+className+"(\\s|$)");
+        for(var n=0,i=node.length;n<i;n++){
+            if(p.test(node[n].className)){
+                elem.push(node[n]);
+            }
+        }
+        return elem;
+    },
+    //填充日历
+    fillDate:function(year,month){
+        //本月份第一天是星期几-为显示上个月的天数做铺垫
+        var first_day = new Date(year,month,1).getDay(),
+        //如果刚好是星期天，则空出一行（显示上个月的天数）
+            first_day = first_day == 0?first_day=7:first_day;
+        //本月份最后一天是几号
+        var final_date = new Date(year,month+1,0).getDate(),
+        //上个月的最后一天是几号
+            last_date = new Date(year,month,0).getDate(),
+        //剩余的格子数--即排在末尾的格子数
+            surplus = 42 - first_day - final_date;
+        //设置年的链接
+        var yearHead = "<a href='/" + "archives/" + year + "/'>" + year + " "+ "</a>"; 
+        //设置年的链接
+        var monthHead = "";
+        var month1 = month + 1;
+        if (month1 < 10) {
+            monthHead = "<a href='/" + "archives/" + year + "/" + "0" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        } else {
+            monthHead = "<a href='/" + "archives/" + year + "/" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        }
+        //设置表头的日历
+        this.oHead.innerHTML = yearHead+'年'+monthHead+'月';
+        //填充日历执行
+        var html = '';
+        //上个月的显示天数
+        for(var i=0;i<first_day;i++){
+            html+='<span class="g-calendar-grey">'+(last_date-(first_day-1)+i)+'</span>';
+        }
+        //本月的显示天数
+        var postdate = new Date("Wed Jan 06 2016 10:15:10 GMT+0800"); 
+        if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
+            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/开张/" title="终于开张了">4</a></span><span>5</span><span><a href="/2016/01/06/时间概念总结/" title="当天有5篇博客,第一篇:时间概念总结">6</a></span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+        } else {
+            for(var j=0;j<final_date;j++){        
+                html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
+            }
+        }
+        //下个月的显示天数
+        for(var k=0;k<surplus;k++){
+            html+='<span class="g-calendar-grey">'+(k+1)+'</span>';
+        }
+        //fill
+        this.oBody.innerHTML = html;
+        // 当前状态
+        if(year==this.c_year&&this.c_month==month){
+            this.oBody.getElementsByTagName('span')[first_day+this.date-1].className='g-calendar-on';
+        }
+
+        // 对所有文章遍历,然后将有文章的日期加上链接,如果文章太多的话,生成页面会很大,去掉了
+        
+    },
+    // next切换
+    next:function(){
+        var _that = this;
+        this.oNext.onclick = function(){
+            _that.month++;
+            if(_that.month>11){
+                _that.month = 0;
+                _that.year++;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    // back 切换
+    back:function(){
+        var _that = this;
+        if(this.oBack != undefined) {
+            this.oBack.onclick = function(){
+                var postdate = new Date("Wed Jan 06 2016 10:15:10 GMT+0800"); 
+                _that.year = postdate.getFullYear();
+                _that.month = postdate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // now切换
+    now:function(){
+        var _that = this;
+        if(this.oNow != undefined ) {
+            this.oNow.onclick = function(){
+                var nowDate = new Date(); 
+                _that.year = nowDate.getFullYear();
+                _that.month = nowDate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // prev切换
+    prev:function(){
+        var _that = this;
+        this.oPrev.onclick = function(){
+            _that.month--;
+            if(_that.month<0){
+                _that.month = 11;
+                _that.year--;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    init:function(){
+        this.oTit.innerHTML = '<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>';
+        // 获取今天的日历时间
+        var now = new Date();
+        this.c_year = this.year = now.getFullYear();
+        this.c_month = this.month = now.getMonth();
+        this.date = now.getDate();
+        // 初始化--填充日历
+        this.fillDate(this.year,this.month);
+        //next切换
+        this.next();
+        //prev切换
+        this.prev();
+        //back 切换
+        this.back();
+        //now 切换
+        this.now();
+    }
+}
+new LGY_calendar('g-calendar');
+</script>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/01/06/时间概念总结/">时间概念总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库(三)/">C++时间库（三）Boost.Date_Time库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库(二)/">C++时间库（二）std::chrono时间库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库(一)/">C++时间库(一) C风格的时间函数</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/localtime的安全性总结/">localtime的安全性总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="/images/cc88x31.png"></a><br>
+      &copy; 2016 Oabinga<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+      <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+      </script>
+      </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'oabinga';
+  
+  var disqus_url = 'http://yoursite.com/2016/01/06/localtime的安全性总结/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+<!-- 多说公共JS代码 end -->
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+-->
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	<script src="/js/gotop.js" type="text/javascript"></script>
+	<!--
+	<script src="/js/gotop.js"></script>
+	-->
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	<!--
+	<script src="/js/toc_aside_toggle.js"></script>
+	-->
+
+</div>
+<script src="/js/toc_aside_toggle.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
