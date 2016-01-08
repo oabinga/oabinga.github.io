@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Emacs编码总结 | 思</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emacs编码总结">
+<meta property="og:url" content="http://yoursite.com/2016/01/08/Emacs编码总结/index.html">
+<meta property="og:site_name" content="思">
+<meta property="og:description" content="在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。">
+<meta property="og:updated_time" content="2016-01-08T03:21:53.536Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Emacs编码总结">
+<meta name="twitter:description" content="在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。">
+  
+    <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="http://fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?518b61392b8176e803c0bc2f03d713dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">思</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的技术总结</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/oabinga" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Emacs编码总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+<a href="/2016/01/08/Emacs编码总结/" class="article-date">
+  <time datetime="2016-01-08T02:11:28.000Z" itemprop="datePublished">2016-01-08</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/工具/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Emacs编码总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		 
+		<div id="toc" class="toc-article">
+			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
+                  	<h3 class="toc-title"><span>文章目录</span></h3>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u67E5_u770B_u7F16_u7801"><span class="toc-number">1.</span> <span class="toc-text">查看编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E"><span class="toc-number">1.1.</span> <span class="toc-text">查看编码系统中具体某个coding的说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF"><span class="toc-number">1.2.</span> <span class="toc-text">查看当前正在使用的编码系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF"><span class="toc-number">1.3.</span> <span class="toc-text">显示Emacs支持的所有编码系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6539_u53D8_u7F16_u7801"><span class="toc-number">2.</span> <span class="toc-text">改变编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7"><span class="toc-number">2.1.</span> <span class="toc-text">更改编码系统优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801"><span class="toc-number">2.2.</span> <span class="toc-text">设置文件存储的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801"><span class="toc-number">2.3.</span> <span class="toc-text">设置文件显示的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801"><span class="toc-number">2.4.</span> <span class="toc-text">设置下一个指令的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6"><span class="toc-number">2.5.</span> <span class="toc-text">不做任何编码转换地查看文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7ECF_u9A8C"><span class="toc-number">4.</span> <span class="toc-text">经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898"><span class="toc-number">4.1.</span> <span class="toc-text">Shell中与其它程序进行交互乱码问题</span></a></li></ol></li></ol>
+		
+		</div>
+		 
+                <!---->
+        <p>在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。</p>
+ <a id="more"></a>
+<h2 id="u67E5_u770B_u7F16_u7801"><a href="#u67E5_u770B_u7F16_u7801" class="headerlink" title="查看编码"></a>查看编码</h2><p>在Emacs下学会查看编码系统很重要，这有利于编码问题的查找和解决。</p>
+<h3 id="u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E"><a href="#u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E" class="headerlink" title="查看编码系统中具体某个coding的说明"></a>查看编码系统中具体某个coding的说明</h3><p><code>M-x describe-coding-system</code> (C-h C coding RET)</p>
+<h3 id="u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF"><a href="#u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF" class="headerlink" title="查看当前正在使用的编码系统"></a>查看当前正在使用的编码系统</h3><p><code>M-x describe-coding-system</code> (C-h C RET)</p>
+<p>输出结果：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">Coding system <span class="keyword">for</span> saving this buffer:</span><br><span class="line">  U -- utf-<span class="number">8</span>-hfs-dos</span><br><span class="line"></span><br><span class="line">Default coding system (<span class="keyword">for</span> new files):</span><br><span class="line">  c -- chinese-gbk-dos (alias: gbk-dos cp936-dos windows-<span class="number">936</span>-dos)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> keyboard input:</span><br><span class="line">  c -- chinese-gbk-unix (alias: gbk-unix cp936-unix windows-<span class="number">936</span>-unix)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> terminal output:</span><br><span class="line">  c -- cp936 (alias of chinese-gbk)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> inter-client cut and paste:</span><br><span class="line">  U -- utf-<span class="number">16</span>le-dos</span><br><span class="line"></span><br><span class="line">Coding systems <span class="keyword">for</span> <span class="keyword">process</span> I/O:</span><br><span class="line">  encoding input to the <span class="keyword">process</span>: U -- utf-<span class="number">8</span>-hfs-dos</span><br><span class="line"></span><br><span class="line">  decoding output from the <span class="keyword">process</span>: U -- utf-<span class="number">8</span>-hfs</span><br><span class="line"></span><br><span class="line">Defaults <span class="keyword">for</span> subprocess I/O:</span><br><span class="line">  decoding: - -- undecided-dos (alias: dos)</span><br><span class="line"></span><br><span class="line">  encoding: - -- undecided-unix (alias: unix)</span><br><span class="line">  </span><br><span class="line">Priority order <span class="keyword">for</span> recognizing coding systems when reading files:</span><br><span class="line">  <span class="number">1</span>. chinese-gbk (alias: gbk cp936 windows-<span class="number">936</span>)</span><br><span class="line">  <span class="number">2</span>. iso-<span class="number">2022</span>-cn (alias: chinese-iso-<span class="number">7</span>bit)</span><br><span class="line">  <span class="number">3</span>. chinese-big5 (alias: big5 cn-big5 cp950)</span><br><span class="line">  <span class="number">4</span>. chinese-iso-<span class="number">8</span>bit (alias: cn-gb-<span class="number">2312</span> euc-china euc-cn cn-gb gb2312)</span><br><span class="line">  <span class="number">5</span>. utf-<span class="number">8</span> (alias: mule-utf-<span class="number">8</span>)</span><br><span class="line">  <span class="number">6</span>. iso-<span class="number">2022</span>-<span class="number">7</span>bit </span><br><span class="line">  <span class="number">7</span>. iso-<span class="number">2022</span>-<span class="number">8</span>bit-ss2 </span><br><span class="line">  <span class="number">8</span>. emacs-mule </span><br><span class="line">  <span class="number">9</span>. raw-text </span><br><span class="line">  <span class="number">10</span>. iso-<span class="number">2022</span>-jp (alias: junet)</span><br><span class="line">  <span class="number">11</span>. in-is13194-devanagari (alias: devanagari)</span><br><span class="line">  <span class="number">12</span>. utf-<span class="number">8</span>-auto </span><br><span class="line">  <span class="number">13</span>. utf-<span class="number">8</span>-with-signature </span><br><span class="line">  <span class="number">14</span>. utf-<span class="number">16</span> </span><br><span class="line">  <span class="number">15</span>. utf-<span class="number">16</span>be-with-signature (alias: utf-<span class="number">16</span>-be)</span><br><span class="line">  <span class="number">16</span>. utf-<span class="number">16</span>le-with-signature (alias: utf-<span class="number">16</span><span class="operator">-le</span>)</span><br><span class="line">  <span class="number">17</span>. utf-<span class="number">16</span>be </span><br><span class="line">  <span class="number">18</span>. utf-<span class="number">16</span>le </span><br><span class="line">  <span class="number">19</span>. japanese-shift-jis (alias: shift_jis sjis)</span><br><span class="line">  <span class="number">20</span>. undecided</span><br></pre></td></tr></table></figure></p>
+<p>其中：</p>
+<ul>
+<li>Coding system for saving this buffer<br>当前buffer的编码，<code>M-x set-buffer-file-coding-system</code>会改变这个编码。</li>
+<li>Default coding system (for new files)<br>默认编码，当打开新文件时会使用这个编码。</li>
+<li>Coding system for keyboard input<br>键盘输入编码，转换键盘输入的字符代码在一些特定终端是有用的，这些终端可能有发送非ASCII图形字符的按键。</li>
+<li>Coding system for terminal output<br>终端输出编码，这对于在某些仅字符终端上支持特定语言或者字符集是非常有用的。</li>
+<li>Coding systems for process I/O<br>和其它程序进行通信时的编码系统，包括输入编码和输出编码，可以使用<code>M-x set-buffer-process-coding-system</code>分别设置输入编码和输出编码，这个会在后面的<a href="#shell">使用经验</a>中会提到。</li>
+</ul>
+<p>最后列出了Emacs读文件时使用的编码优先级，从上面可以看到，打开文件的默认编码是gbk。</p>
+<h3 id="u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF"><a href="#u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF" class="headerlink" title="显示Emacs支持的所有编码系统"></a>显示Emacs支持的所有编码系统</h3><p><code>M-x list-coding-systems</code></p>
+<p><strong>提示</strong><br>每一个编码系统都有三种形式，每一种形式都指明会做什么样的换行转换：</p>
+<ul>
+<li>…-unix 不做换行转换；假设文件使用换行符分割每一行。</li>
+<li>…-dos 假设使用回车换行符分割每一行，会做合适的转换。</li>
+<li>…-mac 假设使用回车符分割每一行，会做合适的转换。</li>
+</ul>
+<h2 id="u6539_u53D8_u7F16_u7801"><a href="#u6539_u53D8_u7F16_u7801" class="headerlink" title="改变编码"></a>改变编码</h2><h3 id="u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7"><a href="#u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7" class="headerlink" title="更改编码系统优先级"></a>更改编码系统优先级</h3><p><code>M-x prefer-coding-system</code><br>此指令将选择的编码放到编码系统优先级队列的最前端。<br>如果想保持这个编码顺序（当Emacs关闭后再打开依然有效），在初始化文件中添加，例如设置utf-8为默认编码：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">prefer-coding-system</span> <span class="quoted">'utf-8</span>)</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801" class="headerlink" title="设置文件存储的编码"></a>设置文件存储的编码</h3><p><code>M-x set-buffer-file-coding-system</code> （C-x RET f coding RET）<br>设置当前buffer保存文件和重新访问文件的编码</p>
+<p>变量<code>buffer-file-coding-system</code>：一旦Emacs为buffer选择了编码系统，会存储在此变量中。从buffer中保存文件会用到这个编码。可以通过<code>M-x set-buffer-file-coding-system</code>改变此变量值。<br>如果选择的编码不能处理所有的字符，在保存文件时，emacs不会用<code>buffer-file-coding-system</code>的值，而是选择更好的编码（通过<code>M-x prefer-coding-system</code>或者<code>M-x set-language-environment</code>设置的编码)。如果emacs选择的这个编码能安全的编码所有的字符，Emacs就用它，否则会显示一个适合编码这个buffer内容的编码列表，供用户选择。</p>
+<h3 id="u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801" class="headerlink" title="设置文件显示的编码"></a>设置文件显示的编码</h3><p><code>M-x revert-buffer-with-coding-system</code> （C-x RET r coding RET）<br>用选择的编码重新打开文件</p>
+<h3 id="u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801" class="headerlink" title="设置下一个指令的编码"></a>设置下一个指令的编码</h3><p><code>universal-coding-system-argument</code> （C-x RET c coding RET）<br>如果在打开文件<code>C-x C-f</code>之前，调用此指令，会用选定的编码打开文件，也会用此编码保存文件；<br>如果在保存文件<code>C-x C-w</code>之前，调用此指令，会用选定的编码保存文件。<br>如果选用这种方式保存文件，与<code>set-buffer-file-coding-system</code>功能类似，只是如果遇到编码系统不能处理的字符，没有任何警告。</p>
+<h3 id="u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6"><a href="#u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6" class="headerlink" title="不做任何编码转换地查看文件"></a>不做任何编码转换地查看文件</h3><p><code>M-x find-file-literall</code><br>对于读或者写二进制文件，tar文件和其它必须逐字检查的文件有用。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><p><code>prefer-coding-system</code>侧重于文件读，<br><code>set-buffer-file-coding-system</code>侧重于文件写，<br><code>revert-buffer-with-coding-system</code>侧重于文件显示</p>
+<h2 id="u7ECF_u9A8C"><a href="#u7ECF_u9A8C" class="headerlink" title="经验"></a>经验</h2><h3 id="Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898"><a href="#Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898" class="headerlink" title="Shell中与其它程序进行交互乱码问题"></a><a name="shell">Shell中与其它程序进行交互乱码问题</a></h3><p>在Emacs的Shell中使用hexo创建新的文章<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> Emacs编码总结</span><br></pre></td></tr></table></figure></p>
+<p>时，会出现<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new Emacs缂栫爜鎬荤粨</span><br><span class="line">INFO  Created: d:<span class="command">\blog</span><span class="command">\source</span><span class="command">\_</span>posts<span class="command">\Emacs</span>缂傛牜鐖滈幀鑽ょ波.md</span><br></pre></td></tr></table></figure></p>
+<p>并且创建的文件名为乱码“Emacs缂栫爜鎬荤粨.md”</p>
+<p>主要原因就是与hexo程序进行通信的编码没有设置正确，我当时设置的encoding input to the process是utf8，decoding output from the process设置的是chinese-gbk，在中文Windows下，操作系统使用的是gbk，因为输入到hexo程序中编码使用utf8，所以导致创建的文件名是乱码。所以通过<code>M-x set-buffer-process-coding-system</code>设置input是gbk就可以了。</p>
+<hr>
+<p><strong>版权声明</strong></p>
+<p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/08/Emacs编码总结/">http://yoursite.com/2016/01/08/Emacs编码总结/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <a data-url="http://yoursite.com/2016/01/08/Emacs编码总结/" data-id="cij54ak8y000gbo39ttjg2yeo" data_title="Emacs编码总结" data_summary="在Windows上使用Emacs经常会遇到乱码问题，每..." class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/08/Emacs编码总结/#disqus_thread" class="article-comment-link">Comments</a>
+      
+
+      
+	  
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Emacs/">Emacs</a></li></ul>
+
+	  
+<span>
+更新日期:<time datetime="2016-01-08T03:21:53.536Z" itemprop="dateModified">2016-01-08</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/07/C++时间库（四）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C++时间库（四） 总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<!-- 多说评论框 start -->
+
+<!-- 多说评论框 end -->
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">文章目录</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u67E5_u770B_u7F16_u7801"><span class="toc-number">1.</span> <span class="toc-text">查看编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E"><span class="toc-number">1.1.</span> <span class="toc-text">查看编码系统中具体某个coding的说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF"><span class="toc-number">1.2.</span> <span class="toc-text">查看当前正在使用的编码系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF"><span class="toc-number">1.3.</span> <span class="toc-text">显示Emacs支持的所有编码系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6539_u53D8_u7F16_u7801"><span class="toc-number">2.</span> <span class="toc-text">改变编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7"><span class="toc-number">2.1.</span> <span class="toc-text">更改编码系统优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801"><span class="toc-number">2.2.</span> <span class="toc-text">设置文件存储的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801"><span class="toc-number">2.3.</span> <span class="toc-text">设置文件显示的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801"><span class="toc-number">2.4.</span> <span class="toc-text">设置下一个指令的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6"><span class="toc-number">2.5.</span> <span class="toc-text">不做任何编码转换地查看文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u603B_u7ED3"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7ECF_u9A8C"><span class="toc-number">4.</span> <span class="toc-text">经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898"><span class="toc-number">4.1.</span> <span class="toc-text">Shell中与其它程序进行交互乱码问题</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Emacs/">Emacs</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Boost/" style="font-size: 13px; color: #7dc3de">Boost</a> <a href="/tags/C/" style="font-size: 20px; color: #1db400">C++</a> <a href="/tags/Emacs/" style="font-size: 13px; color: #7dc3de">Emacs</a>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">日历</h3>
+  <div class="widget">
+    <div id="g-calendar" class="g-calendar">
+        <span class="g-calendar-prev"></span>
+		 
+        <span class="g-calendar-back"></span>
+        <span class="g-calendar-now"></span>
+		 
+        <span class="g-calendar-next"></span>
+        <div class="g-calendar-hd"></div>
+        <div class="g-calendar-tit"></div>
+        <div class="g-calendar-bd"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function LGY_calendar(wrapId, options){
+    this.oWrap = this.getId(wrapId);
+    this.oHead = this.getByClassName('g-calendar-hd',this.oWrap)[0];
+    this.oBody = this.getByClassName('g-calendar-bd',this.oWrap)[0];
+    this.oTit = this.getByClassName('g-calendar-tit',this.oWrap)[0];
+    this.oPrev = this.getByClassName('g-calendar-prev',this.oWrap)[0];
+    this.oNext = this.getByClassName('g-calendar-next',this.oWrap)[0];
+    this.oNow = this.getByClassName('g-calendar-now',this.oWrap)[0];
+    this.oBack = this.getByClassName('g-calendar-back',this.oWrap)[0];
+    this.init();
+}
+LGY_calendar.prototype = {
+    ///////////获取ID元素
+    getId:function(id){
+        return document.getElementById(id);
+    },
+    ////////获取css类名元素
+    getByClassName:function(className,parent){
+        var elem = [],
+            node = parent != undefined&&parent.nodeType==1?parent.getElementsByTagName('*'):document.getElementsByTagName('*'),
+            p = new RegExp("(^|\\s)"+className+"(\\s|$)");
+        for(var n=0,i=node.length;n<i;n++){
+            if(p.test(node[n].className)){
+                elem.push(node[n]);
+            }
+        }
+        return elem;
+    },
+    //填充日历
+    fillDate:function(year,month){
+        //本月份第一天是星期几-为显示上个月的天数做铺垫
+        var first_day = new Date(year,month,1).getDay(),
+        //如果刚好是星期天，则空出一行（显示上个月的天数）
+            first_day = first_day == 0?first_day=7:first_day;
+        //本月份最后一天是几号
+        var final_date = new Date(year,month+1,0).getDate(),
+        //上个月的最后一天是几号
+            last_date = new Date(year,month,0).getDate(),
+        //剩余的格子数--即排在末尾的格子数
+            surplus = 42 - first_day - final_date;
+        //设置年的链接
+        var yearHead = "<a href='/" + "archives/" + year + "/'>" + year + " "+ "</a>"; 
+        //设置年的链接
+        var monthHead = "";
+        var month1 = month + 1;
+        if (month1 < 10) {
+            monthHead = "<a href='/" + "archives/" + year + "/" + "0" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        } else {
+            monthHead = "<a href='/" + "archives/" + year + "/" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        }
+        //设置表头的日历
+        this.oHead.innerHTML = yearHead+'年'+monthHead+'月';
+        //填充日历执行
+        var html = '';
+        //上个月的显示天数
+        for(var i=0;i<first_day;i++){
+            html+='<span class="g-calendar-grey">'+(last_date-(first_day-1)+i)+'</span>';
+        }
+        //本月的显示天数
+        var postdate = new Date("Fri Jan 08 2016 10:11:28 GMT+0800"); 
+        if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
+            html += '<span>1</span><span>2</span><span>3</span><span><a href="/2016/01/04/时区和Unix时间戳的整理/" title="时区和Unix时间戳的整理">4</a></span><span>5</span><span><a href="/2016/01/06/localtime的安全性总结/" title="当天有4篇博客,第一篇:localtime的安全性总结">6</a></span><span><a href="/2016/01/07/C++时间库（四）/" title="C++时间库（四） 总结">7</a></span><span><a href="/2016/01/08/Emacs编码总结/" title="Emacs编码总结">8</a></span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+        } else {
+            for(var j=0;j<final_date;j++){        
+                html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
+            }
+        }
+        //下个月的显示天数
+        for(var k=0;k<surplus;k++){
+            html+='<span class="g-calendar-grey">'+(k+1)+'</span>';
+        }
+        //fill
+        this.oBody.innerHTML = html;
+        // 当前状态
+        if(year==this.c_year&&this.c_month==month){
+            this.oBody.getElementsByTagName('span')[first_day+this.date-1].className='g-calendar-on';
+        }
+
+        // 对所有文章遍历,然后将有文章的日期加上链接,如果文章太多的话,生成页面会很大,去掉了
+        
+    },
+    // next切换
+    next:function(){
+        var _that = this;
+        this.oNext.onclick = function(){
+            _that.month++;
+            if(_that.month>11){
+                _that.month = 0;
+                _that.year++;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    // back 切换
+    back:function(){
+        var _that = this;
+        if(this.oBack != undefined) {
+            this.oBack.onclick = function(){
+                var postdate = new Date("Fri Jan 08 2016 10:11:28 GMT+0800"); 
+                _that.year = postdate.getFullYear();
+                _that.month = postdate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // now切换
+    now:function(){
+        var _that = this;
+        if(this.oNow != undefined ) {
+            this.oNow.onclick = function(){
+                var nowDate = new Date(); 
+                _that.year = nowDate.getFullYear();
+                _that.month = nowDate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // prev切换
+    prev:function(){
+        var _that = this;
+        this.oPrev.onclick = function(){
+            _that.month--;
+            if(_that.month<0){
+                _that.month = 11;
+                _that.year--;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    init:function(){
+        this.oTit.innerHTML = '<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>';
+        // 获取今天的日历时间
+        var now = new Date();
+        this.c_year = this.year = now.getFullYear();
+        this.c_month = this.month = now.getMonth();
+        this.date = now.getDate();
+        // 初始化--填充日历
+        this.fillDate(this.year,this.month);
+        //next切换
+        this.next();
+        //prev切换
+        this.prev();
+        //back 切换
+        this.back();
+        //now 切换
+        this.now();
+    }
+}
+new LGY_calendar('g-calendar');
+</script>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/01/08/Emacs编码总结/">Emacs编码总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/07/C++时间库（四）/">C++时间库（四） 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库（三）/">C++时间库（三） Boost.Date_Time库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库（二）/">C++时间库（二） std::chrono时间库</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/06/C++时间库（一）/">C++时间库（一） C风格的时间函数</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="/images/cc88x31.png"></a><br>
+      &copy; 2016 Oabinga<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+      <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+      </script>
+      </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'oabinga';
+  
+  var disqus_url = 'http://yoursite.com/2016/01/08/Emacs编码总结/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+<!-- 多说公共JS代码 end -->
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+-->
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	<script src="/js/gotop.js" type="text/javascript"></script>
+	<!--
+	<script src="/js/gotop.js"></script>
+	-->
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	<!--
+	<script src="/js/toc_aside_toggle.js"></script>
+	-->
+
+</div>
+<script src="/js/toc_aside_toggle.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

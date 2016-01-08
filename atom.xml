@@ -4,7 +4,7 @@
   <subtitle><![CDATA[我的技术总结]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-07T06:58:24.834Z</updated>
+  <updated>2016-01-08T03:21:53.536Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Emacs编码总结]]></title>
+    <link href="http://yoursite.com/2016/01/08/Emacs%E7%BC%96%E7%A0%81%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2016/01/08/Emacs编码总结/</id>
+    <published>2016-01-08T02:11:28.000Z</published>
+    <updated>2016-01-08T03:21:53.536Z</updated>
+    <content type="html"><![CDATA[<p>在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。</p>
+ <a id="more"></a>
+<h2 id="u67E5_u770B_u7F16_u7801"><a href="#u67E5_u770B_u7F16_u7801" class="headerlink" title="查看编码"></a>查看编码</h2><p>在Emacs下学会查看编码系统很重要，这有利于编码问题的查找和解决。</p>
+<h3 id="u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E"><a href="#u67E5_u770B_u7F16_u7801_u7CFB_u7EDF_u4E2D_u5177_u4F53_u67D0_u4E2Acoding_u7684_u8BF4_u660E" class="headerlink" title="查看编码系统中具体某个coding的说明"></a>查看编码系统中具体某个coding的说明</h3><p><code>M-x describe-coding-system</code> (C-h C coding RET)</p>
+<h3 id="u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF"><a href="#u67E5_u770B_u5F53_u524D_u6B63_u5728_u4F7F_u7528_u7684_u7F16_u7801_u7CFB_u7EDF" class="headerlink" title="查看当前正在使用的编码系统"></a>查看当前正在使用的编码系统</h3><p><code>M-x describe-coding-system</code> (C-h C RET)</p>
+<p>输出结果：<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">Coding system <span class="keyword">for</span> saving this buffer:</span><br><span class="line">  U -- utf-<span class="number">8</span>-hfs-dos</span><br><span class="line"></span><br><span class="line">Default coding system (<span class="keyword">for</span> new files):</span><br><span class="line">  c -- chinese-gbk-dos (alias: gbk-dos cp936-dos windows-<span class="number">936</span>-dos)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> keyboard input:</span><br><span class="line">  c -- chinese-gbk-unix (alias: gbk-unix cp936-unix windows-<span class="number">936</span>-unix)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> terminal output:</span><br><span class="line">  c -- cp936 (alias of chinese-gbk)</span><br><span class="line"></span><br><span class="line">Coding system <span class="keyword">for</span> inter-client cut and paste:</span><br><span class="line">  U -- utf-<span class="number">16</span>le-dos</span><br><span class="line"></span><br><span class="line">Coding systems <span class="keyword">for</span> <span class="keyword">process</span> I/O:</span><br><span class="line">  encoding input to the <span class="keyword">process</span>: U -- utf-<span class="number">8</span>-hfs-dos</span><br><span class="line"></span><br><span class="line">  decoding output from the <span class="keyword">process</span>: U -- utf-<span class="number">8</span>-hfs</span><br><span class="line"></span><br><span class="line">Defaults <span class="keyword">for</span> subprocess I/O:</span><br><span class="line">  decoding: - -- undecided-dos (alias: dos)</span><br><span class="line"></span><br><span class="line">  encoding: - -- undecided-unix (alias: unix)</span><br><span class="line">  </span><br><span class="line">Priority order <span class="keyword">for</span> recognizing coding systems when reading files:</span><br><span class="line">  <span class="number">1</span>. chinese-gbk (alias: gbk cp936 windows-<span class="number">936</span>)</span><br><span class="line">  <span class="number">2</span>. iso-<span class="number">2022</span>-cn (alias: chinese-iso-<span class="number">7</span>bit)</span><br><span class="line">  <span class="number">3</span>. chinese-big5 (alias: big5 cn-big5 cp950)</span><br><span class="line">  <span class="number">4</span>. chinese-iso-<span class="number">8</span>bit (alias: cn-gb-<span class="number">2312</span> euc-china euc-cn cn-gb gb2312)</span><br><span class="line">  <span class="number">5</span>. utf-<span class="number">8</span> (alias: mule-utf-<span class="number">8</span>)</span><br><span class="line">  <span class="number">6</span>. iso-<span class="number">2022</span>-<span class="number">7</span>bit </span><br><span class="line">  <span class="number">7</span>. iso-<span class="number">2022</span>-<span class="number">8</span>bit-ss2 </span><br><span class="line">  <span class="number">8</span>. emacs-mule </span><br><span class="line">  <span class="number">9</span>. raw-text </span><br><span class="line">  <span class="number">10</span>. iso-<span class="number">2022</span>-jp (alias: junet)</span><br><span class="line">  <span class="number">11</span>. in-is13194-devanagari (alias: devanagari)</span><br><span class="line">  <span class="number">12</span>. utf-<span class="number">8</span>-auto </span><br><span class="line">  <span class="number">13</span>. utf-<span class="number">8</span>-with-signature </span><br><span class="line">  <span class="number">14</span>. utf-<span class="number">16</span> </span><br><span class="line">  <span class="number">15</span>. utf-<span class="number">16</span>be-with-signature (alias: utf-<span class="number">16</span>-be)</span><br><span class="line">  <span class="number">16</span>. utf-<span class="number">16</span>le-with-signature (alias: utf-<span class="number">16</span><span class="operator">-le</span>)</span><br><span class="line">  <span class="number">17</span>. utf-<span class="number">16</span>be </span><br><span class="line">  <span class="number">18</span>. utf-<span class="number">16</span>le </span><br><span class="line">  <span class="number">19</span>. japanese-shift-jis (alias: shift_jis sjis)</span><br><span class="line">  <span class="number">20</span>. undecided</span><br></pre></td></tr></table></figure></p>
+<p>其中：</p>
+<ul>
+<li>Coding system for saving this buffer<br>当前buffer的编码，<code>M-x set-buffer-file-coding-system</code>会改变这个编码。</li>
+<li>Default coding system (for new files)<br>默认编码，当打开新文件时会使用这个编码。</li>
+<li>Coding system for keyboard input<br>键盘输入编码，转换键盘输入的字符代码在一些特定终端是有用的，这些终端可能有发送非ASCII图形字符的按键。</li>
+<li>Coding system for terminal output<br>终端输出编码，这对于在某些仅字符终端上支持特定语言或者字符集是非常有用的。</li>
+<li>Coding systems for process I/O<br>和其它程序进行通信时的编码系统，包括输入编码和输出编码，可以使用<code>M-x set-buffer-process-coding-system</code>分别设置输入编码和输出编码，这个会在后面的<a href="#shell">使用经验</a>中会提到。</li>
+</ul>
+<p>最后列出了Emacs读文件时使用的编码优先级，从上面可以看到，打开文件的默认编码是gbk。</p>
+<h3 id="u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF"><a href="#u663E_u793AEmacs_u652F_u6301_u7684_u6240_u6709_u7F16_u7801_u7CFB_u7EDF" class="headerlink" title="显示Emacs支持的所有编码系统"></a>显示Emacs支持的所有编码系统</h3><p><code>M-x list-coding-systems</code></p>
+<p><strong>提示</strong><br>每一个编码系统都有三种形式，每一种形式都指明会做什么样的换行转换：</p>
+<ul>
+<li>…-unix 不做换行转换；假设文件使用换行符分割每一行。</li>
+<li>…-dos 假设使用回车换行符分割每一行，会做合适的转换。</li>
+<li>…-mac 假设使用回车符分割每一行，会做合适的转换。</li>
+</ul>
+<h2 id="u6539_u53D8_u7F16_u7801"><a href="#u6539_u53D8_u7F16_u7801" class="headerlink" title="改变编码"></a>改变编码</h2><h3 id="u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7"><a href="#u66F4_u6539_u7F16_u7801_u7CFB_u7EDF_u4F18_u5148_u7EA7" class="headerlink" title="更改编码系统优先级"></a>更改编码系统优先级</h3><p><code>M-x prefer-coding-system</code><br>此指令将选择的编码放到编码系统优先级队列的最前端。<br>如果想保持这个编码顺序（当Emacs关闭后再打开依然有效），在初始化文件中添加，例如设置utf-8为默认编码：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">prefer-coding-system</span> <span class="quoted">'utf-8</span>)</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u6587_u4EF6_u5B58_u50A8_u7684_u7F16_u7801" class="headerlink" title="设置文件存储的编码"></a>设置文件存储的编码</h3><p><code>M-x set-buffer-file-coding-system</code> （C-x RET f coding RET）<br>设置当前buffer保存文件和重新访问文件的编码</p>
+<p>变量<code>buffer-file-coding-system</code>：一旦Emacs为buffer选择了编码系统，会存储在此变量中。从buffer中保存文件会用到这个编码。可以通过<code>M-x set-buffer-file-coding-system</code>改变此变量值。<br>如果选择的编码不能处理所有的字符，在保存文件时，emacs不会用<code>buffer-file-coding-system</code>的值，而是选择更好的编码（通过<code>M-x prefer-coding-system</code>或者<code>M-x set-language-environment</code>设置的编码)。如果emacs选择的这个编码能安全的编码所有的字符，Emacs就用它，否则会显示一个适合编码这个buffer内容的编码列表，供用户选择。</p>
+<h3 id="u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u6587_u4EF6_u663E_u793A_u7684_u7F16_u7801" class="headerlink" title="设置文件显示的编码"></a>设置文件显示的编码</h3><p><code>M-x revert-buffer-with-coding-system</code> （C-x RET r coding RET）<br>用选择的编码重新打开文件</p>
+<h3 id="u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801"><a href="#u8BBE_u7F6E_u4E0B_u4E00_u4E2A_u6307_u4EE4_u7684_u7F16_u7801" class="headerlink" title="设置下一个指令的编码"></a>设置下一个指令的编码</h3><p><code>universal-coding-system-argument</code> （C-x RET c coding RET）<br>如果在打开文件<code>C-x C-f</code>之前，调用此指令，会用选定的编码打开文件，也会用此编码保存文件；<br>如果在保存文件<code>C-x C-w</code>之前，调用此指令，会用选定的编码保存文件。<br>如果选用这种方式保存文件，与<code>set-buffer-file-coding-system</code>功能类似，只是如果遇到编码系统不能处理的字符，没有任何警告。</p>
+<h3 id="u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6"><a href="#u4E0D_u505A_u4EFB_u4F55_u7F16_u7801_u8F6C_u6362_u5730_u67E5_u770B_u6587_u4EF6" class="headerlink" title="不做任何编码转换地查看文件"></a>不做任何编码转换地查看文件</h3><p><code>M-x find-file-literall</code><br>对于读或者写二进制文件，tar文件和其它必须逐字检查的文件有用。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><p><code>prefer-coding-system</code>侧重于文件读，<br><code>set-buffer-file-coding-system</code>侧重于文件写，<br><code>revert-buffer-with-coding-system</code>侧重于文件显示</p>
+<h2 id="u7ECF_u9A8C"><a href="#u7ECF_u9A8C" class="headerlink" title="经验"></a>经验</h2><h3 id="Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898"><a href="#Shell_u4E2D_u4E0E_u5176_u5B83_u7A0B_u5E8F_u8FDB_u884C_u4EA4_u4E92_u4E71_u7801_u95EE_u9898" class="headerlink" title="Shell中与其它程序进行交互乱码问题"></a><a name="shell">Shell中与其它程序进行交互乱码问题</a></h3><p>在Emacs的Shell中使用hexo创建新的文章<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> Emacs编码总结</span><br></pre></td></tr></table></figure></p>
+<p>时，会出现<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new Emacs缂栫爜鎬荤粨</span><br><span class="line">INFO  Created: d:<span class="command">\blog</span><span class="command">\source</span><span class="command">\_</span>posts<span class="command">\Emacs</span>缂傛牜鐖滈幀鑽ょ波.md</span><br></pre></td></tr></table></figure></p>
+<p>并且创建的文件名为乱码“Emacs缂栫爜鎬荤粨.md”</p>
+<p>主要原因就是与hexo程序进行通信的编码没有设置正确，我当时设置的encoding input to the process是utf8，decoding output from the process设置的是chinese-gbk，在中文Windows下，操作系统使用的是gbk，因为输入到hexo程序中编码使用utf8，所以导致创建的文件名是乱码。所以通过<code>M-x set-buffer-process-coding-system</code>设置input是gbk就可以了。</p>
+<hr>
+<p><strong>版权声明</strong></p>
+<p>本博客 <a href="http://oabinga.github.io/" target="_blank" rel="external">思</a> 采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可</a></p>
+<p>本文永久链接：<a href="http://yoursite.com/2016/01/08/Emacs编码总结/">http://yoursite.com/2016/01/08/Emacs编码总结/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在Windows上使用Emacs经常会遇到乱码问题，每次都让人很闹心，主要原因是还是对Emacs编码不熟悉，下面将Emacs的编码系统梳理一下，并总结了一下自己的使用经验。</p>]]>
+    
+    </summary>
+    
+      <category term="Emacs" scheme="http://yoursite.com/tags/Emacs/"/>
+    
+      <category term="工具" scheme="http://yoursite.com/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[C++时间库（四） 总结]]></title>
