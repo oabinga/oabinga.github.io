@@ -4,7 +4,7 @@
   <subtitle><![CDATA[我的技术总结]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-18T08:14:22.669Z</updated>
+  <updated>2016-03-18T08:29:35.730Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yoursite.com/2016/03/18/Windows%E4%B8%8B%E8%84%9A%E6%9C%AC%E5%90%AF%E5%8A%A8Emacs/"/>
     <id>http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/</id>
     <published>2016-03-18T00:00:00.000Z</published>
-    <updated>2016-03-18T08:14:22.669Z</updated>
+    <updated>2016-03-18T08:29:35.730Z</updated>
     <content type="html"><![CDATA[
 
 <p>
@@ -60,7 +60,10 @@ start %emacs%\bin\runemacs.exe --no-splash %*
 :end
 </pre>
 <p>
-&#x89E3;&#x91CA;&#x4E00;&#x4E0B;&#xFF0C;&#x9996;&#x5148;&#x8981;&#x5224;&#x65AD;&#x662F;&#x5426;&#x6709;&#x6587;&#x4EF6;&#x53C2;&#x6570;&#x3002;
+&#x89E3;&#x91CA;&#x4E00;&#x4E0B;&#xFF0C;&#x811A;&#x672C;&#x9996;&#x5148;&#x8981;&#x5224;&#x65AD;&#x662F;&#x5426;&#x6709;&#x53C2;&#x6570;&#x3002;
+</p>
+
+<p>
 &#x5982;&#x679C;&#x6709;&#xFF0C;&#x8BF4;&#x660E;&#x8981;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#xFF0C;&#x6240;&#x4EE5;&#x8C03;&#x7528;
 </p>
 <div class="org-src-container">
@@ -98,10 +101,9 @@ regedit
 <p>
 &#x5728;&#x6CE8;&#x518C;&#x8868;&#x4E2D;&#x6DFB;&#x52A0;&#x4EE5;&#x4E0B;&#x952E;&#x503C;
 </p>
-<div class="org-src-container">
-
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">HKEY_CLASSES_ROOT\*\shell\Edit With Emacs\<span class="built_in">command</span></span><br></pre></td></tr></table></figure>
-</div>
+<pre class="example">
+HKEY_CLASSES_ROOT\*\shell\Edit With Emacs\command
+</pre>
 <p>
 &#x4FEE;&#x6539; Default &#x503C;&#x4E3A;&#xFF1A;
 </p>
@@ -124,18 +126,19 @@ regedit
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4">&#x542F;&#x52A8; emacs</h3>
-<div class="outline-text-3" id="text-1-4">
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">&#x4F7F;&#x7528;</h2>
+<div class="outline-text-2" id="text-2">
 <p>
-&#x5C06;&#x542F;&#x52A8; emacs &#x7684;&#x811A;&#x672C;&#x653E;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF; PATH &#x5305;&#x542B;&#x7684;&#x8DEF;&#x5F84;&#x91CC;&#x3002;
+&#x5C06;&#x4E0A;&#x9762;&#x7684;&#x811A;&#x672C;&#x4FDD;&#x5B58;&#x6210; emacs.bat&#xFF0C;&#x5E76;&#x5C06;&#x6B64;&#x811A;&#x672C;&#x8DEF;&#x5F84;&#x653E;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF; PATH &#x4E2D;&#x3002;
 </p>
 
 <p>
 &#x5728;&#x542F;&#x52A8;&#x680F;&#x4E2D;&#x8F93;&#x5165; emacs.bat &#x5C31;&#x80FD;&#x542F;&#x52A8; emacs &#x4E86;&#x3002;
 </p>
-</div>
 </div>
 </div>
 

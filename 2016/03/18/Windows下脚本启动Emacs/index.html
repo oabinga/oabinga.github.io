@@ -17,7 +17,7 @@
 
 
 &amp;#x80FD;&amp;#x901A;&amp;#x8FC7;&amp;#x811A;&amp;#x672C;&amp;#x542F;&amp;#x52A8; emacs &amp;#x670D;&amp;#x52A1;&amp;#xFF0C;&amp;#x4F46;&amp;#x4E0D;">
-<meta property="og:updated_time" content="2016-03-18T08:14:22.669Z">
+<meta property="og:updated_time" content="2016-03-18T08:29:35.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows 下脚本启动 Emacs">
 <meta name="twitter:description" content="&amp;#x7F16;&amp;#x5199;&amp;#x8FD9;&amp;#x4E2A;&amp;#x811A;&amp;#x672C;&amp;#x6709; 2 &amp;#x4E2A;&amp;#x76EE;&amp;#x7684;&amp;#xFF1A;
@@ -122,7 +122,7 @@ var _hmt = _hmt || [];
 			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
                   	<h3 class="toc-title"><span>文章目录</span></h3>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-1"><span class="toc-number">1.1.</span> <span class="toc-text">启动脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-2"><span class="toc-number">1.2.</span> <span class="toc-text">右键使用 emacs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-3"><span class="toc-number">1.3.</span> <span class="toc-text">设置 emacs 服务文件环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-4"><span class="toc-number">1.4.</span> <span class="toc-text">启动 emacs</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-1"><span class="toc-number">1.1.</span> <span class="toc-text">启动脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-2"><span class="toc-number">1.2.</span> <span class="toc-text">右键使用 emacs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-3"><span class="toc-number">1.3.</span> <span class="toc-text">设置 emacs 服务文件环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-2"><span class="toc-number">2.</span> <span class="toc-text">使用</span></a></li></ol>
 		
 		</div>
 		 
@@ -167,7 +167,10 @@ start %emacs%\bin\runemacs.exe --no-splash %*
 :end
 </pre>
 <p>
-&#x89E3;&#x91CA;&#x4E00;&#x4E0B;&#xFF0C;&#x9996;&#x5148;&#x8981;&#x5224;&#x65AD;&#x662F;&#x5426;&#x6709;&#x6587;&#x4EF6;&#x53C2;&#x6570;&#x3002;
+&#x89E3;&#x91CA;&#x4E00;&#x4E0B;&#xFF0C;&#x811A;&#x672C;&#x9996;&#x5148;&#x8981;&#x5224;&#x65AD;&#x662F;&#x5426;&#x6709;&#x53C2;&#x6570;&#x3002;
+</p>
+
+<p>
 &#x5982;&#x679C;&#x6709;&#xFF0C;&#x8BF4;&#x660E;&#x8981;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#xFF0C;&#x6240;&#x4EE5;&#x8C03;&#x7528;
 </p>
 <div class="org-src-container">
@@ -205,10 +208,9 @@ regedit
 <p>
 &#x5728;&#x6CE8;&#x518C;&#x8868;&#x4E2D;&#x6DFB;&#x52A0;&#x4EE5;&#x4E0B;&#x952E;&#x503C;
 </p>
-<div class="org-src-container">
-
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">HKEY_CLASSES_ROOT\*\shell\Edit With Emacs\<span class="built_in">command</span></span><br></pre></td></tr></table></figure>
-</div>
+<pre class="example">
+HKEY_CLASSES_ROOT\*\shell\Edit With Emacs\command
+</pre>
 <p>
 &#x4FEE;&#x6539; Default &#x503C;&#x4E3A;&#xFF1A;
 </p>
@@ -231,18 +233,19 @@ regedit
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4">&#x542F;&#x52A8; emacs</h3>
-<div class="outline-text-3" id="text-1-4">
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">&#x4F7F;&#x7528;</h2>
+<div class="outline-text-2" id="text-2">
 <p>
-&#x5C06;&#x542F;&#x52A8; emacs &#x7684;&#x811A;&#x672C;&#x653E;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF; PATH &#x5305;&#x542B;&#x7684;&#x8DEF;&#x5F84;&#x91CC;&#x3002;
+&#x5C06;&#x4E0A;&#x9762;&#x7684;&#x811A;&#x672C;&#x4FDD;&#x5B58;&#x6210; emacs.bat&#xFF0C;&#x5E76;&#x5C06;&#x6B64;&#x811A;&#x672C;&#x8DEF;&#x5F84;&#x653E;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF; PATH &#x4E2D;&#x3002;
 </p>
 
 <p>
 &#x5728;&#x542F;&#x52A8;&#x680F;&#x4E2D;&#x8F93;&#x5165; emacs.bat &#x5C31;&#x80FD;&#x542F;&#x52A8; emacs &#x4E86;&#x3002;
 </p>
-</div>
 </div>
 </div>
 
@@ -252,11 +255,11 @@ regedit
     </div>
     <footer class="article-footer">
 	  
-	  <a data-url="http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/" data-id="cilxejn3l0001l039cpsht3so" data_title="Windows 下脚本启动 Emacs" data_summary="&#x7F16;&#x5199;&#x8FD9;&#x..." class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/#disqus_thread" class="article-comment-link">Comments</a>
+	  <a data-url="http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/" data-id="cilxgeq7p000gas39bk0bfq1t" data_title="Windows 下脚本启动 Emacs" data_summary="&#x7F16;&#x5199;&#x8FD9;&#x..." class="article-share-link">Share</a>
       
 
+      
+        <a href="http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/#ds-thread" class="ds-thread-count article-comment-link" data-thread-key="/2016/03/18/Windows下脚本启动Emacs/">暂无评论</a>
       
 	  
       
@@ -264,7 +267,7 @@ regedit
 
 	  
 <span>
-更新日期:<time datetime="2016-03-18T08:14:22.669Z" itemprop="dateModified">2016-03-18</time>
+更新日期:<time datetime="2016-03-18T08:29:35.730Z" itemprop="dateModified">2016-03-18</time>
 </span>
 
 
@@ -286,14 +289,14 @@ regedit
 </article>
 
 
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-
 
 <!-- 多说评论框 start -->
+
+<section id="comments">
+  <div class="ds-thread"  data-thread-key="/2016/03/18/Windows下脚本启动Emacs/" data-title="Windows 下脚本启动 Emacs" data-url="http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/" id="ds_thread">
+    <noscript>Please enable JavaScript to view the <a href="//duoshuo.com/?ref_noscript">comments powered by duoshuo.</a></noscript>
+  </div>
+</section>
 
 <!-- 多说评论框 end -->
 </section>
@@ -302,7 +305,7 @@ regedit
   <div id="toc" class="toc-aside">
   <h2 class="toc-title">文章目录</h2>
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-1"><span class="toc-number">1.1.</span> <span class="toc-text">启动脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-2"><span class="toc-number">1.2.</span> <span class="toc-text">右键使用 emacs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-3"><span class="toc-number">1.3.</span> <span class="toc-text">设置 emacs 服务文件环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-4"><span class="toc-number">1.4.</span> <span class="toc-text">启动 emacs</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-1"><span class="toc-number">1.1.</span> <span class="toc-text">启动脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-2"><span class="toc-number">1.2.</span> <span class="toc-text">右键使用 emacs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-1-3"><span class="toc-number">1.3.</span> <span class="toc-text">设置 emacs 服务文件环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-2"><span class="toc-number">2.</span> <span class="toc-text">使用</span></a></li></ol>
     
   </div>
 
@@ -544,6 +547,29 @@ new LGY_calendar('g-calendar');
 
 
   
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">友情链接</h3>
+  <ul class="widget">
+    
+    <li><a href="/404.html" target="_BLANK">404 page</a></li>
+    
+    <li><a href="http://toxsch.com" target="_BLANK">toxsch</a></li>
+    
+  </ul>
+</div>
+
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">最新评论</h3>
+  <ul class="widget ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-title="1" data-show-time="1"></ul>
+</div>
+<!-- 需要多说的公用代码 -->
+
+
+  
 
 </aside>
 
@@ -574,22 +600,20 @@ new LGY_calendar('g-calendar');
   
 </nav>
     
-<script>
-  var disqus_shortname = 'oabinga';
-  
-  var disqus_url = 'http://yoursite.com/2016/03/18/Windows下脚本启动Emacs/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//go.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"oabinga"};
+  (function() {
+	var ds = document.createElement('script');
+	ds.type = 'text/javascript';ds.async = true;
+	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	ds.charset = 'UTF-8';
+	(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
 
 <!-- 多说公共JS代码 end -->
 
