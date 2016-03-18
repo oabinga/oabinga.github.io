@@ -4,15 +4,132 @@
   <subtitle><![CDATA[我的技术总结]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-08T03:21:53.536Z</updated>
+  <updated>2016-03-18T06:32:14.108Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
-    <name><![CDATA[Oabinga]]></name>
+    <name><![CDATA[oabinga]]></name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Emacs 在 Windows 下使用总结]]></title>
+    <link href="http://yoursite.com/2016/03/16/Emacs%E5%9C%A8Windows%E4%B8%8B%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2016/03/16/Emacs在Windows下使用总结/</id>
+    <published>2016-03-16T00:00:00.000Z</published>
+    <updated>2016-03-18T06:32:14.108Z</updated>
+    <content type="html"><![CDATA[
+
+<p>
+Emacs &#x5728; Windows &#x4E0A;&#x4F7F;&#x7528;&#x4F1A;&#x9047;&#x5230;&#x5404;&#x79CD;&#x95EE;&#x9898;&#xFF0C;&#x4E0B;&#x9762;&#x5C31;&#x662F;&#x5BF9;&#x5B9E;&#x8DF5;&#x4E2D;&#x9047;&#x5230;&#x7684;&#x95EE;&#x9898;&#x8FDB;&#x884C;&#x7684;&#x603B;&#x7ED3;&#xFF0C;&#x5185;&#x5BB9;&#x5C06;&#x6765;&#x4F1A;&#x6709;&#x66F4;&#x65B0;&#x3002;
+</p>
+
+<a id="more"></a>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">HOME</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+&#x8FD9;&#x4E2A;&#x5728; emacs &#x7684;&#x8BF4;&#x660E;&#x4E2D;&#x6709;&#x5177;&#x4F53;&#x7AE0;&#x8282;<a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Windows-HOME.html" target="_blank" rel="external">HOME and Startup Directories on MS-Windows</a>.
+</p>
+<blockquote>
+<p>
+The Windows equivalent of HOME is the user-specific application data directory. The actual location depends on the Windows version; typical values are C:\Documents and Settings\username\Application Data on Windows 2000/XP/2K3, C:\Users\username\AppData\Roaming on Windows Vista/7/2008, and either C:\WINDOWS\Application Data or C:\WINDOWS\Profiles\username\Application Data on Windows 9X/ME. If this directory does not exist or cannot be accessed, Emacs falls back to C:\ as the default value of HOME.
+</p>
+</blockquote>
+
+<p>
+<b>HOME</b> &#x5728; windows &#x4E0A;&#x7B49;&#x4EF7;&#x4E8E;&#x7279;&#x5B9A;&#x7528;&#x6237;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x6570;&#x636E;&#x8DEF;&#x5F84;&#x3002;&#x8FD9;&#x4E2A;&#x8DEF;&#x5F84;&#x4F9D;&#x8D56;&#x4E8E; windows &#x7248;&#x672C;&#x3002;
+</p>
+
+<ul class="org-ul">
+<li>Windows 2000/XP/2K3 &#x4E0B;&#x662F; C:\Documents and Settings\username\Application Data
+</li>
+<li>Windows Vista/7/2008/8/10 &#x4E0B;&#x662F; C:\Users\username\AppData\Roaming
+</li>
+<li>Windows 9X/ME &#x4E0B;&#x662F; C:\WINDOWS\Application Data &#x6216;&#x8005; C:\WINDOWS\Profiles\username\Application Data
+</li>
+</ul>
+
+<p>
+&#x5982;&#x679C;&#x6CA1;&#x6709;&#x8FD9;&#x4E2A;&#x8DEF;&#x5F84;&#xFF0C;emacs &#x4F1A;&#x4F7F;&#x7528; C:\&#x4F5C;&#x4E3A;&#x7F3A;&#x7701; <b>HOME</b> &#x8DEF;&#x5F84;&#x3002;
+</p>
+
+<p>
+<b>HOME</b> &#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x6DFB;&#x52A0;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x6765;&#x8FDB;&#x884C;&#x4FEE;&#x6539;&#xFF0C;&#x5982;&#x679C;&#x6B64;&#x65F6;&#x7CFB;&#x7EDF;&#x4E2D;&#x5982;&#x679C;&#x5B89;&#x88C5;&#x4E86; cygwin&#x3001;git &#x7B49;&#x8F6F;&#x4EF6;&#xFF0C;&#x4F1A;&#x5F71;&#x54CD;&#x5230;&#x5B83;&#x4EEC;&#x7684;&#x4F7F;&#x7528;&#x3002;
+</p>
+
+<p>
+&#x56E0;&#x4E3A; <b>HOME</b> &#x662F;&#x5B58;&#x653E; init &#x6587;&#x4EF6;&#x7684;&#x5730;&#x65B9;&#x3002;&#x5982;&#x679C; init &#x6587;&#x4EF6;&#x5728;&#x522B;&#x7684;&#x76EE;&#x5F55;&#x4E0B;&#xFF0C;&#x53EF;&#x4EE5;&#x5728; <b>HOME</b> &#x4E2D;&#x901A;&#x8FC7;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;.emacs &#x6587;&#x4EF6;&#xFF0C;&#x6307;&#x5411;&#x771F;&#x6B63;&#x7684;&#x521D;&#x59CB;&#x5316;&#x6587;&#x4EF6;&#x3002;&#x4F8B;&#x5982;&#xFF1A;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(load-file &quot;d:/emacs-24.5/.emacs.d/init.el&quot;)</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">&#x670D;&#x52A1;</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+emacs &#x4F1A;&#x5728; <b>HOME</b> &#x4E2D;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;.emacs.d &#x76EE;&#x5F55;&#xFF0C;&#x5982;&#x679C; emacs &#x7A0B;&#x5E8F;&#x5728;&#x522B;&#x7684;&#x8DEF;&#x5F84;&#x4E2D;&#x6709;&#x4E00;&#x4E2A;.emacs.d&#xFF0C;&#x8FD9;&#x4E2A;.emacs.d &#x5E76;&#x4E0D;&#x8D77;&#x4F5C;&#x7528;&#x3002;&#x5982;&#x679C; emacs &#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x542F;&#x52A8;&#xFF0C;&#x9700;&#x8981;&#x5728; init &#x6587;&#x4EF6;&#x4E2D;&#x6DFB;&#x52A0;:
+</p>
+<div class="org-src-container">
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(server-start)</span><br></pre></td></tr></table></figure>
+</div>
+<p>
+&#x4F1A;&#x5728; HOME/.emacs.d/server &#x4E0B;&#x751F;&#x6210;&#x4E00;&#x4E2A; server &#x6587;&#x4EF6;&#xFF0C;&#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x8BB0;&#x5F55;&#x4E86; ip&#x3001;&#x7AEF;&#x53E3;&#x548C;&#x5176;&#x5B83;&#x4FE1;&#x606F;&#x3002;&#x5173;&#x6389;&#x8FD9;&#x4E2A;&#x670D;&#x52A1;&#xFF0C;&#x8FD9;&#x4E2A;&#x6587;&#x4EF6;&#x4F1A;&#x81EA;&#x52A8;&#x6D88;&#x5931;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">&#x53F3;&#x952E;&#x4F7F;&#x7528; emacs</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+&#x5728;&#x6CE8;&#x518C;&#x8868;&#x4E2D;&#x6DFB;&#x52A0;&#x4EE5;&#x4E0B;&#x952E;&#x503C;
+</p>
+<pre class="example">
+HKEY_CLASSES_ROOT\*\shell\Edit With Emacs\command
+</pre>
+<p>
+&#x4FEE;&#x6539; Default &#x503C;&#x4E3A;&#xFF1A;
+</p>
+<pre class="example">
+&quot;d:\emacs-24.5\bin\emacsclientw.exe&quot; --no-wait --alternate-editor=&quot;d:\emacs-24.5\bin\runemacs.exe&quot; &quot;%1&quot;
+</pre>
+<ul class="org-ul">
+<li><b>&#x2013;no-wait</b> &#x544A;&#x8BC9; client &#x4E0D;&#x7528;&#x7B49;&#x5230; server &#x7684;&#x8FD4;&#x56DE;&#xFF0C;&#x800C;&#x662F;&#x76F4;&#x63A5;&#x9000;&#x51FA;
+</li>
+<li><b>&#x2013;alternate-editor</b> &#x5F53; server &#x4E0D;&#x5B58;&#x5728;&#x65F6;&#xFF0C;&#x53D8;&#x4E3A;&#x4F7F;&#x7528; runemacs &#x8FD9;&#x4E2A;&#x7A0B;&#x5E8F;&#x53BB;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#xFF0C;&#x5373;&#x76F8;&#x5F53;&#x4E8E;&#x542F;&#x52A8;&#x4E86;&#x4E00;&#x4E2A; server&#xFF0C;&#x5F53;&#x7136;&#x6B64;&#x65F6;&#x7684; init &#x6587;&#x4EF6;&#x4E2D;&#x6709;`(server-start)`&#x8FD9;&#x4E2A;&#x8BED;&#x53E5;&#x3002;
+</li>
+</ul>
+<p>
+&#x8BBE;&#x7F6E;&#x6210;&#x529F;&#x4E4B;&#x540E;&#xFF0C;&#x5728;&#x9700;&#x8981;&#x6253;&#x5F00;&#x7684;&#x6587;&#x4EF6;&#x4E0A;&#x53F3;&#x952E;&#x83DC;&#x5355;&#xFF0C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0; <b>Edit With Emacs</b> &#x8FD9;&#x4E2A;&#x83DC;&#x5355;&#x9879;&#x3002;
+</p>
+
+<p>
+&#x53C2;&#x8003;<a href="http://www.cnblogs.com/ini_always/archive/2012/04/28/2475741.html" target="_blank" rel="external">windows &#x5E73;&#x53F0; Emacs &#x5355;&#x5B9E;&#x4F8B;&#x539F;&#x7406;&#x3001;&#x8BBE;&#x7F6E;&#x53CA;&#x53F3;&#x952E;&#x83DC;&#x5355;&#x7684;&#x6DFB;&#x52A0;</a>.
+</p>
+</div>
+</div>
+
+<br>Render by <a #href="https://github.com/CodeFalling/hexo-renderer-org">hexo-renderer-org</a> with <a href="http://www.gnu.org/software/emacs/" target="_blank" rel="external">Emacs</a> 25.0.50.1 (<a href="http://orgmode.org" target="_blank" rel="external">Org</a> mode 8.2.10)<hr><p><strong>&#x7248;&#x6743;&#x58F0;&#x660E;</strong></p> <p>&#x672C;&#x535A;&#x5BA2; <a href="http://oabinga.github.io/" target="_blank" rel="external">&#x601D;</a> &#x91C7;&#x7528;<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">&#x77E5;&#x8BC6;&#x5171;&#x4EAB;&#x7F72;&#x540D;-&#x975E;&#x5546;&#x4E1A;&#x6027;&#x4F7F;&#x7528;-&#x76F8;&#x540C;&#x65B9;&#x5F0F;&#x5171;&#x4EAB; 4.0 &#x56FD;&#x9645;&#x8BB8;&#x53EF;&#x534F;&#x8BAE;&#x8FDB;&#x884C;&#x8BB8;&#x53EF;</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>
+Emacs &#x5728; Windows &#x4E0A;&#x4F7F;&#x7528;&#x4F1A;&#x9047;&#x5230;&#x5404;&#x79CD;&#x95EE;&#x9898;&#xFF0C;&#x4E0B;&#x9762;&#x5C31;&#x662F;&#x5BF9;&#x5B9E;&#x8DF5;&#x4E2D;&#x9047;&#x5230;&#x7684;&#x95EE;&#x9898;&#x8FDB;&#x884C;&#x7684;&#x603B;&#x7ED3;&#xFF0C;&#x5185;&#x5BB9;&#x5C06;&#x6765;&#x4F1A;&#x6709;&#x66F4;&#x65B0;&#x3002;
+</p>]]>
+    
+    </summary>
+    
+      <category term="Emacs" scheme="http://yoursite.com/tags/Emacs/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Emacs编码总结]]></title>
