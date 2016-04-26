@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>关于动态加载 dll 的排错经历 | 思</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;#x95EE;&amp;#x9898;
+
+
+&amp;#x4F7F;&amp;#x7528; VS2013 &amp;#x5F00;&amp;#x53D1;&amp;#x7684;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5728; Win10,Win7 &amp;#x4E0A;&amp;#x8FD0;&amp;#x884C;&amp;#x90FD;&amp;#x6CA1;&amp;#x6709;&amp;#x95EE;&amp;#x9898;&amp;#xFF0C;&amp;#x4F46;&amp;#x5728; XP &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于动态加载 dll 的排错经历">
+<meta property="og:url" content="http://yoursite.com/2016/04/26/关于动态加载 dll 的排错经历/index.html">
+<meta property="og:site_name" content="思">
+<meta property="og:description" content="&amp;#x95EE;&amp;#x9898;
+
+
+&amp;#x4F7F;&amp;#x7528; VS2013 &amp;#x5F00;&amp;#x53D1;&amp;#x7684;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5728; Win10,Win7 &amp;#x4E0A;&amp;#x8FD0;&amp;#x884C;&amp;#x90FD;&amp;#x6CA1;&amp;#x6709;&amp;#x95EE;&amp;#x9898;&amp;#xFF0C;&amp;#x4F46;&amp;#x5728; XP &amp;#">
+<meta property="og:updated_time" content="2016-04-26T09:07:23.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于动态加载 dll 的排错经历">
+<meta name="twitter:description" content="&amp;#x95EE;&amp;#x9898;
+
+
+&amp;#x4F7F;&amp;#x7528; VS2013 &amp;#x5F00;&amp;#x53D1;&amp;#x7684;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5728; Win10,Win7 &amp;#x4E0A;&amp;#x8FD0;&amp;#x884C;&amp;#x90FD;&amp;#x6CA1;&amp;#x6709;&amp;#x95EE;&amp;#x9898;&amp;#xFF0C;&amp;#x4F46;&amp;#x5728; XP &amp;#">
+  
+    <link rel="alternative" href="/atom.xml" title="思" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="http://fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?518b61392b8176e803c0bc2f03d713dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">思</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我的技术总结</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/oabinga" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于动态加载 dll 的排错经历" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    
+<a href="/2016/04/26/关于动态加载 dll 的排错经历/" class="article-date">
+  <time datetime="2016-04-26T00:00:00.000Z" itemprop="datePublished">2016-04-26</time>
+</a>
+
+
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于动态加载 dll 的排错经历
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		 
+		<div id="toc" class="toc-article">
+			<!--<h2 class="toc-title"><span>文章目录</span></h2>-->
+                  	<h3 class="toc-title"><span>文章目录</span></h3>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-2"><span class="toc-number">2.</span> <span class="toc-text">查找问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-3"><span class="toc-number">3.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-3-1"><span class="toc-number">3.1.</span> <span class="toc-text">解决 GetDynamicTimeZoneInformation 定位问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-3-2"><span class="toc-number">3.2.</span> <span class="toc-text">解决 TLS 问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-4"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		 
+                <!---->
+        
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">&#x95EE;&#x9898;</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+&#x4F7F;&#x7528; VS2013 &#x5F00;&#x53D1;&#x7684;&#x7A0B;&#x5E8F;&#x5728; Win10,Win7 &#x4E0A;&#x8FD0;&#x884C;&#x90FD;&#x6CA1;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x4F46;&#x5728; XP &#x4E0B;&#x65E0;&#x6CD5;&#x8FD0;&#x884C;&#xFF0C;&#x63D0;&#x793A;&#x672A;&#x627E;&#x5230; Controller &#x63D2;&#x4EF6;&#xFF08;&#x5373; dll&#xFF0C;&#x7A0B;&#x5E8F;&#x4F7F;&#x7528; QT &#x5F00;&#x53D1;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x52A8;
+&#x6001;&#x52A0;&#x8F7D;&#x63D2;&#x4EF6;&#x673A;&#x5236;&#xFF09;
+</p>
+
+<a id="more"></a>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">&#x67E5;&#x627E;&#x95EE;&#x9898;</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+&#x9996;&#x5148;&#x60F3;&#x5230;&#x7684;&#x89E3;&#x51B3;&#x601D;&#x8DEF;&#x662F;&#x53BB;&#x67E5;&#x627E;&#x8FD9;&#x4E2A;&#x63D2;&#x4EF6;&#x6709;&#x6CA1;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x8FD9;&#x4E2A; Controller &#x63D2;&#x4EF6;&#x662F;&#x522B;&#x4EBA;&#x5F00;&#x53D1;&#x7684;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x4E86;&#x6211;&#x5F00;&#x53D1;
+&#x7684; dal &#x52A8;&#x6001;&#x5E93;&#xFF0C;&#x7531;&#x4E8E;&#x5728; XP &#x4E0A;&#x4E0D;&#x80FD;&#x8FDB;&#x884C;&#x8C03;&#x8BD5;&#xFF0C;&#x6240;&#x4EE5;&#x4F7F;&#x7528;&#x4E86;&#x5199;&#x65E5;&#x5FD7;&#x7684;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x8C03;&#x8BD5;&#xFF0C;&#x901A;&#x8FC7;&#x65E5;&#x5FD7;&#x7684;&#x8DDF;&#x8E2A;&#xFF0C;
+&#x53D1;&#x73B0;&#x4E86;&#x95EE;&#x9898;&#x51FA;&#x5728; LoadLibrary &#x4E0A;&#xFF0C;&#x52A0;&#x8F7D; dll &#x5931;&#x8D25;&#xFF0C;&#x8FD9;&#x4E2A;&#x5176;&#x5B9E;&#x662F;&#x6700;&#x521D;&#x5C31;&#x77E5;&#x9053;&#x7684;&#x7ED3;&#x679C;&#xFF0C;&#x53EA;&#x662F;&#x5BF9;&#x7A0B;&#x5E8F;
+&#x4E2D;&#x7684;&#x52A8;&#x6001;&#x52A0;&#x8F7D;&#x673A;&#x5236;&#x4E0D;&#x751A;&#x4E86;&#x89E3;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x6B21;&#x8C03;&#x8BD5;&#x53EA;&#x662F;&#x719F;&#x6089;&#x4E86;&#x8FD9;&#x4E2A;&#x673A;&#x5236;&#xFF0C;&#x5E76;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x95EE;&#x9898;&#x6240;&#x5728;&#x3002;
+</p>
+
+
+<p>
+&#x4E3A;&#x4EC0;&#x4E48;&#x662F;&#x8FD9;&#x4E2A; dll &#x52A0;&#x8F7D;&#x5931;&#x8D25;&#xFF0C;&#x800C;&#x5176;&#x5B83;&#x7684; dll &#x6CA1;&#x6709;&#x95EE;&#x9898;&#x5462;&#x3002; &#x90A3;&#x5C31;&#x5199;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x7A0B;&#x5E8F;&#xFF0C;&#x4F7F;&#x7528;
+LoadLibrary &#x52A8;&#x6001;&#x52A0;&#x8F7D; Controller &#x52A8;&#x6001;&#x5E93;&#xFF0C;&#x7A0B;&#x5E8F;&#x5728; XP &#x4E0A;&#x4E00;&#x8FD0;&#x884C;&#x5C31;&#x51FA;&#x9519;&#xFF0C;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x662F;
+</p>
+<pre class="example">
+  &#x65E0;&#x6CD5;&#x5B9A;&#x4F4D;&#x7A0B;&#x5E8F;&#x8F93;&#x5165;&#x70B9; GetDynamicTimeZoneInformation &#x4E8E;&#x52A8;&#x6001;&#x94FE;&#x63A5;&#x5E93; KERNEL32.dll &#x4E0A;
+</pre>
+<p>
+&#x5F00;&#x59CB;&#x6211;&#x4EE5;&#x4E3A;&#x662F;&#x8FD9;&#x4E2A;&#x6D4B;&#x8BD5;&#x7A0B;&#x5E8F;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x5C31;&#x5BFB;&#x627E; VS2013 &#x5F00;&#x53D1; XP &#x517C;&#x5BB9;&#x7A0B;&#x5E8F;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF0C;&#x5728;&#x591A;&#x6B21;&#x5C1D;&#x8BD5;
+&#x4E4B;&#x540E;&#xFF0C;&#x4ECD;&#x65E0;&#x6CD5;&#x89E3;&#x51B3;&#x3002;GetDynamicTimeZoneInformation &#x8FD9;&#x4E2A;&#x4FE1;&#x606F;&#x4E00;&#x76F4;&#x6CA1;&#x6709;&#x5F15;&#x8D77;&#x6211;&#x7684;&#x6CE8;&#x610F;&#xFF0C;&#x56E0;
+&#x4E3A;&#x6211;&#x5728;&#x7A0B;&#x5E8F;&#x4E2D;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x8FC7;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x3002;&#x5728;&#x7ECF;&#x8FC7;&#x4E00;&#x756A;&#x52AA;&#x529B;&#x4E4B;&#x540E;&#xFF0C;&#x4ECD;&#x7136;&#x6CA1;&#x6709;&#x89E3;&#x51B3;&#x95EE;&#x9898;&#xFF0C;&#x5C31;&#x8F6C;&#x6362;&#x4E00;&#x4E0B;
+&#x65B9;&#x6CD5;&#x3002;
+</p>
+
+
+<p>
+&#x4ECE;&#x7F51;&#x4E0A;&#x5F97;&#x77E5;&#xFF0C;&#x4F7F;&#x7528; process monitor &#x53EF;&#x4EE5;&#x67E5;&#x770B; dll &#x7684;&#x52A0;&#x8F7D;&#x60C5;&#x51B5;&#xFF0C;process monitor &#x662F;&#x4E00;&#x4E2A;&#x5B9E;&#x65F6;
+&#x8FDB;&#x7A0B;&#x76D1;&#x63A7;&#x8F6F;&#x4EF6;&#xFF0C;&#x80FD;&#x76D1;&#x63A7;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x6587;&#x4EF6;&#x64CD;&#x4F5C;&#x548C;&#x6CE8;&#x518C;&#x8868;&#x7684;&#x8BFB;&#x5199;&#x8FC7;&#x7A0B;&#x3002;&#x901A;&#x8FC7;&#x76D1;&#x63A7;&#x8DDF;&#x8E2A;&#xFF0C;&#x53D1;&#x73B0; dll &#x90FD;
+&#x8FDB;&#x884C;&#x4E86;&#x52A0;&#x8F7D;&#xFF0C;&#x5E76;&#x6CA1;&#x6709;&#x53D1;&#x73B0;&#x95EE;&#x9898;&#xFF0C;&#x518D;&#x6362;&#x79CD;&#x65B9;&#x6CD5;&#x3002;
+</p>
+
+
+<p>
+&#x4F7F;&#x7528; depends &#x67E5;&#x770B; Controller &#x52A8;&#x6001;&#x5E93;&#x7684;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;&#xFF0C;&#x5F00;&#x59CB;&#x65F6;&#x6000;&#x7591;&#x662F;&#x8DEF;&#x5F84;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x4F46;&#x5176;&#x5B83;
+dll &#x6CA1;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x5E94;&#x8BE5;&#x4E0D;&#x662F;&#x8FD9;&#x4E2A;&#x539F;&#x56E0;&#x3002;&#x7136;&#x540E;&#x4ED4;&#x7EC6;&#x68C0;&#x67E5;&#x4F9D;&#x8D56;&#x9879;, &#x5728;&#x4F9D;&#x8D56;&#x6811;&#x4E2D;&#xFF0C;&#x53D1;&#x73B0; Controller &#x4F9D;
+&#x8D56; dal&#xFF0C;dal &#x53C8;&#x4F9D;&#x8D56; kernel32&#xFF0C;&#x800C;&#x5176;&#x4E2D;&#x4F7F;&#x7528;&#x7684;&#x51FD;&#x6570;&#x5C31;&#x5305;&#x62EC;
+GetDynamicTimeZoneInformation&#xFF0C;&#x4F46;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5728; XP &#x4E0B;&#x7684; kernerl32 &#x4E2D;&#x627E;&#x4E0D;&#x5230;&#x3002;&#x4E8E;&#x662F;&#x67E5;&#x4E86;&#x4E00;&#x4E0B;
+MSDN&#xFF0C;&#x53D1;&#x73B0;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x652F;&#x6301;&#x7684;&#x6700;&#x4F4E;&#x7248;&#x672C;&#x662F; VISTA, &#x539F;&#x6765;&#x662F;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5728;&#x6363;&#x9B3C;&#xFF0C;&#x4F46;&#x662F; dal &#x4E2D;&#x6CA1;&#x6709;&#x4F7F;&#x7528;
+&#x5230;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x5F00;&#x59CB;&#x65F6;&#x6211;&#x5E76;&#x6CA1;&#x6709;&#x6000;&#x7591; dal &#x4E2D;&#x4F7F;&#x7528;&#x7684;&#x5F00;&#x6E90;&#x5E93;&#xFF0C;&#x56E0;&#x4E3A;&#x90A3;&#x4E9B;&#x5E93;&#x90FD;&#x662F;&#x8DE8;&#x5E73;&#x53F0;&#x7684;&#x3002;&#x5728;&#x627E;&#x904D;&#x6240;&#x6709;
+&#x7684;&#x4EE3;&#x7801;&#x4E5F;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x4E0E;&#x6B64;&#x76F8;&#x5173;&#x7684;&#x4E1C;&#x897F;&#x3002;&#x90A3;&#x5C31;&#x7528;&#x6700;&#x7B28;&#x7684;&#x529E;&#x6CD5;&#xFF0C;&#x628A;&#x5DE5;&#x7A0B;&#x4E2D;&#x7684;&#x6587;&#x4EF6;&#x4F9D;&#x6B21;&#x4ECE;&#x5DE5;&#x7A0B;&#x4E2D;&#x5254;&#x9664;&#xFF0C;
+&#x7F16;&#x8BD1;&#x540E;&#x4F7F;&#x7528; depends &#x770B;&#x662F;&#x5426;&#x4F7F;&#x7528;&#x4E86;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x5230;&#x6700;&#x540E;&#xFF0C;&#x6574;&#x4E2A;&#x5DE5;&#x7A0B;&#x53EA;&#x5269;&#x57FA;&#x672C;&#x6846;&#x67B6;&#x4E86;&#xFF0C;&#x8FD8;&#x662F;&#x5BF9;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x6709;&#x4F9D;&#x8D56;&#xFF0C;
+&#x6B64;&#x65F6;&#x53EA;&#x4F7F;&#x7528;&#x4E86; spdlog &#x8FD9;&#x4E2A;&#x5F00;&#x6E90;&#x5E93;&#xFF0C;&#x90A3;&#x5C31;&#x4ECE;&#x8FD9;&#x4E2A;&#x5E93;&#x4E2D;&#x641C;&#x641C;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x6CA1;&#x60F3;&#x5230;&#x7ADF;&#x7136;&#x627E;&#x5230;&#x4E86;&#xFF0C;&#x539F;&#x6765;
+&#x8FD9;&#x4E2A;&#x65E5;&#x5FD7;&#x5E93;&#x83B7;&#x53D6;&#x65F6;&#x95F4;&#x4FE1;&#x606F;&#x8981;&#x7528;&#x5230;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x800C;&#x4E14;&#x6E90;&#x7801;&#x4E2D;&#x4E5F;&#x52A0;&#x4E86;&#x5B8F;&#x5224;&#x65AD;&#xFF0C;&#x5728;&#x53EA;&#x6709;&#x7CFB;&#x7EDF;&#x7248;&#x672C;&#x9AD8;
+&#x4E8E; VISTA&#xFF0C;&#x624D;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5728; details/os.h &#x4E2D;&#x3002;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">inline int utc_minutes_offset(const std::tm&amp; tm = details::os::localtime())</span><br><span class="line">{</span><br><span class="line"></span><br><span class="line">#ifdef _WIN32</span><br><span class="line">#if _WIN32_WINNT &lt; _WIN32_WINNT_WS08</span><br><span class="line">    TIME_ZONE_INFORMATION tzinfo;</span><br><span class="line">    auto rv = GetTimeZoneInformation(&amp;tzinfo);</span><br><span class="line">#else</span><br><span class="line">    DYNAMIC_TIME_ZONE_INFORMATION tzinfo;</span><br><span class="line">    auto rv = GetDynamicTimeZoneInformation(&amp;tzinfo);</span><br><span class="line">#endif</span><br><span class="line">    if (rv == TIME_ZONE_ID_INVALID)</span><br><span class="line">	throw spdlog::spdlog_ex(&quot;Failed getting timezone info. Last error: &quot; + GetLastError());</span><br><span class="line"></span><br><span class="line">    int offset = -tzinfo.Bias;</span><br><span class="line">    if (tm.tm_isdst)</span><br><span class="line">	offset -= tzinfo.DaylightBias;</span><br><span class="line">    else</span><br><span class="line">	offset -= tzinfo.StandardBias;</span><br><span class="line">    return offset;</span><br><span class="line">#else</span><br><span class="line">    return static_cast&lt;int&gt;(tm.tm_gmtoff / 60);</span><br><span class="line">#endif</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x4E8E;&#x662F;&#x5728;&#x9884;&#x5904;&#x7406;&#x5668;&#x5B9A;&#x4E49;&#x4E2D;&#x52A0;&#x4E0A;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">WINVER=_WIN32_WINNT_WINXP</span><br><span class="line">_WIN32_WINNT=_WIN32_WINNT_WINXP</span><br></pre></td></tr></table></figure>
+</div>
+<p>
+&#x7F16;&#x8BD1;&#x540E;&#x7684;&#x7A0B;&#x5E8F;&#x5728; XP &#x4E0A;&#x4E0D;&#x51FA;&#x73B0;&#x627E;&#x4E0D;&#x5230;&#x63D2;&#x4EF6;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x800C;&#x662F;&#x76F4;&#x63A5;&#x62A5;&#x51FA;&#x5F02;&#x5E38;&#x4FE1;&#x606F;&#xFF0C;&#x5F02;&#x5E38;&#x7684;&#x4F4D;&#x7F6E;&#x8FD8;&#x662F;&#x51FA;
+&#x73B0;&#x5728; dal &#x52A8;&#x6001;&#x5E93;&#x4E2D;&#x3002;&#x7531;&#x4E8E;&#x65E0;&#x6CD5;&#x5B9A;&#x4F4D;&#x8FD9;&#x4E2A;&#x5F02;&#x5E38;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x6CA1;&#x529E;&#x6CD5;&#x5728; XP &#x4E2D;&#x5B89;&#x88C5;&#x4E86; windbg&#xFF0C;&#x4F7F;&#x7528;
+winbdg &#x8C03;&#x8BD5;&#xFF0C;&#x5F88;&#x5FEB;&#x5B9A;&#x4F4D;&#x5230;&#x5185;&#x90E8;&#x51FD;&#x6570; XXXGetLastError &#x4E0A;&#xFF0C;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x662F;&#x7528;&#x4E8E;&#x83B7;&#x53D6;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x7684;&#xFF0C;
+&#x4F7F;&#x7528;&#x552F;&#x4E00;&#x7684;&#x6280;&#x672F;&#x5C31;&#x662F; TLS(Thread Local Storage)&#xFF0C;&#x4E0D;&#x8FC7;&#x4F7F;&#x7528;&#x7684;&#x662F;&#x9759;&#x6001; TLS&#xFF1A;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">__declspec(thread) DWORD g_error;</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x67E5;&#x770B; MSDN&#xFF0C;&#x53D1;&#x73B0;<a href="https://msdn.microsoft.com/zh-cn/library/yx1x886y.aspx" target="_blank" rel="external">&#x5EF6;&#x8FDF;&#x52A0;&#x8F7D; DLL &#x7684;&#x7EA6;&#x675F;</a>&#x4E2D;&#x6709;&#x8BF4;&#x660E;
+</p>
+
+<blockquote>
+<p>
+&#x5982;&#x679C;&#x5728;&#x5EF6;&#x8FDF;&#x52A0;&#x8F7D;&#x7684; DLL &#x7684;&#x5165;&#x53E3;&#x70B9;&#x53D1;&#x751F;&#x6BCF;&#x4E2A;&#x8FDB;&#x7A0B;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5219; DLL &#x7684;&#x5EF6;&#x8FDF;&#x52A0;&#x8F7D;&#x53EF;&#x80FD;&#x4E0D;&#x4F1A;&#x9020;&#x6210;&#x8FDB;&#x7A0B;&#x884C;&#x4E3A;&#x76F8;&#x540C;&#x3002;&#x5176;&#x4ED6;&#x60C5;&#x51B5;&#x5305;&#x62EC;&#x9759;&#x6001; TLS&#xFF08;&#x7EBF;&#x7A0B;&#x672C;&#x5730;&#x5B58;&#x50A8;&#x533A;&#xFF09;&#xFF0C;&#x5B83;&#x4F7F;&#x7528;&#x901A;&#x8FC7; LoadLibrary &#x52A0;&#x8F7D; DLL &#x65F6;&#x4E0D;&#x5904;&#x7406;&#x7684; __declspec(thread) &#x6765;&#x58F0;&#x660E;&#x3002;&#x4F7F;&#x7528; TlsAlloc&#x3001;TlsFree&#x3001;TlsGetValue &#x548C; TlsSetValue &#x7684;&#x52A8;&#x6001; TLS &#x4ECD;&#x53EF;&#x5728;&#x9759;&#x6001;&#x6216;&#x8005;&#x5EF6;&#x8FDF;&#x52A0;&#x8F7D;&#x7684; DLL &#x4E2D;&#x4F7F;&#x7528;&#x3002;
+</p>
+</blockquote>
+
+<p>
+&#x539F;&#x56E0;<a href="https://support.microsoft.com/en-us/kb/118816" target="_blank" rel="external">PRB: Calling LoadLibrary() to Load a DLL That Has Static TLS</a>&#x5728;&#x4E2D;&#x6709;&#x8BF4;&#x660E;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">&#x89E3;&#x51B3;</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">&#x89E3;&#x51B3; GetDynamicTimeZoneInformation &#x5B9A;&#x4F4D;&#x95EE;&#x9898;</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+&#x4E8E;&#x662F;&#x5728;&#x9884;&#x5904;&#x7406;&#x5668;&#x5B9A;&#x4E49;&#x4E2D;&#x52A0;&#x4E0A;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">WINVER=_WIN32_WINNT_WINXP</span><br><span class="line">_WIN32_WINNT=_WIN32_WINNT_WINXP</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">&#x89E3;&#x51B3; TLS &#x95EE;&#x9898;</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+&#x4F7F;&#x7528;&#x52A8;&#x6001; TLS&#xFF0C;&#x5373; TlsAlloc&#x3001;TlsFree&#x3001;TlsGetValue &#x548C;
+TlsSetValue&#xFF0C;&#x66FF;&#x6362;&#x9759;&#x6001; TLS&#x3002;
+</p>
+<div class="org-src-container">
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">DWORD g_tls_index;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">XXXSetLastError</span><span class="params">(<span class="keyword">int</span> error)</span> </span>{</span><br><span class="line">    TlsSetValue(g_tls_index, (LPVOID)error);</span><br><span class="line">}</span><br><span class="line"><span class="function">XXX_API <span class="keyword">int</span> <span class="title">XXXLastError</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">int</span>)TlsGetValue(g_tls_index);</span><br><span class="line">}</span><br><span class="line"><span class="function">XXX_API <span class="keyword">int</span> <span class="title">XXXInit</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (g_init) {</span><br><span class="line">	<span class="keyword">return</span> XXX_OK;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> ((g_tls_index = TlsAlloc()) == TLS_OUT_OF_INDEXES)</span><br><span class="line">	<span class="keyword">return</span> XXX_INIT_ERROR;</span><br><span class="line">    g_init = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> XXX_OK;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function">XXX_API <span class="keyword">void</span> <span class="title">XXXDestroy</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (g_init) {</span><br><span class="line">	TlsFree(g_tls_index);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">&#x603B;&#x7ED3;</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+&#x7A0B;&#x5E8F;&#x5728; XP &#x4E0A;&#x4E0D;&#x80FD;&#x8FD0;&#x884C;&#x7684;&#x95EE;&#x9898;&#x5B9E;&#x9645;&#x662F;&#x7531;&#x4E24;&#x4E2A;&#x95EE;&#x9898;&#x5F15;&#x8D77;&#x7684;&#xFF0C;&#x8FD9;&#x91CC;&#x9762;&#x7275;&#x626F;&#x4E86;&#x4E00;&#x4E9B;&#x6211;&#x4E0D;&#x6E05;&#x695A;&#x7684;&#x77E5;&#x8BC6;&#xFF0C;
+&#x5BF9;&#x4E8E; Windows &#x4E0B;&#x7684;&#x52A8;&#x6001;&#x5E93;&#x52A0;&#x8F7D;&#x6709;&#x4E86;&#x8FDB;&#x4E00;&#x6B65;&#x7406;&#x89E3;&#x3002;&#x5728;&#x67E5;&#x9519;&#x6392;&#x9519;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x4E00;&#x5B9A;&#x8981;&#x51B7;&#x9759;&#x548C;&#x591A;&#x601D;
+&#x8003;&#xFF0C;&#x8FD9;&#x6B21;&#x67E5;&#x9519;&#x7ECF;&#x5386;&#x5C31;&#x56E0;&#x4E3A;&#x9C81;&#x83BD;&#x8D70;&#x4E86;&#x4E0D;&#x5C11;&#x5F2F;&#x8DEF;&#xFF0C;&#x6D6A;&#x8D39;&#x4E86;&#x4E0D;&#x5C11;&#x65F6;&#x95F4;&#x3002;
+</p>
+</div>
+</div>
+
+<br>Render by <a #href="https://github.com/CodeFalling/hexo-renderer-org">hexo-renderer-org</a> with <a href="http://www.gnu.org/software/emacs/" target="_blank" rel="external">Emacs</a> 25.0.50.1 (<a href="http://orgmode.org" target="_blank" rel="external">Org</a> mode 8.2.10)<hr><p><strong>&#x7248;&#x6743;&#x58F0;&#x660E;</strong></p> <p>&#x672C;&#x535A;&#x5BA2; <a href="http://oabinga.github.io/" target="_blank" rel="external">&#x601D;</a> &#x91C7;&#x7528;<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">&#x77E5;&#x8BC6;&#x5171;&#x4EAB;&#x7F72;&#x540D;-&#x975E;&#x5546;&#x4E1A;&#x6027;&#x4F7F;&#x7528;-&#x76F8;&#x540C;&#x65B9;&#x5F0F;&#x5171;&#x4EAB; 4.0 &#x56FD;&#x9645;&#x8BB8;&#x53EF;&#x534F;&#x8BAE;&#x8FDB;&#x884C;&#x8BB8;&#x53EF;</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <a data-url="http://yoursite.com/2016/04/26/关于动态加载 dll 的排错经历/" data-id="cinh7rd42000b9k39xz203m8k" data_title="关于动态加载 dll 的排错经历" data_summary="&#x95EE;&#x9898;
+
+
+&#x4F..." class="article-share-link">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2016/04/26/关于动态加载 dll 的排错经历/#ds-thread" class="ds-thread-count article-comment-link" data-thread-key="/2016/04/26/关于动态加载 dll 的排错经历/">暂无评论</a>
+      
+	  
+      
+	  
+<span>
+更新日期:<time datetime="2016-04-26T09:07:23.102Z" itemprop="dateModified">2016-04-26</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/03/18/Windows下脚本启动Emacs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Windows 下脚本启动 Emacs</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+<!-- 多说评论框 start -->
+
+<section id="comments">
+  <div class="ds-thread"  data-thread-key="/2016/04/26/关于动态加载 dll 的排错经历/" data-title="关于动态加载 dll 的排错经历" data-url="http://yoursite.com/2016/04/26/关于动态加载 dll 的排错经历/" id="ds_thread">
+    <noscript>Please enable JavaScript to view the <a href="//duoshuo.com/?ref_noscript">comments powered by duoshuo.</a></noscript>
+  </div>
+</section>
+
+<!-- 多说评论框 end -->
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">文章目录</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-1"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-2"><span class="toc-number">2.</span> <span class="toc-text">查找问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-3"><span class="toc-number">3.</span> <span class="toc-text">解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-3-1"><span class="toc-number">3.1.</span> <span class="toc-text">解决 GetDynamicTimeZoneInformation 定位问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sec-3-2"><span class="toc-number">3.2.</span> <span class="toc-text">解决 TLS 问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sec-4"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/整理/">整理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Boost/">Boost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Emacs/">Emacs</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Boost/" style="font-size: 13px; color: #7dc3de">Boost</a> <a href="/tags/C/" style="font-size: 20px; color: #1db400">C++</a> <a href="/tags/Emacs/" style="font-size: 16.5px; color: #4dbc6f">Emacs</a>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">日历</h3>
+  <div class="widget">
+    <div id="g-calendar" class="g-calendar">
+        <span class="g-calendar-prev"></span>
+		 
+        <span class="g-calendar-back"></span>
+        <span class="g-calendar-now"></span>
+		 
+        <span class="g-calendar-next"></span>
+        <div class="g-calendar-hd"></div>
+        <div class="g-calendar-tit"></div>
+        <div class="g-calendar-bd"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function LGY_calendar(wrapId, options){
+    this.oWrap = this.getId(wrapId);
+    this.oHead = this.getByClassName('g-calendar-hd',this.oWrap)[0];
+    this.oBody = this.getByClassName('g-calendar-bd',this.oWrap)[0];
+    this.oTit = this.getByClassName('g-calendar-tit',this.oWrap)[0];
+    this.oPrev = this.getByClassName('g-calendar-prev',this.oWrap)[0];
+    this.oNext = this.getByClassName('g-calendar-next',this.oWrap)[0];
+    this.oNow = this.getByClassName('g-calendar-now',this.oWrap)[0];
+    this.oBack = this.getByClassName('g-calendar-back',this.oWrap)[0];
+    this.init();
+}
+LGY_calendar.prototype = {
+    ///////////获取ID元素
+    getId:function(id){
+        return document.getElementById(id);
+    },
+    ////////获取css类名元素
+    getByClassName:function(className,parent){
+        var elem = [],
+            node = parent != undefined&&parent.nodeType==1?parent.getElementsByTagName('*'):document.getElementsByTagName('*'),
+            p = new RegExp("(^|\\s)"+className+"(\\s|$)");
+        for(var n=0,i=node.length;n<i;n++){
+            if(p.test(node[n].className)){
+                elem.push(node[n]);
+            }
+        }
+        return elem;
+    },
+    //填充日历
+    fillDate:function(year,month){
+        //本月份第一天是星期几-为显示上个月的天数做铺垫
+        var first_day = new Date(year,month,1).getDay(),
+        //如果刚好是星期天，则空出一行（显示上个月的天数）
+            first_day = first_day == 0?first_day=7:first_day;
+        //本月份最后一天是几号
+        var final_date = new Date(year,month+1,0).getDate(),
+        //上个月的最后一天是几号
+            last_date = new Date(year,month,0).getDate(),
+        //剩余的格子数--即排在末尾的格子数
+            surplus = 42 - first_day - final_date;
+        //设置年的链接
+        var yearHead = "<a href='/" + "archives/" + year + "/'>" + year + " "+ "</a>"; 
+        //设置年的链接
+        var monthHead = "";
+        var month1 = month + 1;
+        if (month1 < 10) {
+            monthHead = "<a href='/" + "archives/" + year + "/" + "0" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        } else {
+            monthHead = "<a href='/" + "archives/" + year + "/" + month1 + "/'>" + " " + month1 + " " + "</a>";
+        }
+        //设置表头的日历
+        this.oHead.innerHTML = yearHead+'年'+monthHead+'月';
+        //填充日历执行
+        var html = '';
+        //上个月的显示天数
+        for(var i=0;i<first_day;i++){
+            html+='<span class="g-calendar-grey">'+(last_date-(first_day-1)+i)+'</span>';
+        }
+        //本月的显示天数
+        var postdate = new Date("Tue Apr 26 2016 08:00:00 GMT+0800"); 
+        if (true && postdate.getFullYear() == year && postdate.getMonth() == month) { 
+            html += '<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span><a href="/2016/04/26/关于动态加载 dll 的排错经历/" title="关于动态加载 dll 的排错经历">26</a></span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>';
+        } else {
+            for(var j=0;j<final_date;j++){        
+                html+='<span id="d'+(j+1)+'">'+(j+1)+'</span>';
+            }
+        }
+        //下个月的显示天数
+        for(var k=0;k<surplus;k++){
+            html+='<span class="g-calendar-grey">'+(k+1)+'</span>';
+        }
+        //fill
+        this.oBody.innerHTML = html;
+        // 当前状态
+        if(year==this.c_year&&this.c_month==month){
+            this.oBody.getElementsByTagName('span')[first_day+this.date-1].className='g-calendar-on';
+        }
+
+        // 对所有文章遍历,然后将有文章的日期加上链接,如果文章太多的话,生成页面会很大,去掉了
+        
+    },
+    // next切换
+    next:function(){
+        var _that = this;
+        this.oNext.onclick = function(){
+            _that.month++;
+            if(_that.month>11){
+                _that.month = 0;
+                _that.year++;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    // back 切换
+    back:function(){
+        var _that = this;
+        if(this.oBack != undefined) {
+            this.oBack.onclick = function(){
+                var postdate = new Date("Tue Apr 26 2016 08:00:00 GMT+0800"); 
+                _that.year = postdate.getFullYear();
+                _that.month = postdate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // now切换
+    now:function(){
+        var _that = this;
+        if(this.oNow != undefined ) {
+            this.oNow.onclick = function(){
+                var nowDate = new Date(); 
+                _that.year = nowDate.getFullYear();
+                _that.month = nowDate.getMonth();
+                // 填充日历
+                _that.fillDate(_that.year,_that.month);
+            };
+        }
+    },
+    // prev切换
+    prev:function(){
+        var _that = this;
+        this.oPrev.onclick = function(){
+            _that.month--;
+            if(_that.month<0){
+                _that.month = 11;
+                _that.year--;
+            }
+            // 填充日历
+            _that.fillDate(_that.year,_that.month);
+        };
+    },
+    init:function(){
+        this.oTit.innerHTML = '<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>';
+        // 获取今天的日历时间
+        var now = new Date();
+        this.c_year = this.year = now.getFullYear();
+        this.c_month = this.month = now.getMonth();
+        this.date = now.getDate();
+        // 初始化--填充日历
+        this.fillDate(this.year,this.month);
+        //next切换
+        this.next();
+        //prev切换
+        this.prev();
+        //back 切换
+        this.back();
+        //now 切换
+        this.now();
+    }
+}
+new LGY_calendar('g-calendar');
+</script>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/04/26/关于动态加载 dll 的排错经历/">关于动态加载 dll 的排错经历</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/18/Windows下脚本启动Emacs/">Windows 下脚本启动 Emacs</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/16/Emacs在Windows下使用总结/">Emacs 在 Windows 下使用总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/08/Emacs编码总结/">Emacs编码总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/07/C++时间库（四）/">C++时间库（四） 总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">友情链接</h3>
+  <ul class="widget">
+    
+    <li><a href="/404.html" target="_BLANK">404 page</a></li>
+    
+    <li><a href="http://toxsch.com" target="_BLANK">toxsch</a></li>
+    
+  </ul>
+</div>
+
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">最新评论</h3>
+  <ul class="widget ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-title="1" data-show-time="1"></ul>
+</div>
+<!-- 需要多说的公用代码 -->
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="/images/cc88x31.png"></a><br>
+      &copy; 2016 oabinga<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+      <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+      </script>
+      </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"oabinga"};
+  (function() {
+	var ds = document.createElement('script');
+	ds.type = 'text/javascript';ds.async = true;
+	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	ds.charset = 'UTF-8';
+	(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+<!-- 多说公共JS代码 end -->
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+-->
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	<script src="/js/gotop.js" type="text/javascript"></script>
+	<!--
+	<script src="/js/gotop.js"></script>
+	-->
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	<!--
+	<script src="/js/toc_aside_toggle.js"></script>
+	-->
+
+</div>
+<script src="/js/toc_aside_toggle.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
